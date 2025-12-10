@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20251210102912"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "HelpSubcategory",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "helpCategory",
+      "relationshipName": "category",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

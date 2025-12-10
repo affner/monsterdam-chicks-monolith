@@ -1,0 +1,54 @@
+{
+  "annotations": {
+    "changelogDate": "20251210095412"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "transactionType",
+      "fieldType": "MoneyEarningType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "TIP_EARNING (money.earnings.type.tip-earning),SUBSCRIPTION_EARNING (money.earnings.type.subscription-earning),POST_EARNING (money.earnings.type.post-earning),MESSAGE_EARNING (money.earnings.type.message-earning),WITHDRAW (money.earnings.type.withdraw)"
+    }
+  ],
+  "name": "MoneyEarning",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "userLite",
+      "relationshipName": "creator",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

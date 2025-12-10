@@ -1,0 +1,31 @@
+{
+  "monsterdamChicksApp": {
+    "moneyEarning": {
+      "home": {
+        "title": "Money Earnings",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Money Earning",
+        "createOrEditLabel": "Crear o editar Money Earning",
+        "notFound": "Ningún Money Earnings encontrado"
+      },
+      "created": "Un nuevo Money Earning ha sido creado con el identificador {{ param }}",
+      "updated": "Un Money Earning ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Money Earning ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Money Earning {{ id }}?"
+      },
+      "detail": {
+        "title": "Money Earning"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "transactionType": "Transaction Type",
+      "creator": "Creator"
+    }
+  }
+}

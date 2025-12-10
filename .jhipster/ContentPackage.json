@@ -1,0 +1,61 @@
+{
+  "annotations": {
+    "changelogDate": "20251210100912"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "videoCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "imageCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "isPaidContent",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "messageId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "postId",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "ContentPackage",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

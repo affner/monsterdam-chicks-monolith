@@ -1,0 +1,37 @@
+{
+  "monsterdamChicksApp": {
+    "auction": {
+      "home": {
+        "title": "Auctions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Auction",
+        "createOrEditLabel": "Crear o editar Auction",
+        "notFound": "Ningún Auctions encontrado"
+      },
+      "created": "Un nuevo Auction ha sido creado con el identificador {{ param }}",
+      "updated": "Un Auction ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Auction ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Auction {{ id }}?"
+      },
+      "detail": {
+        "title": "Auction"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "startingPrice": "Starting Price",
+      "currentPrice": "Current Price",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "auctionStatus": "Auction Status",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "creator": "Creator",
+      "winner": "Winner"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "monsterdamChicksApp": {
+    "moneyGift": {
+      "home": {
+        "title": "Money Gifts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Money Gift",
+        "createOrEditLabel": "Create or edit a Money Gift",
+        "notFound": "No Money Gifts found"
+      },
+      "created": "A new Money Gift is created with identifier {{ param }}",
+      "updated": "A Money Gift is updated with identifier {{ param }}",
+      "deleted": "A Money Gift is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Money Gift {{ id }}?"
+      },
+      "detail": {
+        "title": "Money Gift"
+      },
+      "id": "ID",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "messageId": "Message Id",
+      "postId": "Post Id",
+      "viewerId": "Viewer Id",
+      "creatorId": "Creator Id",
+      "payment": "Payment"
+    }
+  }
+}

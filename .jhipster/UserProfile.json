@@ -1,0 +1,93 @@
+{
+  "annotations": {
+    "changelogDate": "20251210093812"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "emailContact",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "profilePhotoS3Key",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "coverPhotoS3Key",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mainContentUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobilePhone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "websiteUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "amazonWishlistUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastLoginDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "biography",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "isFree",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "UserProfile",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "state",
+      "relationshipName": "stateOfResidence",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userLite",
+      "otherEntityRelationshipName": "profile",
+      "relationshipName": "user",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,34 @@
+{
+  "monsterdamChicksApp": {
+    "singleVideo": {
+      "home": {
+        "title": "Single Videos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Single Video",
+        "createOrEditLabel": "Crear o editar Single Video",
+        "notFound": "Ningún Single Videos encontrado"
+      },
+      "created": "Un nuevo Single Video ha sido creado con el identificador {{ param }}",
+      "updated": "Un Single Video ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Single Video ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Single Video {{ id }}?"
+      },
+      "detail": {
+        "title": "Single Video"
+      },
+      "id": "ID",
+      "thumbnailS3Key": "Thumbnail S 3 Key",
+      "contentS3Key": "Content S 3 Key",
+      "duration": "Duration",
+      "likeCount": "Like Count",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "creatorId": "Creator Id",
+      "contentPackage": "Content Package"
+    }
+  }
+}

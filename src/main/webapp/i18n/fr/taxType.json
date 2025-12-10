@@ -1,0 +1,9 @@
+{
+  "monsterdamChicksApp": {
+    "TaxType": {
+      "null": "",
+      "VAT": "tax.type.vat",
+      "WITHHOLDING": "tax.type.withholding"
+    }
+  }
+}

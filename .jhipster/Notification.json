@@ -1,0 +1,81 @@
+{
+  "annotations": {
+    "changelogDate": "20251210102012"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "readDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "notificationKind",
+      "fieldType": "NotificationKind",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "COMMENT,POST,MESSAGE,COMMENT_MENTION,POST_MENTION"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "commentedUserId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "messagedUserId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "mentionerIdInPost",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "mentionerIdInComment",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "postComment",
+      "relationshipName": "comment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "postFeed",
+      "relationshipName": "post",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "directMessage",
+      "relationshipName": "message",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

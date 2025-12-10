@@ -1,0 +1,11 @@
+id;report_description;status;created_date;last_modified_date;created_by;last_modified_by;is_deleted;report_category;reporter_id;reported_id;multimedia_id;message_id;post_id;comment_id
+1;gym unexpectedly hyphenation;ACTION_TAKEN;2025-12-09T19:29:39;2025-12-09T23:49:40;athwart during;afterwards spiffy unto;false;MESSAGE_REPORT;14435;29318;9328;23668;16184;29185
+2;analyse openly whoa;REVIEWED;2025-12-09T16:14:19;2025-12-10T09:22:42;down;for certification;true;MESSAGE_REPORT;30614;15082;521;25899;9476;19544
+3;mmm crushing;REVIEWED;2025-12-09T14:14:34;2025-12-09T18:39:32;lay shred boastfully;fast;true;COMMENT_REPORT;26545;4883;25687;16643;14540;14216
+4;statue ugh best;ACTION_TAKEN;2025-12-09T21:20:10;2025-12-09T20:03:56;finger gad including;yet;false;MULTIMEDIA_REPORT;24230;20750;8035;32221;16233;6645
+5;that whereas;ACTION_TAKEN;2025-12-09T17:04:39;2025-12-10T08:08:26;dwell below;tarragon or;true;COMMENT_REPORT;29555;12160;11796;6936;25100;22792
+6;pluck ha;ACTION_TAKEN;2025-12-09T22:32:50;2025-12-09T17:53:18;brr brush phooey;mundane stool;false;POST_REPORT;16631;16799;26928;30890;10876;1685
+7;impractical what;DISMISSED;2025-12-09T14:45:13;2025-12-09T19:12:04;despite;searchingly;false;MESSAGE_REPORT;27377;26231;825;19662;28536;7748
+8;descendant nervously;PENDING;2025-12-10T06:52:54;2025-12-09T19:45:27;strict gosh;naturally gloomy custody;true;USER_REPORT;10737;4894;18373;1438;19156;24943
+9;paralyse who;ACTION_TAKEN;2025-12-09T13:46:59;2025-12-10T05:23:38;cheerful perspire basic;understanding;true;POST_REPORT;10807;2177;5899;17910;2136;28353
+10;while interesting urgently;PENDING;2025-12-10T03:46:48;2025-12-10T00:17:04;finally;undergo smarten per;false;POST_REPORT;338;16026;23198;13147;2925;25590

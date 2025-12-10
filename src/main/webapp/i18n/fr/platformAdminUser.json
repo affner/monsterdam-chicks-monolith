@@ -1,0 +1,35 @@
+{
+  "monsterdamChicksApp": {
+    "platformAdminUser": {
+      "home": {
+        "title": "PlatformAdminUsers",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Platform Admin User",
+        "createOrEditLabel": "Créer ou éditer un Platform Admin User",
+        "notFound": "Aucun Platform Admin User trouvé"
+      },
+      "created": "Un nouveau Platform Admin User a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Platform Admin User avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Platform Admin User avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Platform Admin User {{ id }} ?"
+      },
+      "detail": {
+        "title": "Platform Admin User"
+      },
+      "id": "ID",
+      "fullName": "Full Name",
+      "emailAddress": "Email Address",
+      "nickName": "Nick Name",
+      "gender": "Gender",
+      "mobilePhone": "Mobile Phone",
+      "lastLoginDate": "Last Login Date",
+      "birthDate": "Birth Date",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

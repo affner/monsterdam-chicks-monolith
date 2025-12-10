@@ -1,0 +1,35 @@
+{
+  "monsterdamChicksApp": {
+    "subscriptionPlanOffer": {
+      "home": {
+        "title": "SubscriptionPlanOffers",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Subscription Plan Offer",
+        "createOrEditLabel": "Créer ou éditer un Subscription Plan Offer",
+        "notFound": "Aucun Subscription Plan Offer trouvé"
+      },
+      "created": "Un nouveau Subscription Plan Offer a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Subscription Plan Offer avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Subscription Plan Offer avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Subscription Plan Offer {{ id }} ?"
+      },
+      "detail": {
+        "title": "Subscription Plan Offer"
+      },
+      "id": "ID",
+      "freeDaysDuration": "Free Days Duration",
+      "discountPercentage": "Discount Percentage",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "subscriptionsLimit": "Subscriptions Limit",
+      "promotionType": "Promotion Type",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "creator": "Creator"
+    }
+  }
+}

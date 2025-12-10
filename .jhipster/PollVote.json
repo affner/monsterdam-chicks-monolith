@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20251210101812"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "votingUserId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "PollVote",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "pollOption",
+      "relationshipName": "pollOption",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

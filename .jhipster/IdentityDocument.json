@@ -1,0 +1,67 @@
+{
+  "annotations": {
+    "changelogDate": "20251210102412"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "documentName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "documentDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "documentStatus",
+      "fieldType": "DocumentStatus",
+      "fieldValues": "PENDING (admin.document.status.pending),APPROVED (admin.document.status.approved),REJECTED (admin.document.status.rejected)"
+    },
+    {
+      "fieldName": "documentType",
+      "fieldType": "DocumentType",
+      "fieldValues": "ID_VERIFICATION (admin.document.type.id_verification),CONTRACT (admin.document.type.contract),MISC (admin.document.type.misc)"
+    },
+    {
+      "fieldName": "fileDocument",
+      "fieldType": "AnyBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fileDocumentS3Key",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    }
+  ],
+  "name": "IdentityDocument",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "identityDocumentReview",
+      "relationshipName": "review",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

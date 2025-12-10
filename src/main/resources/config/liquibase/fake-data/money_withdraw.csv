@@ -1,0 +1,11 @@
+id;amount;created_date;last_modified_date;created_by;last_modified_by;is_deleted;withdraw_status
+1;32014.02;2025-12-09T17:13:22;2025-12-10T09:18:42;apud accidentally;barracks boastfully;true;WITHDRAW_PROCESSED
+2;12856.95;2025-12-09T12:29:30;2025-12-10T04:17:43;splosh ribbon following;finally table rule;false;WITHDRAW_DECLINED
+3;2793.42;2025-12-09T13:02:09;2025-12-10T04:12:55;waterlogged;what splash magnificent;false;WITHDRAW_PROCESSED
+4;13438.74;2025-12-09T14:27:29;2025-12-10T04:25:50;at before enormously;sympathetically impostor graceful;false;WITHDRAW_PENDING
+5;6958.66;2025-12-09T23:51:18;2025-12-10T06:23:32;sonar warped;qua until stitcher;false;WITHDRAW_DECLINED
+6;16729.79;2025-12-10T03:38:59;2025-12-09T16:45:25;quash quirkily below;healthily;true;WITHDRAW_DECLINED
+7;20902.2;2025-12-09T18:17:53;2025-12-09T23:16:55;naturally revoke;under blah;true;WITHDRAW_PENDING
+8;9593.05;2025-12-09T22:03:39;2025-12-09T17:59:06;casement to;provided reluctantly whenever;false;WITHDRAW_PROCESSED
+9;12008.73;2025-12-09T11:55:58;2025-12-09T22:03:29;indeed ah;oxidize edge instead;false;WITHDRAW_DECLINED
+10;13124.12;2025-12-10T04:11:56;2025-12-10T00:07:19;questioningly once oh;mechanic;false;WITHDRAW_PROCESSED

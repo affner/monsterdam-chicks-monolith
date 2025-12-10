@@ -1,0 +1,30 @@
+{
+  "monsterdamChicksApp": {
+    "stateUserRelation": {
+      "home": {
+        "title": "State User Relations",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo State User Relation",
+        "createOrEditLabel": "Crear o editar State User Relation",
+        "notFound": "Ningún State User Relations encontrado"
+      },
+      "created": "Un nuevo State User Relation ha sido creado con el identificador {{ param }}",
+      "updated": "Un State User Relation ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un State User Relation ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar State User Relation {{ id }}?"
+      },
+      "detail": {
+        "title": "State User Relation"
+      },
+      "id": "ID",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "state": "State",
+      "userProfile": "User Profile"
+    }
+  }
+}

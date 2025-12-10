@@ -1,0 +1,9 @@
+{
+  "monsterdamChicksApp": {
+    "AdminGender": {
+      "null": "",
+      "MALE": "admin.gender.male",
+      "FEMALE": "admin.gender.female"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+id;title;description;starting_price;current_price;start_date;end_date;auction_status;created_date;last_modified_date;created_by;last_modified_by;is_deleted
+1;geez;../fake-data/blob/hipster.txt;22805.54;12476;2025-12-09T15:33:06;2025-12-10T03:44:38;CANCELLED;2025-12-10T01:00:09;2025-12-09T09:56:03;the;fooey since around;false
+2;whoa ugh;../fake-data/blob/hipster.txt;8180.6;10350.57;2025-12-09T14:23:46;2025-12-09T17:42:56;CANCELLED;2025-12-10T01:30:20;2025-12-09T13:51:22;if pro;ack joyous;true
+3;trouser;../fake-data/blob/hipster.txt;25188.51;2077.02;2025-12-09T10:35:54;2025-12-10T03:24:35;CANCELLED;2025-12-10T05:49:06;2025-12-09T09:50:21;oof;coolly;false
+4;siege since;../fake-data/blob/hipster.txt;25456.86;19959.39;2025-12-09T14:54:41;2025-12-09T16:54:31;FINISHED;2025-12-10T05:19:08;2025-12-09T14:00:01;absent onset behind;phew searchingly;true
+5;instead wisely;../fake-data/blob/hipster.txt;23710.3;14260.06;2025-12-10T00:34:37;2025-12-10T04:11:53;FINISHED;2025-12-10T01:54:05;2025-12-09T12:57:19;oddball extra-large;out;true
+6;ouch impossible;../fake-data/blob/hipster.txt;12067.57;12384.91;2025-12-09T10:53:56;2025-12-09T20:05:50;ACTIVE;2025-12-10T09:47:59;2025-12-09T10:27:27;than heavenly sauerkraut;honestly speedy yahoo;false
+7;as;../fake-data/blob/hipster.txt;12427.11;22535.33;2025-12-10T04:54:25;2025-12-09T11:14:02;CANCELLED;2025-12-10T09:39:08;2025-12-09T20:45:01;concerning democratize;yowza before;false
+8;elevator;../fake-data/blob/hipster.txt;19146.23;32717.53;2025-12-10T00:30:13;2025-12-09T20:15:03;FINISHED;2025-12-09T14:07:37;2025-12-09T18:45:08;interviewer whose;tightly minor;true
+9;hm;../fake-data/blob/hipster.txt;15241.44;28829.65;2025-12-09T18:40:15;2025-12-09T11:12:52;FINISHED;2025-12-09T23:25:59;2025-12-09T17:38:40;commonly;upbeat elderly;false
+10;thongs gosh peninsula;../fake-data/blob/hipster.txt;11221.23;18053.92;2025-12-09T14:53:05;2025-12-09T19:29:54;FINISHED;2025-12-10T06:48:25;2025-12-10T03:23:01;veto carefully;card;false

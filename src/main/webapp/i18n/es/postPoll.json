@@ -1,0 +1,33 @@
+{
+  "monsterdamChicksApp": {
+    "postPoll": {
+      "home": {
+        "title": "Post Polls",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Post Poll",
+        "createOrEditLabel": "Crear o editar Post Poll",
+        "notFound": "Ningún Post Polls encontrado"
+      },
+      "created": "Un nuevo Post Poll ha sido creado con el identificador {{ param }}",
+      "updated": "Un Post Poll ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Post Poll ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Post Poll {{ id }}?"
+      },
+      "detail": {
+        "title": "Post Poll"
+      },
+      "id": "ID",
+      "question": "Question",
+      "isMultiChoice": "Is Multi Choice",
+      "endDate": "End Date",
+      "duration": "Duration",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "isDeleted": "Is Deleted",
+      "postId": "Post Id"
+    }
+  }
+}
