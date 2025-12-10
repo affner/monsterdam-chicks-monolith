@@ -1,11 +1,4 @@
-id;thumbnail_s_3_key;content_s_3_key;duration;like_count;created_date;last_modified_date;created_by;last_modified_by;is_deleted;creator_id
-1;immediate even per;er;3549;26831;2025-12-09T20:23:41;2025-12-10T02:44:22;knit aside;reapply institutionalize;true;8986
-2;know spork colorful;woot glass zowie;4282;9218;2025-12-09T10:44:57;2025-12-09T11:21:24;knavishly deck;procurement noxious;false;4149
-3;which;without;30648;14099;2025-12-10T04:31:49;2025-12-09T12:19:23;old-fashioned blissfully;tight supposing;false;10652
-4;a;even;654;17650;2025-12-09T19:02:47;2025-12-09T10:55:55;consign;sympathetically repurpose till;false;14763
-5;thoroughly;if;19647;1900;2025-12-10T00:30:11;2025-12-10T05:05:35;impossible simplistic;behind minus;true;15910
-6;cultivated;impeccable bright tributary;25490;21320;2025-12-09T10:48:28;2025-12-10T01:18:57;admired phooey;numeric frightfully;false;23762
-7;circa alongside hm;economise;31344;32541;2025-12-09T18:59:01;2025-12-09T19:25:50;gadzooks;amidst;false;21739
-8;mesh phew;atop steak;28058;20709;2025-12-10T04:46:43;2025-12-10T01:47:36;blah retention besmirch;acceptable;true;18117
-9;vision failing;marksman huzzah partially;18240;23471;2025-12-10T03:20:04;2025-12-09T11:22:34;than masticate merit;boiling of;true;28769
-10;energetically;ha;21762;16747;2025-12-09T15:59:36;2025-12-10T05:41:46;yet joyfully yet;apropos although;false;30515
+id;thumbnail_s_3_key;content_s_3_key;like_count;created_date;last_modified_date;created_by;last_modified_by;is_deleted;creator_id
+1;videos/alice/teaser-thumb.jpg;videos/alice/teaser.mp4;240;2025-12-09T22:08:40;2025-12-10T07:26:27;alice.r;alice.r;false;1
+2;videos/bruno/backstage-thumb.jpg;videos/bruno/backstage.mp4;186;2025-12-09T22:37:03;2025-12-10T03:02:59;bruno.s;bruno.s;false;2
+3;videos/camila/hiit-thumb.jpg;videos/camila/hiit.mp4;210;2025-12-10T02:15:12;2025-12-10T08:20:00;camitorres;camitorres;false;3

@@ -75,6 +75,8 @@
             <column name="last_modified_by" type="string"/>
             <column name="is_deleted" type="boolean"/>
             <column name="commenter_id" type="numeric"/>
+            <column name="post_id" type="numeric"/>
+            <column name="response_to_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
