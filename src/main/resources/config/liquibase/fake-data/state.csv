@@ -9,3 +9,23 @@ id;state_name;iso_code;created_date;last_modified_date;created_by;last_modified_
 8;Inglaterra;ENG;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;8
 9;Lisboa;LIS;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;9
 10;Holanda Septentrional;NH;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;10
+11;Jalisco;JAL;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;1
+12;Texas;TX;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;2
+13;Quebec;QC;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;3
+14;Cataluña;CAT;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;4
+15;Occitania;OCC;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;5
+16;Renania del Norte-Westfalia;NRW;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;6
+17;Lazio;LAZ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;7
+18;Escocia;SCO;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;8
+19;Oporto;OPO;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;9
+20;Brabante Septentrional;NB;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;10
+21;Antioquia;ANT;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;11
+22;Buenos Aires;BA;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;12
+23;São Paulo;SP;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;13
+24;Santiago Metropolitana;RM;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;14
+25;Cusco;CUS;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;15
+26;Canelones;CAN;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;16
+27;Central;CEN;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;17
+28;Santa Cruz;SCZ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;18
+29;Miranda;MIR;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;19
+30;San José;SJ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;20
