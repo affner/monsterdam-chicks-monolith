@@ -30,6 +30,17 @@
             referencedTableName="jhi_user"/>
     </changeSet>
 
+    <changeSet id="20251210103512-3" author="jhipster">
+        <loadData
+            file="config/liquibase/data/support_user.csv"
+            separator=";"
+            tableName="support_user"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
 </databaseChangeLog>
