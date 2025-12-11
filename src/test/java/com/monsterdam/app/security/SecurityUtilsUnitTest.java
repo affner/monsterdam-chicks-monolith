@@ -3,6 +3,7 @@ package com.monsterdam.app.security;
 import static com.monsterdam.app.security.SecurityUtils.USER_ID_CLAIM;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.monsterdam.app.security.DomainUserDetailsService;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
@@ -57,6 +58,19 @@ class SecurityUtilsUnitTest {
             .build();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(jwt, "token"));
         SecurityContextHolder.setContext(securityContext);
+        var contextUserId = SecurityUtils.getCurrentUserId();
+        assertThat(contextUserId.orElse(null)).isEqualTo(userId);
+    }
+
+    @Test
+    void testGetCurrentUserIdFromUserDetails() {
+        var userId = 5L;
+        var securityContext = SecurityContextHolder.createEmptyContext();
+        var authorities = Collections.singletonList(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        var user = new DomainUserDetailsService.UserWithId("login", "token", authorities, userId);
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(user, "token", authorities));
+        SecurityContextHolder.setContext(securityContext);
+
         var contextUserId = SecurityUtils.getCurrentUserId();
         assertThat(contextUserId.orElse(null)).isEqualTo(userId);
     }
