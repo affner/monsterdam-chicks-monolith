@@ -1,11 +1,2 @@
 id;question;is_multi_choice;end_date;duration;created_date;last_modified_date;created_by;last_modified_by;is_deleted;post_id
-1;../fake-data/blob/hipster.txt;false;2025-12-09;22955;2025-12-10T03:10:11;2025-12-09T20:54:38;cleverly acidly;aside downright;false;1971
-2;../fake-data/blob/hipster.txt;false;2025-12-09;23323;2025-12-10T04:27:32;2025-12-10T01:16:58;daughter;failing loose deceivingly;true;18326
-3;../fake-data/blob/hipster.txt;false;2025-12-10;26563;2025-12-09T11:05:28;2025-12-09T14:44:20;that although abandoned;gadzooks flight;true;24299
-4;../fake-data/blob/hipster.txt;true;2025-12-10;14925;2025-12-10T01:45:21;2025-12-10T08:18:20;unimpressively tame dress;filthy;true;2416
-5;../fake-data/blob/hipster.txt;true;2025-12-10;5318;2025-12-10T03:47:59;2025-12-09T11:42:13;reluctantly quizzically eventually;devoted upright extremely;true;12950
-6;../fake-data/blob/hipster.txt;true;2025-12-09;4784;2025-12-09T18:02:42;2025-12-10T00:10:40;toward the faraway;since scarcely yawn;false;13624
-7;../fake-data/blob/hipster.txt;true;2025-12-10;3866;2025-12-09T10:44:53;2025-12-10T05:33:35;stall obvious infatuated;ramp yowza;true;3043
-8;../fake-data/blob/hipster.txt;false;2025-12-09;4194;2025-12-10T06:22:20;2025-12-09T10:18:40;er atop fit;certainly quart;true;25305
-9;../fake-data/blob/hipster.txt;false;2025-12-09;1579;2025-12-09T17:01:10;2025-12-10T07:49:23;alb hamburger;um eek grandpa;false;2694
-10;../fake-data/blob/hipster.txt;true;2025-12-10;414;2025-12-09T20:57:22;2025-12-10T03:33:42;ouch badly;yowza;true;27547
+1;"¿Prefieres entrenar en la mañana o noche?";false;2025-12-16T09:15:00;7;2025-12-09T09:15:00;2025-12-09T09:15:00;alicia;alicia;false;1

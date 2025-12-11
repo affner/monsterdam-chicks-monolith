@@ -1,11 +1,3 @@
 id;title;content;is_deleted
-1;brr an;../fake-data/blob/hipster.txt;true
-2;mixture descent modulo;../fake-data/blob/hipster.txt;false
-3;wildly sour knuckle;../fake-data/blob/hipster.txt;false
-4;masticate;../fake-data/blob/hipster.txt;false
-5;failing;../fake-data/blob/hipster.txt;true
-6;gaseous lest;../fake-data/blob/hipster.txt;true
-7;disconnection;../fake-data/blob/hipster.txt;false
-8;advancement stable retrospectivity;../fake-data/blob/hipster.txt;true
-9;while bob;../fake-data/blob/hipster.txt;true
-10;considering nor authentic;../fake-data/blob/hipster.txt;false
+1;¿Cómo solicito un reembolso?;"Ve a tus compras y selecciona la opción de reembolso.";false
+2;¿Qué formatos de video se aceptan?;"MP4 y MOV hasta 4K.";false

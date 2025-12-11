@@ -1,11 +1,3 @@
 id;option_description;vote_count
-1;../fake-data/blob/hipster.txt;13608
-2;../fake-data/blob/hipster.txt;32352
-3;../fake-data/blob/hipster.txt;12858
-4;../fake-data/blob/hipster.txt;14289
-5;../fake-data/blob/hipster.txt;15527
-6;../fake-data/blob/hipster.txt;10589
-7;../fake-data/blob/hipster.txt;11892
-8;../fake-data/blob/hipster.txt;4479
-9;../fake-data/blob/hipster.txt;11645
-10;../fake-data/blob/hipster.txt;32546
+1;Mañana;28
+2;Noche;14

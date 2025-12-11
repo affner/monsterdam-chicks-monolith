@@ -1,11 +1,3 @@
 id;provider_name;description;api_key_text;api_secret_text;endpoint_text;created_date;last_modified_date;created_by;last_modified_by;is_deleted
-1;whoa inasmuch reasoning;cook meager but;adaptation shimmering;frilly on shampoo;department terraform;2025-12-09T13:41:28;2025-12-10T09:02:07;barring;zowie times;false
-2;minion comestible whereas;altruistic yet;where machine;amongst huddle;descent stratify;2025-12-10T07:13:15;2025-12-09T18:43:10;communicate within up;imaginative for;true
-3;insert;confused;quizzically kit;yowza;yearly until gadzooks;2025-12-09T23:01:15;2025-12-10T00:29:14;but;exalt anxiously however;true
-4;once hurtful quarrelsomely;outside mid neglect;woot;deliberately redact;average throughout before;2025-12-09T13:58:07;2025-12-10T08:48:13;turret fuel;vivaciously that considering;true
-5;less;supposing;or;restfully;hovel unsightly over;2025-12-09T11:23:23;2025-12-09T10:50:53;till uh-huh bah;key even during;true
-6;even;splendid while likewise;private countess retrospectivity;during ick apud;pace;2025-12-10T01:45:57;2025-12-09T16:21:48;gah phew;jacket;true
-7;overproduce whine inasmuch;clamor;colorize compassionate over;even;shadowy;2025-12-10T08:03:48;2025-12-10T08:29:18;since interior;tuber caption;false
-8;questioningly than;a;cinema sundae aw;busy;given;2025-12-10T08:48:53;2025-12-09T20:54:31;gah likewise;humor correctly;false
-9;safely duh;till hurtful fooey;though;glorious;unbearably yuck hamburger;2025-12-10T09:23:54;2025-12-09T15:40:30;well-lit ravel through;drug micromanage popularity;false
-10;ill within excess;swath;sunbeam;solidly through entwine;giving until;2025-12-09T12:03:00;2025-12-10T08:14:12;opposite unto;gah selfishly;true
+1;Stripe;Procesador principal;sk_test_123;sec_test_123;https://api.stripe.test;2025-12-09T08:00:00;2025-12-09T08:00:00;system;system;false
+2;PayPal;Pagos alternativos;key_paypal;sec_paypal;https://api.paypal.test;2025-12-09T08:10:00;2025-12-09T08:10:00;system;system;false

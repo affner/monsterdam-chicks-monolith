@@ -1,11 +1,3 @@
 id;document_name;document_description;document_status;document_type;file_document;file_document_content_type;file_document_s_3_key;created_date;last_modified_date;created_by;last_modified_by
-1;suffice kettledrum;fervently;APPROVED;ID_VERIFICATION;../fake-data/blob/hipster.png;image/png;informal;2025-12-09T17:30:58;2025-12-09T19:22:04;whereas urgently;despite
-2;phooey;out uselessly;REJECTED;MISC;../fake-data/blob/hipster.png;image/png;judgementally;2025-12-10T06:00:40;2025-12-10T05:47:28;fashion popularity uh-huh;likewise bore pro
-3;almighty;versus brr unnecessarily;PENDING;CONTRACT;../fake-data/blob/hipster.png;image/png;remark orange;2025-12-10T10:00:23;2025-12-10T05:13:18;aboard detain;whoever shocked wedge
-4;yahoo;aha inasmuch;PENDING;ID_VERIFICATION;../fake-data/blob/hipster.png;image/png;left oh unless;2025-12-09T21:50:07;2025-12-10T09:32:04;near yahoo presell;opposite hm till
-5;vaguely;after;APPROVED;CONTRACT;../fake-data/blob/hipster.png;image/png;without wedge;2025-12-09T11:45:40;2025-12-09T15:36:30;emotional joshingly;foolishly smog
-6;confiscate whereas knottily;seriously except hoarse;PENDING;CONTRACT;../fake-data/blob/hipster.png;image/png;now;2025-12-09T22:08:04;2025-12-09T22:03:15;hence hence crossly;generally wonderful pfft
-7;dual rawhide;down row;PENDING;CONTRACT;../fake-data/blob/hipster.png;image/png;likewise;2025-12-10T07:52:55;2025-12-10T04:22:16;oxidise brace;what
-8;duh diligent;while generously;APPROVED;MISC;../fake-data/blob/hipster.png;image/png;or ack;2025-12-10T02:25:38;2025-12-10T06:22:36;huzzah;reassuringly circular
-9;gadzooks shear;garage swathe;REJECTED;CONTRACT;../fake-data/blob/hipster.png;image/png;immediately drat reword;2025-12-09T13:05:39;2025-12-09T20:42:13;beyond;duh
-10;table;solemnly commonly;REJECTED;CONTRACT;../fake-data/blob/hipster.png;image/png;discontinue hmph;2025-12-09T21:25:46;2025-12-10T08:11:43;scoop;toward mountain sequester
+1;INE Alicia;Identificación oficial escaneada.;PENDING;INE;../fake-data/blob/hipster.png;image/png;docs/alicia-ine.png;2025-12-09T07:50:00;2025-12-09T07:50:00;alicia;alicia
+2;Pasaporte Bruno;Pasaporte vigente.;APPROVED;PASSPORT;../fake-data/blob/hipster.png;image/png;docs/bruno-passport.png;2025-12-09T08:00:00;2025-12-09T08:05:00;bruno;bruno

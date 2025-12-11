@@ -1,11 +1,3 @@
 id;requested_date;status;association_token;expiry_date;created_date;last_modified_date;created_by;last_modified_by;is_deleted;owner_id
-1;2025-12-09T22:00:16;APPROVED;noxious masquerade abaft;2025-12-10T00:42:28;2025-12-09T15:56:11;2025-12-09T11:01:50;scaly vastly wiggly;fork;true;21087
-2;2025-12-09T21:22:02;REQUESTED;yum offensively defrag;2025-12-10T03:36:13;2025-12-09T20:24:13;2025-12-10T00:35:44;drat gleefully minor;vice over finished;true;9443
-3;2025-12-09T10:34:38;APPROVED;arcade;2025-12-09T12:32:48;2025-12-10T08:29:53;2025-12-10T06:53:37;mid;tame;true;31031
-4;2025-12-09T18:35:57;APPROVED;lazy pessimistic;2025-12-09T16:56:58;2025-12-09T22:05:28;2025-12-10T03:31:02;yippee if;but understanding;true;27615
-5;2025-12-09T12:55:54;APPROVED;gah;2025-12-09T21:28:42;2025-12-09T23:28:23;2025-12-09T14:05:31;versus beep where;whoa;false;22308
-6;2025-12-10T07:50:10;APPROVED;nice meh;2025-12-09T19:18:18;2025-12-09T19:19:37;2025-12-10T04:35:44;ownership eventually;pause godfather;true;18863
-7;2025-12-09T18:42:13;REQUESTED;needily reckless;2025-12-10T00:14:44;2025-12-10T02:42:05;2025-12-09T21:23:13;descriptive;ack weary reassuringly;true;7511
-8;2025-12-10T05:19:52;APPROVED;collectivization solution righteously;2025-12-09T20:05:20;2025-12-09T12:14:54;2025-12-09T14:25:05;woot polyester;carboxyl painfully blight;true;2011
-9;2025-12-10T07:53:15;APPROVED;hence aw however;2025-12-10T08:36:39;2025-12-09T16:17:47;2025-12-10T04:08:35;without what frequent;profuse;true;4439
-10;2025-12-10T04:38:50;REJECTED;obediently phooey;2025-12-09T16:58:38;2025-12-09T13:41:03;2025-12-09T16:25:55;inasmuch briefly finally;ha mid baritone;true;25633
+1;2025-12-09T10:00:00;ACCEPTED;ASSOC-123;2026-01-09T10:00:00;2025-12-09T10:00:00;2025-12-09T10:05:00;alicia;alicia;false;1
+2;2025-12-09T10:10:00;PENDING;ASSOC-456;2026-01-09T10:10:00;2025-12-09T10:10:00;2025-12-09T10:10:00;bruno;bruno;false;2

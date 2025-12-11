@@ -1,11 +1,3 @@
 id;amount;created_date;last_modified_date;created_by;last_modified_by;is_deleted;transaction_type
-1;28754.91;2025-12-09T10:34:05;2025-12-09T14:48:45;vaguely;worthless;false;MESSAGE_EARNING
-2;13711.52;2025-12-09T12:22:21;2025-12-09T14:42:03;badly sans;incidentally fussy;false;TIP_EARNING
-3;20794.57;2025-12-10T01:25:30;2025-12-09T22:53:10;despite yippee regarding;redress;true;POST_EARNING
-4;4386.29;2025-12-09T18:24:43;2025-12-09T20:48:49;pecan;devise;false;POST_EARNING
-5;20562.82;2025-12-09T10:42:42;2025-12-10T00:52:24;far airbrush for;ouch archaeology oddly;false;POST_EARNING
-6;9063.33;2025-12-09T10:06:42;2025-12-09T22:47:32;minus;backbone;false;POST_EARNING
-7;32739.98;2025-12-09T17:30:47;2025-12-10T07:37:20;sedately round;or savour;false;MESSAGE_EARNING
-8;10542.41;2025-12-09T11:05:40;2025-12-09T20:03:26;plus throughout consequently;meh slow ah;true;WITHDRAW
-9;8136.22;2025-12-09T23:22:45;2025-12-09T13:43:45;who ew busily;tedious blindly;true;TIP_EARNING
-10;14204.4;2025-12-09T17:37:58;2025-12-10T04:23:34;give;gape yahoo;false;TIP_EARNING
+1;150.75;2025-12-09T12:00:00;2025-12-09T12:00:00;alicia;alicia;false;SUBSCRIPTION
+2;320.00;2025-12-09T12:10:00;2025-12-09T12:10:00;bruno;bruno;false;TIPS

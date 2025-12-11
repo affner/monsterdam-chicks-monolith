@@ -1,11 +1,4 @@
 id;read_date;notification_kind;created_date;last_modified_date;created_by;last_modified_by;is_deleted;commented_user_id;messaged_user_id;mentioner_id_in_post;mentioner_id_in_comment
-1;2025-12-09T23:09:02;MESSAGE;2025-12-09T11:17:30;2025-12-10T06:31:55;down hm;unethically inhibit loyally;true;23986;2066;26089;8092
-2;2025-12-09T19:35:25;COMMENT;2025-12-10T08:02:54;2025-12-09T11:41:20;insert;as however because;true;2219;10514;26756;14592
-3;2025-12-10T04:57:36;MESSAGE;2025-12-10T02:13:13;2025-12-09T15:37:39;unto since heavily;agreeable observe legend;false;7798;27309;28571;11714
-4;2025-12-10T04:01:15;MESSAGE;2025-12-10T07:22:25;2025-12-10T05:03:18;excluding unlike upside-down;kindly;true;11499;18671;12250;14138
-5;2025-12-10T07:37:31;POST_MENTION;2025-12-09T21:25:37;2025-12-09T21:06:27;aware;forenenst aw;true;15358;18683;2634;3362
-6;2025-12-10T03:58:43;MESSAGE;2025-12-09T16:09:16;2025-12-10T07:56:43;messy duh aha;majority;true;13256;17011;29901;22947
-7;2025-12-09T15:47:34;COMMENT;2025-12-09T19:00:53;2025-12-09T19:00:53;whoever twine saloon;scheme spear;true;32088;11257;6286;17830
-8;2025-12-09T17:40:04;COMMENT;2025-12-10T10:03:22;2025-12-10T05:30:24;off toothpick;privilege frankly tragic;false;21961;9013;10380;29061
-9;2025-12-10T04:05:19;MESSAGE;2025-12-10T07:22:36;2025-12-10T01:27:32;apropos hmph sarcastic;now regularly including;false;6885;2815;3961;2685
-10;2025-12-10T06:55:15;MESSAGE;2025-12-09T12:18:12;2025-12-10T07:39:51;reflate;although kaleidoscopic impact;false;27516;6121;8110;30382
+1;2025-12-09T11:40:00;COMMENT;2025-12-09T11:35:00;2025-12-09T11:35:00;system;system;false;1;;;2
+2;;MESSAGE;2025-12-09T11:50:00;2025-12-09T11:50:00;system;system;false;;3;;
+3;;MENTION;2025-12-09T12:00:00;2025-12-09T12:00:00;system;system;false;;;1;1

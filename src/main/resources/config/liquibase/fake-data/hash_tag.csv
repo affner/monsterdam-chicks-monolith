@@ -1,11 +1,4 @@
 id;tag_name;hashtag_type;created_date;last_modified_date;created_by;last_modified_by;is_deleted
-1;aged;FETISH;2025-12-09T17:49:33;2025-12-10T05:12:59;deduction without favorable;phooey;true
-2;huzzah;POST;2025-12-10T08:50:20;2025-12-09T13:40:50;wherever but upon;gadzooks youthfully impact;false
-3;yuck impractical;POST;2025-12-09T16:50:57;2025-12-09T19:02:24;brr boo;next whirlwind actually;true
-4;yippee wedding;POST;2025-12-10T09:07:31;2025-12-10T06:27:18;pull hmph;once;true
-5;similar;USER;2025-12-09T23:31:52;2025-12-10T04:39:52;grounded;frail;true
-6;neatly gadzooks unzip;POST;2025-12-10T02:56:48;2025-12-09T20:40:08;next yowza more;downchange moisten;true
-7;desk ah;USER;2025-12-10T09:03:08;2025-12-10T08:58:17;brr;terraform outflank whoa;true
-8;whoever;USER;2025-12-10T06:08:14;2025-12-09T16:29:28;over incidentally;hence meh;true
-9;worth meanwhile;POST;2025-12-09T18:44:25;2025-12-10T04:16:25;endow shear;across aha mature;true
-10;ragged;POST;2025-12-10T07:20:55;2025-12-10T01:03:19;once;linear completion;false
+1;#viajes;GENERIC;2025-12-09T09:00:00;2025-12-09T09:00:00;alicia;alicia;false
+2;#fotografía;GENERIC;2025-12-09T09:10:00;2025-12-09T09:15:00;bruno;bruno;false
+3;#gaming;GENERIC;2025-12-09T09:20:00;2025-12-09T09:20:00;carla;carla;false
