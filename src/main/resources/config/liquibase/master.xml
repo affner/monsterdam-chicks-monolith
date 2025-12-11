@@ -85,6 +85,7 @@
     <include file="config/liquibase/changelog/20251210094312_added_entity_constraints_Feedback.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210094412_added_entity_constraints_PersonalSocialLinks.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210094512_added_entity_constraints_StateUserRelation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251210095112_added_entity_constraints_State.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210094712_added_entity_constraints_SpecialAward.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210094812_added_entity_constraints_PurchasedSubscription.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210094912_added_entity_constraints_Auction.xml" relativeToChangelogFile="false"/>

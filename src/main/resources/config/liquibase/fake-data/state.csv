@@ -1,11 +1,31 @@
 id;state_name;iso_code;created_date;last_modified_date;created_by;last_modified_by;is_deleted;country_id
-1;yippee hoarse unsteady;glo;2025-12-10T06:15:11;2025-12-10T06:13:23;kookily blossom;since lowball phooey;false;25780
-2;anguished hunger equate;for;2025-12-09T15:42:39;2025-12-10T00:27:02;angelic worriedly unto;talkative typify;true;19467
-3;sorrowful newsstand frenetically;sto;2025-12-09T17:41:15;2025-12-10T08:13:02;hoot;bravely;true;22097
-4;depend;out;2025-12-09T11:47:23;2025-12-09T22:40:28;barring;amongst;false;30249
-5;thoroughly uncover giant;whe;2025-12-09T22:28:59;2025-12-09T11:50:09;circa until stable;and captain;false;24892
-6;hydrant serenade puny;emb;2025-12-10T03:41:48;2025-12-09T12:29:16;yuck gratefully whether;officially coaxingly equally;true;5938
-7;unaccountably;bel;2025-12-10T05:19:17;2025-12-10T03:40:48;individual;over wherever;false;27576
-8;triumphantly before how;pis;2025-12-09T21:34:08;2025-12-10T08:14:32;fedora bah always;by;false;19754
-9;entire lyre;ene;2025-12-10T01:19:30;2025-12-09T13:11:10;although;highly;true;18839
-10;catalog;tre;2025-12-10T01:20:32;2025-12-10T09:12:07;once vice;sympathetically;false;12261
+1;Nuevo León;NLE;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;1
+2;California;CA;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;2
+3;Ontario;ON;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;3
+4;Madrid;MAD;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;4
+5;Île-de-France;IDF;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;5
+6;Baviera;BAV;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;6
+7;Lombardía;LOM;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;7
+8;Inglaterra;ENG;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;8
+9;Lisboa;LIS;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;9
+10;Holanda Septentrional;NH;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;10
+11;Jalisco;JAL;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;1
+12;Texas;TX;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;2
+13;Quebec;QC;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;3
+14;Cataluña;CAT;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;4
+15;Occitania;OCC;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;5
+16;Renania del Norte-Westfalia;NRW;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;6
+17;Lazio;LAZ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;7
+18;Escocia;SCO;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;8
+19;Oporto;OPO;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;9
+20;Brabante Septentrional;NB;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;10
+21;Antioquia;ANT;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;11
+22;Buenos Aires;BA;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;12
+23;São Paulo;SP;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;13
+24;Santiago Metropolitana;RM;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;14
+25;Cusco;CUS;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;15
+26;Canelones;CAN;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;16
+27;Central;CEN;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;17
+28;Santa Cruz;SCZ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;18
+29;Miranda;MIR;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;19
+30;San José;SJ;2025-01-01T00:00:00;2025-01-02T00:00:00;system;system;false;20
