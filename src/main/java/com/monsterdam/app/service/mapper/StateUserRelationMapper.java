@@ -13,6 +13,16 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface StateUserRelationMapper extends EntityMapper<StateUserRelationDTO, StateUserRelation> {
+    @Override
+    @Mapping(target = "userProfile.user", ignore = true)
+    StateUserRelation toEntity(StateUserRelationDTO dto);
+
+    @Override
+    @Mapping(target = "userProfile.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget StateUserRelation entity, StateUserRelationDTO dto);
+
     @Mapping(target = "state", source = "state", qualifiedByName = "stateId")
     @Mapping(target = "userProfile", source = "userProfile", qualifiedByName = "userProfileId")
     StateUserRelationDTO toDto(StateUserRelation s);

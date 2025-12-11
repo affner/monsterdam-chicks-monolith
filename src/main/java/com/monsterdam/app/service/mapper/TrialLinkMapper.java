@@ -11,6 +11,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface TrialLinkMapper extends EntityMapper<TrialLinkDTO, TrialLink> {
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    TrialLink toEntity(TrialLinkDTO dto);
+
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget TrialLink entity, TrialLinkDTO dto);
+
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     TrialLinkDTO toDto(TrialLink s);
 

@@ -11,6 +11,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface UserEventMapper extends EntityMapper<UserEventDTO, UserEvent> {
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    UserEvent toEntity(UserEventDTO dto);
+
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget UserEvent entity, UserEventDTO dto);
+
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     UserEventDTO toDto(UserEvent s);
 

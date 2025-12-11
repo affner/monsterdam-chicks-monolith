@@ -11,6 +11,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface FeedbackMapper extends EntityMapper<FeedbackDTO, Feedback> {
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    Feedback toEntity(FeedbackDTO dto);
+
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget Feedback entity, FeedbackDTO dto);
+
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     FeedbackDTO toDto(Feedback s);
 

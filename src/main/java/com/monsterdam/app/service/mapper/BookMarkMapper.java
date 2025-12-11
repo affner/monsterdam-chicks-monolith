@@ -15,6 +15,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface BookMarkMapper extends EntityMapper<BookMarkDTO, BookMark> {
+    @Override
+    @Mapping(target = "user.profile.user", ignore = true)
+    @Mapping(target = "user.settings.user", ignore = true)
+    BookMark toEntity(BookMarkDTO dto);
+
+    @Override
+    @Mapping(target = "user.profile.user", ignore = true)
+    @Mapping(target = "user.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget BookMark entity, BookMarkDTO dto);
+
     @Mapping(target = "user", source = "user", qualifiedByName = "userLiteId")
     @Mapping(target = "post", source = "post", qualifiedByName = "postFeedId")
     @Mapping(target = "message", source = "message", qualifiedByName = "directMessageId")

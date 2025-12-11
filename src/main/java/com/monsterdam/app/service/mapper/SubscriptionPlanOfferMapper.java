@@ -11,6 +11,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface SubscriptionPlanOfferMapper extends EntityMapper<SubscriptionPlanOfferDTO, SubscriptionPlanOffer> {
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    SubscriptionPlanOffer toEntity(SubscriptionPlanOfferDTO dto);
+
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget SubscriptionPlanOffer entity, SubscriptionPlanOfferDTO dto);
+
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     SubscriptionPlanOfferDTO toDto(SubscriptionPlanOffer s);
 
