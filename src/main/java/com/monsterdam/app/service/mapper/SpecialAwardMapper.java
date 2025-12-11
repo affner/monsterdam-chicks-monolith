@@ -11,6 +11,22 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface SpecialAwardMapper extends EntityMapper<SpecialAwardDTO, SpecialAward> {
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Mapping(target = "viewer.profile.user", ignore = true)
+    @Mapping(target = "viewer.settings.user", ignore = true)
+    SpecialAward toEntity(SpecialAwardDTO dto);
+
+    @Override
+    @Mapping(target = "creator.profile.user", ignore = true)
+    @Mapping(target = "creator.settings.user", ignore = true)
+    @Mapping(target = "viewer.profile.user", ignore = true)
+    @Mapping(target = "viewer.settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget SpecialAward entity, SpecialAwardDTO dto);
+
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     @Mapping(target = "viewer", source = "viewer", qualifiedByName = "userLiteId")
     SpecialAwardDTO toDto(SpecialAward s);

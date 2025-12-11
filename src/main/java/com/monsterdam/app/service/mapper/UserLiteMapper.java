@@ -15,6 +15,18 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface UserLiteMapper extends EntityMapper<UserLiteDTO, UserLite> {
+    @Override
+    @Mapping(target = "profile.user", ignore = true)
+    @Mapping(target = "settings.user", ignore = true)
+    UserLite toEntity(UserLiteDTO dto);
+
+    @Override
+    @Mapping(target = "profile.user", ignore = true)
+    @Mapping(target = "settings.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget UserLite entity, UserLiteDTO dto);
+
     @Mapping(target = "profile", source = "profile", qualifiedByName = "userProfileId")
     @Mapping(target = "settings", source = "settings", qualifiedByName = "userSettingsId")
     @Mapping(target = "countryOfBirth", source = "countryOfBirth", qualifiedByName = "countryId")

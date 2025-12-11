@@ -13,6 +13,16 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface PersonalSocialLinksMapper extends EntityMapper<PersonalSocialLinksDTO, PersonalSocialLinks> {
+    @Override
+    @Mapping(target = "userProfile.user", ignore = true)
+    PersonalSocialLinks toEntity(PersonalSocialLinksDTO dto);
+
+    @Override
+    @Mapping(target = "userProfile.user", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void partialUpdate(@MappingTarget PersonalSocialLinks entity, PersonalSocialLinksDTO dto);
+
     @Mapping(target = "socialNetwork", source = "socialNetwork", qualifiedByName = "socialNetworkId")
     @Mapping(target = "userProfile", source = "userProfile", qualifiedByName = "userProfileId")
     PersonalSocialLinksDTO toDto(PersonalSocialLinks s);
