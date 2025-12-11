@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monsterdam.app.IntegrationTest;
 import com.monsterdam.app.domain.Authority;
 import com.monsterdam.app.repository.AuthorityRepository;
+import com.monsterdam.app.security.AuthoritiesConstants;
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser(authorities = { "ROLE_ADMIN" })
+@WithMockUser(authorities = { AuthoritiesConstants.SUPPORT_ADMIN })
 class AuthorityResourceIT {
 
     private static final String ENTITY_API_URL = "/api/authorities";

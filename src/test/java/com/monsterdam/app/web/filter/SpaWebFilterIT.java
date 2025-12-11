@@ -31,7 +31,7 @@ class SpaWebFilterIT {
     }
 
     @Test
-    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    @WithMockUser(authorities = AuthoritiesConstants.SUPPORT_ADMIN)
     void testFilterDoesNotForwardToIndexForV3ApiDocs() throws Exception {
         mockMvc.perform(get("/v3/api-docs")).andExpect(status().isOk()).andExpect(forwardedUrl(null));
     }

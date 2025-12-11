@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link PublicUserResource} REST controller.
  */
 @AutoConfigureMockMvc
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser(authorities = AuthoritiesConstants.SUPPORT_ADMIN)
 @IntegrationTest
 class PublicUserResourceIT {
 
