@@ -46,7 +46,11 @@ export default () => next => action => {
       const { response } = error;
       if (response.status === 401) {
         // Ignore, page will be redirected to login.
-      } else if (error.config?.url?.endsWith('api/account') || error.config?.url?.endsWith('api/authenticate')) {
+      } else if (
+        error.config?.url?.endsWith('api/account') ||
+        error.config?.url?.endsWith('api/authenticate') ||
+        error.config?.url?.endsWith('api/support/authenticate')
+      ) {
         // Ignore, authentication status check and authentication are treated differently.
       } else if (response.status === 0) {
         // connection refused, server not reachable

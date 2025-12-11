@@ -183,10 +183,26 @@ describe('Authentication reducer tests', () => {
       const loginResponse = { headers: { authorization: 'auth' } };
       axios.post = sinon.stub().returns(Promise.resolve(loginResponse));
 
-      const result = await authenticate('test', 'test')(dispatch, getState, extra);
+      const result = await authenticate({ username: 'test', password: 'test' })(dispatch, getState, extra);
 
       const pendingAction = dispatch.mock.calls[0][0];
       expect(pendingAction.meta.requestStatus).toBe('pending');
+      expect(authenticate.fulfilled.match(result)).toBe(true);
+    });
+
+    it('falls back to standard authentication when support authentication fails with 401', async () => {
+      const loginResponse = { headers: { authorization: 'auth' } };
+      axios.post = sinon.stub();
+      (axios.post as sinon.SinonStub)
+        .onFirstCall()
+        .rejects({ isAxiosError: true, response: { status: 401 } })
+        .onSecondCall()
+        .resolves(loginResponse);
+
+      const result = await authenticate({ username: 'fallback', password: 'pass' })(dispatch, getState, extra);
+
+      expect((axios.post as sinon.SinonStub).firstCall.args[0]).toBe('api/support/authenticate');
+      expect((axios.post as sinon.SinonStub).secondCall.args[0]).toBe('api/authenticate');
       expect(authenticate.fulfilled.match(result)).toBe(true);
     });
   });

@@ -106,6 +106,20 @@ describe('Notification Middleware', () => {
     },
   };
 
+  const SUPPORT_LOGIN_REJECTED_ERROR = {
+    type: ERROR_TYPE,
+    error: {
+      isAxiosError: true,
+      response: {
+        data: '',
+        config: {
+          url: 'api/support/authenticate',
+        },
+        status: 401,
+      },
+    },
+  };
+
   const TITLE_ERROR = {
     type: ERROR_TYPE,
     error: {
@@ -216,6 +230,12 @@ describe('Notification Middleware', () => {
 
   it('should not trigger an error toast message and return error for 401 response code', () => {
     expect(store.dispatch(LOGIN_REJECTED_ERROR).error.response.status).toEqual(401);
+    expect((toastify.toast as any).error.called).toEqual(false);
+    expect((toastify.toast as any).success.called).toEqual(false);
+  });
+
+  it('should not trigger an error toast message for support login 401 response code', () => {
+    expect(store.dispatch(SUPPORT_LOGIN_REJECTED_ERROR).error.response.status).toEqual(401);
     expect((toastify.toast as any).error.called).toEqual(false);
     expect((toastify.toast as any).success.called).toEqual(false);
   });
