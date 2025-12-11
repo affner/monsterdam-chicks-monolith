@@ -2,3 +2,5 @@ id;thumbnail_s_3_key;birth_date;gender;created_date;last_modified_date;created_b
 40001;images/thumbnails/sofia-crespo.jpg;1992-06-12;FEMALE;2024-11-30T12:00:00;2024-12-01T09:45:00;system;system;false;sofia.crespo;Sofía Crespo;50001;60001
 40002;images/thumbnails/diego-luna.jpg;1988-02-17;MALE;2024-11-30T12:05:00;2024-12-01T09:50:00;system;system;false;diego.luna;Diego Luna;50002;60002
 40010;images/thumbnails/ana-ramirez.jpg;1997-09-03;FEMALE;2024-11-30T12:10:00;2024-12-01T09:55:00;system;system;false;ana.ramirez;Ana Ramírez;50010;60010
+40020;images/thumbnails/laura-herrera.jpg;1995-01-22;FEMALE;2024-12-02T11:55:00;2024-12-02T12:05:00;system;system;false;laura.herrera;Laura Herrera;50020;60020
+40021;images/thumbnails/mateo-silva.jpg;1990-07-14;MALE;2024-12-02T12:30:00;2024-12-02T12:35:00;system;system;false;mateo.silva;Mateo Silva;50021;60021

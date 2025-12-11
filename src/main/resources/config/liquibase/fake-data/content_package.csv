@@ -1,3 +1,4 @@
 id;amount;video_count;image_count;is_paid_content;created_date;last_modified_date;created_by;last_modified_by;is_deleted;message_id;post_id
 90001;19.99;0;12;true;2024-12-01T08:20:00;2024-12-01T09:00:00;sofia.crespo;sofia.crespo;false;;
 90002;12.50;0;8;true;2024-12-01T09:05:00;2024-12-01T09:35:00;diego.luna;diego.luna;false;;
+90010;49.99;2;2;true;2024-12-01T10:05:00;2024-12-01T10:30:00;sofia.crespo;sofia.crespo;false;;

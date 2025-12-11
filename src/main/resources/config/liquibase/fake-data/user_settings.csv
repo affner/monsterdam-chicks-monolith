@@ -2,3 +2,5 @@ id;dark_mode;language;content_filter;message_blur_intensity;activity_status_visi
 60001;true;ES;false;0;true;false;1;true;true;true;true;true;true;false;false;false;false;false;true;false;false;false;2024-12-01T10:00:00;2024-12-01T10:00:00;system;system;false
 60002;false;ES;false;0;true;false;1;true;true;true;true;true;true;false;false;false;false;false;true;false;false;false;2024-12-01T10:05:00;2024-12-01T10:05:00;system;system;false
 60010;false;ES;false;0;false;false;1;true;true;true;true;true;true;false;false;false;false;false;true;false;false;false;2024-12-01T10:10:00;2024-12-01T10:10:00;system;system;false
+60020;true;ES;false;0;true;true;2;true;true;true;true;true;true;false;true;true;false;false;true;true;true;true;2024-12-02T12:00:00;2024-12-02T12:05:00;system;system;false
+60021;false;ES;false;0;true;false;1;true;true;true;true;true;true;false;false;false;false;false;true;false;false;false;2024-12-02T12:30:00;2024-12-02T12:35:00;system;system;false
