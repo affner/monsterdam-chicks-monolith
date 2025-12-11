@@ -77,6 +77,7 @@
     <include file="config/liquibase/changelog/20251210103212_added_entity_UserReport.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210103312_added_entity_AdminEmailConfigs.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210103412_added_entity_AdminSystemConfigs.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251210103512_added_entity_SupportUser.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20251210093712_added_entity_constraints_UserLite.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251210093812_added_entity_constraints_UserProfile.xml" relativeToChangelogFile="false"/>
