@@ -1,6 +1,6 @@
 package com.monsterdam.app.security.jwt;
 
-import static com.monsterdam.app.security.AuthoritiesConstants.ADMIN;
+import static com.monsterdam.app.security.AuthoritiesConstants.SUPPORT_ADMIN;
 import static com.monsterdam.app.security.SecurityUtils.AUTHORITIES_CLAIM;
 import static com.monsterdam.app.security.SecurityUtils.JWT_ALGORITHM;
 
@@ -49,7 +49,7 @@ public class JwtAuthenticationTestUtils {
             .issuedAt(now)
             .expiresAt(now.plusSeconds(60))
             .subject(user)
-            .claims(customClaim -> customClaim.put(AUTHORITIES_CLAIM, Collections.singletonList(ADMIN)))
+            .claims(customClaim -> customClaim.put(AUTHORITIES_CLAIM, Collections.singletonList(SUPPORT_ADMIN)))
             .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
