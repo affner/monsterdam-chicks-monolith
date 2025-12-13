@@ -71,6 +71,20 @@ public class ContentPackageServiceImpl implements ContentPackageService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<ContentPackageDTO> findActive(Pageable pageable) {
+        LOG.debug("Request to get all active ContentPackages");
+        return contentPackageRepository.findByIsDeletedFalse(pageable).map(contentPackageMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ContentPackageDTO> findActiveByPaymentType(Boolean isPaidContent, Pageable pageable) {
+        LOG.debug("Request to get active ContentPackages filtered by payment type: {}", isPaidContent);
+        return contentPackageRepository.findByIsDeletedFalseAndIsPaidContent(isPaidContent, pageable).map(contentPackageMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<ContentPackageDTO> findOne(Long id) {
         LOG.debug("Request to get ContentPackage : {}", id);
         return contentPackageRepository.findById(id).map(contentPackageMapper::toDto);

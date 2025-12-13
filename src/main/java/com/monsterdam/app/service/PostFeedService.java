@@ -42,6 +42,23 @@ public interface PostFeedService {
     Page<PostFeedDTO> findAll(Pageable pageable);
 
     /**
+     * Get all public post feeds ready for public browse surfaces.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<PostFeedDTO> findPublicFeed(Pageable pageable);
+
+    /**
+     * Search across public post feeds.
+     *
+     * @param query the free text query.
+     * @param pageable the pagination information.
+     * @return matching public posts.
+     */
+    Page<PostFeedDTO> searchPublicFeed(String query, Pageable pageable);
+
+    /**
      * Get the "id" postFeed.
      *
      * @param id the id of the entity.
