@@ -1,6 +1,8 @@
 package com.monsterdam.app.repository;
 
 import com.monsterdam.app.domain.ContentPackage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ContentPackageRepository extends JpaRepository<ContentPackage, Long> {}
+public interface ContentPackageRepository extends JpaRepository<ContentPackage, Long> {
+    Page<ContentPackage> findByIsDeletedFalse(Pageable pageable);
+
+    Page<ContentPackage> findByIsDeletedFalseAndIsPaidContent(Boolean isPaidContent, Pageable pageable);
+}

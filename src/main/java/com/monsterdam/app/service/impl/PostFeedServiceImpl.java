@@ -71,6 +71,20 @@ public class PostFeedServiceImpl implements PostFeedService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<PostFeedDTO> findPublicFeed(Pageable pageable) {
+        LOG.debug("Request to get public PostFeeds for browse surfaces");
+        return postFeedRepository.findVisibleFeed(pageable).map(postFeedMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostFeedDTO> searchPublicFeed(String query, Pageable pageable) {
+        LOG.debug("Request to search public PostFeeds for query: {}", query);
+        return postFeedRepository.findByPostContentContainingIgnoreCaseAndIsDeletedFalse(query, pageable).map(postFeedMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<PostFeedDTO> findOne(Long id) {
         LOG.debug("Request to get PostFeed : {}", id);
         return postFeedRepository.findById(id).map(postFeedMapper::toDto);
