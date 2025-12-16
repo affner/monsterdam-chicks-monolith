@@ -6,11 +6,13 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A PollOption.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "poll_option")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PollOption implements Serializable {

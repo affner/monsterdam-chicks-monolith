@@ -9,11 +9,17 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A UserLite.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_lite")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserLite implements Serializable {
@@ -39,15 +45,19 @@ public class UserLite implements Serializable {
     private UserGender gender;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

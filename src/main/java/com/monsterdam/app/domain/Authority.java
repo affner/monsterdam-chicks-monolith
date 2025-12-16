@@ -6,11 +6,13 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A Authority.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "jhi_authority")
 @JsonIgnoreProperties(value = { "new", "id" })
 @SuppressWarnings("common-java:DuplicatedBlocks")

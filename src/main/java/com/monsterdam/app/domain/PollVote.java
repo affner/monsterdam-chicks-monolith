@@ -5,11 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A PollVote.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "poll_vote")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PollVote implements Serializable {
@@ -23,6 +26,7 @@ public class PollVote implements Serializable {
     private Long id;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 

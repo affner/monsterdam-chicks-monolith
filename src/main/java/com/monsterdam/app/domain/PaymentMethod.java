@@ -5,11 +5,17 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A PaymentMethod.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "payment_method")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PaymentMethod implements Serializable {
@@ -35,15 +41,19 @@ public class PaymentMethod implements Serializable {
     private LocalDate expirationDate;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

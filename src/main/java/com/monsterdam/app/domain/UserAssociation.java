@@ -6,11 +6,17 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A UserAssociation.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_association")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserAssociation implements Serializable {
@@ -40,15 +46,19 @@ public class UserAssociation implements Serializable {
     private Instant expiryDate;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

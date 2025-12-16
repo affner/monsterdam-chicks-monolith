@@ -7,11 +7,17 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A PostPoll.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "post_poll")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PostPoll implements Serializable {
@@ -41,15 +47,19 @@ public class PostPoll implements Serializable {
     private Duration duration;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

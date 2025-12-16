@@ -7,11 +7,16 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A RefundTransaction.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "refund_transaction")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class RefundTransaction implements Serializable {
@@ -51,15 +56,18 @@ public class RefundTransaction implements Serializable {
     private GenericStatus status;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
     @Column(name = "processed_at")
     private Instant processedAt;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

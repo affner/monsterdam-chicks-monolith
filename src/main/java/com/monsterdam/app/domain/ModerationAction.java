@@ -6,11 +6,13 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A ModerationAction.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "moderation_action")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ModerationAction implements Serializable {
