@@ -9,3 +9,7 @@ id;thumbnail_s_3_key;birth_date;gender;created_date;last_modified_date;created_b
 8;avatar/user8.jpg;1992-12-02;FEMALE;2025-12-10T11:10:00;2025-12-14T11:05:00;system;admin;;"jnavarro";"Julia Navarro"
 9;avatar/user9.jpg;1989-04-27;MALE;2025-12-10T11:20:00;2025-12-14T11:15:00;system;admin;;"cibarra";"Carlos Ibarra"
 10;avatar/user10.jpg;1996-06-15;FEMALE;2025-12-10T11:30:00;2025-12-14T11:25:00;system;admin;;"mvazquez";"Marta Vazquez"
+11;avatar/user11.jpg;1990-10-02;MALE;2025-12-12T10:15:00;2025-12-15T08:10:00;system;admin;;"jperez";"Javier Perez"
+12;avatar/user12.jpg;1993-08-19;FEMALE;2025-12-12T10:25:00;2025-12-15T08:20:00;system;admin;;"cmorales";"Carla Morales"
+13;avatar/user13.jpg;1997-01-28;FEMALE;2025-12-12T10:35:00;2025-12-15T08:30:00;system;admin;;"lruiz";"Laura Ruiz"
+14;avatar/user14.jpg;1988-04-11;MALE;2025-12-12T10:45:00;2025-12-15T08:40:00;system;admin;;"agonzalez";"Alejandro Gonzalez"
