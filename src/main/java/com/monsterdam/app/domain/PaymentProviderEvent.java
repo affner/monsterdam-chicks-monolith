@@ -6,11 +6,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A PaymentProviderEvent.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "payment_provider_event")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PaymentProviderEvent implements Serializable {
@@ -54,9 +58,11 @@ public class PaymentProviderEvent implements Serializable {
     @Column(name = "processing_status", nullable = false)
     private GenericStatus processingStatus;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

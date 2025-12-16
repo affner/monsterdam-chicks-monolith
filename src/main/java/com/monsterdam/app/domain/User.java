@@ -14,11 +14,13 @@ import java.util.Locale;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A user.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "jhi_user")
 public class User extends AbstractAuditingEntity<Long> implements Serializable {
 

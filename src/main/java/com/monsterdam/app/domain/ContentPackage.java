@@ -8,11 +8,17 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A ContentPackage.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "content_package")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ContentPackage implements Serializable {
@@ -39,15 +45,19 @@ public class ContentPackage implements Serializable {
     private Boolean isPaidContent;
 
     @NotNull
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 
+    @LastModifiedBy
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 

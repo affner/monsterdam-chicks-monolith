@@ -7,11 +7,13 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A Payment.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "payment")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Payment implements Serializable {

@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * A DocumentReviewObservation.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "document_review_observation")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DocumentReviewObservation implements Serializable {
