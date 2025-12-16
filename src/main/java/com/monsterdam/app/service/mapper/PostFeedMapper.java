@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PostFeed} and its DTO {@link PostFeedDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostFeedMapper extends EntityMapper<PostFeedDTO, PostFeed> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     PostFeedDTO toDto(PostFeed s);

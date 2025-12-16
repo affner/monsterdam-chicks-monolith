@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link RefundTransaction} and its DTO {@link RefundTransactionDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RefundTransactionMapper extends EntityMapper<RefundTransactionDTO, RefundTransaction> {
     @Mapping(target = "payment", source = "payment", qualifiedByName = "paymentId")
     RefundTransactionDTO toDto(RefundTransaction s);

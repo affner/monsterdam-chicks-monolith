@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link State} and its DTO {@link StateDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StateMapper extends EntityMapper<StateDTO, State> {
     @Mapping(target = "country", source = "country", qualifiedByName = "countryId")
     StateDTO toDto(State s);
