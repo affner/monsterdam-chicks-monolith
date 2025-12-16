@@ -1,0 +1,34 @@
+{
+  "monsterdamChicksApp": {
+    "ledgerEntry": {
+      "home": {
+        "title": "Ledger Entries",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Ledger Entry",
+        "createOrEditLabel": "Crear o editar Ledger Entry",
+        "notFound": "Ningún Ledger Entries encontrado"
+      },
+      "created": "Un nuevo Ledger Entry ha sido creado con el identificador {{ param }}",
+      "updated": "Un Ledger Entry ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Ledger Entry ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Ledger Entry {{ id }}?"
+      },
+      "detail": {
+        "title": "Ledger Entry"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "currency": "Currency",
+      "entryType": "Entry Type",
+      "accountType": "Account Type",
+      "accountOwnerId": "Account Owner Id",
+      "reason": "Reason",
+      "referenceType": "Reference Type",
+      "referenceId": "Reference Id",
+      "createdDate": "Created Date",
+      "createdBy": "Created By",
+      "deletedDate": "Deleted Date"
+    }
+  }
+}

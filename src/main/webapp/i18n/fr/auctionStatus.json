@@ -1,0 +1,10 @@
+{
+  "monsterdamChicksApp": {
+    "AuctionStatus": {
+      "null": "",
+      "ACTIVE": "auction.status.active",
+      "FINISHED": "auction.status.finished",
+      "CANCELLED": "auction.status.cancelled"
+    }
+  }
+}

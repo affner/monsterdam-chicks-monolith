@@ -1,0 +1,35 @@
+{
+  "monsterdamChicksApp": {
+    "purchasedSubscription": {
+      "home": {
+        "title": "Purchased Subscriptions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Purchased Subscription",
+        "createOrEditLabel": "Crear o editar Purchased Subscription",
+        "notFound": "Ningún Purchased Subscriptions encontrado"
+      },
+      "created": "Un nuevo Purchased Subscription ha sido creado con el identificador {{ param }}",
+      "updated": "Un Purchased Subscription ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Purchased Subscription ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Purchased Subscription {{ id }}?"
+      },
+      "detail": {
+        "title": "Purchased Subscription"
+      },
+      "id": "ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "subscriptionStatus": "Subscription Status",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "viewer": "Viewer",
+      "creator": "Creator",
+      "payment": "Payment",
+      "subscriptionPlanOffer": "Subscription Plan Offer"
+    }
+  }
+}

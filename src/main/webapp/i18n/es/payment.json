@@ -1,0 +1,44 @@
+{
+  "monsterdamChicksApp": {
+    "payment": {
+      "home": {
+        "title": "Payments",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Payment",
+        "createOrEditLabel": "Crear o editar Payment",
+        "notFound": "Ningún Payments encontrado"
+      },
+      "created": "Un nuevo Payment ha sido creado con el identificador {{ param }}",
+      "updated": "Un Payment ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Payment ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Payment {{ id }}?"
+      },
+      "detail": {
+        "title": "Payment"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "currency": "Currency",
+      "paymentDate": "Payment Date",
+      "paymentStatus": "Payment Status",
+      "paymentReference": "Payment Reference",
+      "cloudTransactionId": "Cloud Transaction Id",
+      "providerPaymentIntentId": "Provider Payment Intent Id",
+      "providerChargeId": "Provider Charge Id",
+      "providerCustomerId": "Provider Customer Id",
+      "providerPaymentMethodId": "Provider Payment Method Id",
+      "providerEventLastId": "Provider Event Last Id",
+      "countryCode": "Country Code",
+      "providerFeeAmount": "Provider Fee Amount",
+      "platformFeeAmount": "Platform Fee Amount",
+      "creatorNetAmount": "Creator Net Amount",
+      "taxAmount": "Tax Amount",
+      "authorizedDate": "Authorized Date",
+      "capturedDate": "Captured Date",
+      "method": "Method",
+      "provider": "Provider",
+      "viewer": "Viewer"
+    }
+  }
+}

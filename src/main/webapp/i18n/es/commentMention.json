@@ -1,0 +1,30 @@
+{
+  "monsterdamChicksApp": {
+    "commentMention": {
+      "home": {
+        "title": "Comment Mentions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Comment Mention",
+        "createOrEditLabel": "Crear o editar Comment Mention",
+        "notFound": "Ningún Comment Mentions encontrado"
+      },
+      "created": "Un nuevo Comment Mention ha sido creado con el identificador {{ param }}",
+      "updated": "Un Comment Mention ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Comment Mention ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Comment Mention {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment Mention"
+      },
+      "id": "ID",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "originPostComment": "Origin Post Comment",
+      "mentionedUser": "Mentioned User"
+    }
+  }
+}

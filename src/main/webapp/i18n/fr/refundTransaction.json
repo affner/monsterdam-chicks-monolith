@@ -1,0 +1,35 @@
+{
+  "monsterdamChicksApp": {
+    "refundTransaction": {
+      "home": {
+        "title": "RefundTransactions",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Refund Transaction",
+        "createOrEditLabel": "Créer ou éditer un Refund Transaction",
+        "notFound": "Aucun Refund Transaction trouvé"
+      },
+      "created": "Un nouveau Refund Transaction a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Refund Transaction avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Refund Transaction avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Refund Transaction {{ id }} ?"
+      },
+      "detail": {
+        "title": "Refund Transaction"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "currency": "Currency",
+      "reason": "Reason",
+      "paymentReference": "Payment Reference",
+      "providerChargeId": "Provider Charge Id",
+      "status": "Status",
+      "createdDate": "Created Date",
+      "processedAt": "Processed At",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "payment": "Payment"
+    }
+  }
+}

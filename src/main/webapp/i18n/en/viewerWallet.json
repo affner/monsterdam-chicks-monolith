@@ -1,0 +1,33 @@
+{
+  "monsterdamChicksApp": {
+    "viewerWallet": {
+      "home": {
+        "title": "Viewer Wallets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Viewer Wallet",
+        "createOrEditLabel": "Create or edit a Viewer Wallet",
+        "notFound": "No Viewer Wallets found"
+      },
+      "created": "A new Viewer Wallet is created with identifier {{ param }}",
+      "updated": "A Viewer Wallet is updated with identifier {{ param }}",
+      "deleted": "A Viewer Wallet is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Viewer Wallet {{ id }}?"
+      },
+      "detail": {
+        "title": "Viewer Wallet"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "currency": "Currency",
+      "transactionType": "Transaction Type",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "payment": "Payment",
+      "viewer": "Viewer"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20251216070250"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "documentStatus",
+      "fieldType": "DocumentStatus",
+      "fieldValues": "PENDING (admin.document.status.pending),APPROVED (admin.document.status.approved),REJECTED (admin.document.status.rejected)"
+    },
+    {
+      "fieldName": "resolutionDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "reviewStatus",
+      "fieldType": "ReviewStatus",
+      "fieldValues": "REVIEWING (admin.review.status.reviewing),APPROVED (admin.review.status.approved),REJECTED (admin.review.status.rejected)"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ticketId",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "IdentityDocumentReview",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

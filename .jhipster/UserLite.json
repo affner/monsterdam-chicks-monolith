@@ -1,0 +1,216 @@
+{
+  "annotations": {
+    "changelogDate": "20251216061550"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "thumbnailS3Key",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "UserGender",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "MALE (user.gender.male),FEMALE (user.gender.female)"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deletedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "nickName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[a-z0-9_-]{3,16}$"
+    },
+    {
+      "fieldName": "fullName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[a-zA-Z0-9 ]*$"
+    }
+  ],
+  "name": "UserLite",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "userProfile",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "profile",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "userSettings",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "settings",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "country",
+      "relationshipName": "countryOfBirth",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "purchasedSubscription",
+      "otherEntityRelationshipName": "viewer",
+      "relationshipName": "purchasedSubscriptionsAsViewer",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "purchasedSubscription",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "purchasedSubscriptionsAsCreator",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "pollVote",
+      "otherEntityRelationshipName": "voter",
+      "relationshipName": "pollVotes",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "userAssociation",
+      "otherEntityRelationshipName": "owner",
+      "relationshipName": "associationsAsOwner",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "assistanceTicket",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "assistanceTickets",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "payment",
+      "otherEntityRelationshipName": "viewer",
+      "relationshipName": "payments",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "postComment",
+      "otherEntityRelationshipName": "commenter",
+      "relationshipName": "comments",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "postFeed",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "posts",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "singleAudio",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "singleAudios",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "singleVideo",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "singleVideos",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "singlePhoto",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "singlePhotos",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "videoStory",
+      "otherEntityRelationshipName": "creator",
+      "relationshipName": "videoStories",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "directMessage",
+      "otherEntityRelationshipName": "sender",
+      "relationshipName": "directMessagesSent",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "likeMark",
+      "otherEntityRelationshipName": "liker",
+      "relationshipName": "likeMarks",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "notification",
+      "otherEntityRelationshipName": "recipient",
+      "relationshipName": "notificationsReceived",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "notification",
+      "otherEntityRelationshipName": "actor",
+      "relationshipName": "notificationsTriggered",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "postMention",
+      "otherEntityRelationshipName": "mentionedUser",
+      "relationshipName": "postMentions",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "commentMention",
+      "otherEntityRelationshipName": "mentionedUser",
+      "relationshipName": "commentMentions",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "chatRoom",
+      "otherEntityRelationshipName": "participants",
+      "relationshipName": "chatRooms",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

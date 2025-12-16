@@ -1,0 +1,34 @@
+{
+  "monsterdamChicksApp": {
+    "notification": {
+      "home": {
+        "title": "Notifications",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Notification",
+        "createOrEditLabel": "Créer ou éditer un Notification",
+        "notFound": "Aucun Notification trouvé"
+      },
+      "created": "Un nouveau Notification a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Notification avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Notification avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Notification {{ id }} ?"
+      },
+      "detail": {
+        "title": "Notification"
+      },
+      "id": "ID",
+      "readDate": "Read Date",
+      "notificationKind": "Notification Kind",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "comment": "Comment",
+      "post": "Post",
+      "message": "Message",
+      "recipient": "Recipient",
+      "actor": "Actor"
+    }
+  }
+}

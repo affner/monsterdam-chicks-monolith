@@ -1,0 +1,35 @@
+{
+  "monsterdamChicksApp": {
+    "moneyWithdraw": {
+      "home": {
+        "title": "MoneyWithdraws",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Money Withdraw",
+        "createOrEditLabel": "Créer ou éditer un Money Withdraw",
+        "notFound": "Aucun Money Withdraw trouvé"
+      },
+      "created": "Un nouveau Money Withdraw a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Money Withdraw avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Money Withdraw avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Money Withdraw {{ id }} ?"
+      },
+      "detail": {
+        "title": "Money Withdraw"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "currency": "Currency",
+      "payoutProviderName": "Payout Provider Name",
+      "payoutReferenceId": "Payout Reference Id",
+      "processedAt": "Processed At",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "withdrawStatus": "Withdraw Status",
+      "creator": "Creator"
+    }
+  }
+}

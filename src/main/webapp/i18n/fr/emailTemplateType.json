@@ -1,0 +1,11 @@
+{
+  "monsterdamChicksApp": {
+    "EmailTemplateType": {
+      "null": "",
+      "NOTIFICATION": "NOTIFICATION",
+      "NEWSLETTER": "NEWSLETTER",
+      "ALERT": "ALERT",
+      "PROMOTION": "PROMOTION"
+    }
+  }
+}

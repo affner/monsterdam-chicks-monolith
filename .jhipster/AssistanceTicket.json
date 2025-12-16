@@ -1,0 +1,86 @@
+{
+  "annotations": {
+    "changelogDate": "20251216070550"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "subject",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "TicketStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "OPEN (admin.ticket.status.open),ASSIGNED (admin.ticket.status.assigned),CLOSED (admin.ticket.status.closed)"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "TicketType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ACCESS_ISSUE (admin.ticket.type.accessIssue),DOCUMENT_VERIFICATION (admin.ticket.type.document.verification),REFUND_REQUEST (admin.ticket.type.refund.request),REPORT_REQUEST (admin.ticket.type.report.request),OTHER (admin.ticket.type.other),CONTENT_ISSUE (admin.ticket.type.content.issue),PAYMENT_ISSUE (admin.ticket.type.payment.issue),HARASSMENT_REPORT (admin.ticket.type.harassment.report),BUG_REPORT (admin.ticket.type.bug.report),ACCOUNT_SUSPENSION (admin.ticket.type.account.suspension),PRIVACY_CONCERN (admin.ticket.type.privacy.concern),FEATURE_REQUEST (admin.ticket.type.feature.request)"
+    },
+    {
+      "fieldName": "openedAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "closedAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "comments",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    }
+  ],
+  "name": "AssistanceTicket",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "platformAdminUser",
+      "relationshipName": "assignedAdmin",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "identityDocumentReview",
+      "relationshipName": "documentsReview",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userLite",
+      "otherEntityRelationshipName": "assistanceTickets",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

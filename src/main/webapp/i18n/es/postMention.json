@@ -1,0 +1,30 @@
+{
+  "monsterdamChicksApp": {
+    "postMention": {
+      "home": {
+        "title": "Post Mentions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Post Mention",
+        "createOrEditLabel": "Crear o editar Post Mention",
+        "notFound": "Ningún Post Mentions encontrado"
+      },
+      "created": "Un nuevo Post Mention ha sido creado con el identificador {{ param }}",
+      "updated": "Un Post Mention ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Post Mention ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Post Mention {{ id }}?"
+      },
+      "detail": {
+        "title": "Post Mention"
+      },
+      "id": "ID",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "originPost": "Origin Post",
+      "mentionedUser": "Mentioned User"
+    }
+  }
+}

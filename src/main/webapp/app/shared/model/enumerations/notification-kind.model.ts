@@ -1,0 +1,11 @@
+export enum NotificationKind {
+  COMMENT = 'COMMENT',
+
+  POST = 'POST',
+
+  MESSAGE = 'MESSAGE',
+
+  COMMENT_MENTION = 'COMMENT_MENTION',
+
+  POST_MENTION = 'POST_MENTION',
+}

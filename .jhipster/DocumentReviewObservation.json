@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20251216070350"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "commentDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "DocumentReviewObservation",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "identityDocumentReview",
+      "relationshipName": "review",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

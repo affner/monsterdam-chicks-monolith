@@ -1,0 +1,214 @@
+package com.monsterdam.app.service.dto;
+
+import com.monsterdam.app.domain.enumeration.TicketStatus;
+import com.monsterdam.app.domain.enumeration.TicketType;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
+
+/**
+ * A DTO for the {@link com.monsterdam.app.domain.AssistanceTicket} entity.
+ */
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class AssistanceTicketDTO implements Serializable {
+
+    private Long id;
+
+    @NotNull
+    private String subject;
+
+    @NotNull
+    private String description;
+
+    @NotNull
+    private TicketStatus status;
+
+    @NotNull
+    private TicketType type;
+
+    private Instant openedAt;
+
+    private Instant closedAt;
+
+    private String comments;
+
+    @NotNull
+    private Instant createdDate;
+
+    private Instant lastModifiedDate;
+
+    private String createdBy;
+
+    private String lastModifiedBy;
+
+    private PlatformAdminUserDTO assignedAdmin;
+
+    private IdentityDocumentReviewDTO documentsReview;
+
+    @NotNull
+    private UserLiteDTO user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
+    }
+
+    public TicketType getType() {
+        return type;
+    }
+
+    public void setType(TicketType type) {
+        this.type = type;
+    }
+
+    public Instant getOpenedAt() {
+        return openedAt;
+    }
+
+    public void setOpenedAt(Instant openedAt) {
+        this.openedAt = openedAt;
+    }
+
+    public Instant getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(Instant closedAt) {
+        this.closedAt = closedAt;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public PlatformAdminUserDTO getAssignedAdmin() {
+        return assignedAdmin;
+    }
+
+    public void setAssignedAdmin(PlatformAdminUserDTO assignedAdmin) {
+        this.assignedAdmin = assignedAdmin;
+    }
+
+    public IdentityDocumentReviewDTO getDocumentsReview() {
+        return documentsReview;
+    }
+
+    public void setDocumentsReview(IdentityDocumentReviewDTO documentsReview) {
+        this.documentsReview = documentsReview;
+    }
+
+    public UserLiteDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserLiteDTO user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AssistanceTicketDTO)) {
+            return false;
+        }
+
+        AssistanceTicketDTO assistanceTicketDTO = (AssistanceTicketDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, assistanceTicketDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "AssistanceTicketDTO{" +
+            "id=" + getId() +
+            ", subject='" + getSubject() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", type='" + getType() + "'" +
+            ", openedAt='" + getOpenedAt() + "'" +
+            ", closedAt='" + getClosedAt() + "'" +
+            ", comments='" + getComments() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", assignedAdmin=" + getAssignedAdmin() +
+            ", documentsReview=" + getDocumentsReview() +
+            ", user=" + getUser() +
+            "}";
+    }
+}

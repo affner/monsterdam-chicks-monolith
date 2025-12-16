@@ -1,0 +1,11 @@
+id;amount;currency;payout_provider_name;payout_reference_id;processed_at;created_date;last_modified_date;created_by;last_modified_by;deleted_date;withdraw_status
+1;32014.02;dis;during except;bidet someplace;2025-12-15T12:30:29;2025-12-15T18:38:27;2025-12-16T06:10:38;how row shrilly;sock yowza;2025-12-16T04:59:07;WITHDRAW_DECLINED
+2;24568.76;whi;into iterate handy;snowplow furthermore;2025-12-15T11:54:37;2025-12-16T06:30:34;2025-12-15T08:54:01;serialize sympathetically;vice recommendation courteous;2025-12-15T16:50:59;WITHDRAW_PENDING
+3;18230.65;nat;hold;stitcher meh yowza;2025-12-15T14:58:33;2025-12-16T02:40:50;2025-12-15T20:44:33;hence;unwritten since;2025-12-15T19:00:21;WITHDRAW_DECLINED
+4;17472.46;owl;embarrassment ascribe;statue wide small;2025-12-16T03:31:05;2025-12-15T17:56:14;2025-12-15T22:27:09;yet scuttle awareness;yippee functional;2025-12-15T07:23:01;WITHDRAW_PENDING
+5;27417.23;mad;modulo fervently;whenever;2025-12-15T18:54:18;2025-12-15T22:55:00;2025-12-16T03:41:35;righteously sedately uselessly;or or;2025-12-15T11:01:22;WITHDRAW_DECLINED
+6;10625.13;hyg;upon disconnection enormously;when without;2025-12-15T18:30:01;2025-12-15T12:45:25;2025-12-15T16:58:34;militate;possible interviewer consequently;2025-12-15T18:44:23;WITHDRAW_DECLINED
+7;1735.03;who;cautiously;oddball cinch;2025-12-16T05:40:47;2025-12-15T13:39:38;2025-12-15T20:25:53;object for beyond;unwritten;2025-12-15T17:10:25;WITHDRAW_DECLINED
+8;29619.93;kin;extremely;dearest overcoat markup;2025-12-15T20:06:24;2025-12-15T08:40:49;2025-12-15T16:39:34;pfft along versus;rosin comfortable achieve;2025-12-16T05:50:10;WITHDRAW_DECLINED
+9;17172.79;the;authorized ironclad tremendously;psst structure;2025-12-16T06:16:19;2025-12-15T12:02:39;2025-12-15T07:15:13;pish huzzah stiffen;ah;2025-12-15T07:28:35;WITHDRAW_DECLINED
+10;493.19;plu;pillbox on sturdy;intrigue obnoxiously terribly;2025-12-16T06:24:48;2025-12-16T00:54:30;2025-12-16T01:35:34;permafrost although however;duh;2025-12-15T14:42:32;WITHDRAW_PROCESSED

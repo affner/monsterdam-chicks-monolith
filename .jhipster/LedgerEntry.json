@@ -1,0 +1,71 @@
+{
+  "annotations": {
+    "changelogDate": "20251216063950"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "currency",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "3"
+    },
+    {
+      "fieldName": "entryType",
+      "fieldType": "LedgerEntryType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CREDIT,DEBIT"
+    },
+    {
+      "fieldName": "accountType",
+      "fieldType": "LedgerAccountType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PLATFORM,CREATOR,VIEWER_WALLET"
+    },
+    {
+      "fieldName": "accountOwnerId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "reason",
+      "fieldType": "LedgerReason",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PURCHASE,COMMISSION,PAYOUT,REFUND,WALLET_TOP_UP"
+    },
+    {
+      "fieldName": "referenceType",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "40"
+    },
+    {
+      "fieldName": "referenceId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deletedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "LedgerEntry",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

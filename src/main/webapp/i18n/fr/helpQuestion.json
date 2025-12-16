@@ -1,0 +1,31 @@
+{
+  "monsterdamChicksApp": {
+    "helpQuestion": {
+      "home": {
+        "title": "HelpQuestions",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Help Question",
+        "createOrEditLabel": "Créer ou éditer un Help Question",
+        "notFound": "Aucun Help Question trouvé"
+      },
+      "created": "Un nouveau Help Question a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Help Question avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Help Question avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Help Question {{ id }} ?"
+      },
+      "detail": {
+        "title": "Help Question"
+      },
+      "id": "ID",
+      "title": "Title",
+      "content": "Content",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "subcategory": "Subcategory"
+    }
+  }
+}

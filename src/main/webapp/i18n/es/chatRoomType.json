@@ -1,0 +1,9 @@
+{
+  "monsterdamChicksApp": {
+    "ChatRoomType": {
+      "null": "",
+      "DIRECT": "DIRECT",
+      "GROUP": "GROUP"
+    }
+  }
+}

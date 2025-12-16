@@ -1,0 +1,34 @@
+{
+  "monsterdamChicksApp": {
+    "trialLink": {
+      "home": {
+        "title": "TrialLinks",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Trial Link",
+        "createOrEditLabel": "Créer ou éditer un Trial Link",
+        "notFound": "Aucun Trial Link trouvé"
+      },
+      "created": "Un nouveau Trial Link a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Trial Link avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Trial Link avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Trial Link {{ id }} ?"
+      },
+      "detail": {
+        "title": "Trial Link"
+      },
+      "id": "ID",
+      "linkCode": "Link Code",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "freeDays": "Free Days",
+      "isUsed": "Is Used",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "creator": "Creator"
+    }
+  }
+}

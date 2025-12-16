@@ -1,0 +1,34 @@
+{
+  "monsterdamChicksApp": {
+    "paymentProviderEvent": {
+      "home": {
+        "title": "Payment Provider Events",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Payment Provider Event",
+        "createOrEditLabel": "Create or edit a Payment Provider Event",
+        "notFound": "No Payment Provider Events found"
+      },
+      "created": "A new Payment Provider Event is created with identifier {{ param }}",
+      "updated": "A Payment Provider Event is updated with identifier {{ param }}",
+      "deleted": "A Payment Provider Event is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Payment Provider Event {{ id }}?"
+      },
+      "detail": {
+        "title": "Payment Provider Event"
+      },
+      "id": "ID",
+      "providerName": "Provider Name",
+      "eventType": "Event Type",
+      "eventId": "Event Id",
+      "payloadJson": "Payload Json",
+      "receivedAt": "Received At",
+      "processedAt": "Processed At",
+      "processingStatus": "Processing Status",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "payment": "Payment"
+    }
+  }
+}

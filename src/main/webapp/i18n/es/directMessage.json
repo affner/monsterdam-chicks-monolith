@@ -1,0 +1,36 @@
+{
+  "monsterdamChicksApp": {
+    "directMessage": {
+      "home": {
+        "title": "Direct Messages",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Direct Message",
+        "createOrEditLabel": "Crear o editar Direct Message",
+        "notFound": "Ningún Direct Messages encontrado"
+      },
+      "created": "Un nuevo Direct Message ha sido creado con el identificador {{ param }}",
+      "updated": "Un Direct Message ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Direct Message ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Direct Message {{ id }}?"
+      },
+      "detail": {
+        "title": "Direct Message"
+      },
+      "id": "ID",
+      "messageContent": "Message Content",
+      "readDate": "Read Date",
+      "likeCount": "Like Count",
+      "isHidden": "Is Hidden",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "repliedStoryId": "Replied Story Id",
+      "responseTo": "Response To",
+      "chatRoom": "Chat Room",
+      "sender": "Sender"
+    }
+  }
+}

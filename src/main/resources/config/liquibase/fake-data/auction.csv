@@ -1,0 +1,11 @@
+id;title;description;starting_price;current_price;start_date;end_date;auction_status;created_date;last_modified_date;created_by;last_modified_by;deleted_date
+1;geez;../fake-data/blob/hipster.txt;22805.54;12476;2025-12-15T12:10:44;2025-12-16T00:22:16;CANCELLED;2025-12-15T21:37:47;2025-12-15T06:33:41;the;fooey since around;2025-12-16T05:53:31
+2;whoa ugh;../fake-data/blob/hipster.txt;8180.6;10350.57;2025-12-15T11:01:24;2025-12-15T14:20:34;CANCELLED;2025-12-15T22:07:58;2025-12-15T10:29:00;if pro;ack joyous;2025-12-15T11:21:57
+3;trouser;../fake-data/blob/hipster.txt;25188.51;2077.02;2025-12-15T07:13:32;2025-12-16T00:02:13;CANCELLED;2025-12-16T02:26:44;2025-12-15T06:27:59;oof;coolly;2025-12-16T01:59:33
+4;siege since;../fake-data/blob/hipster.txt;25456.86;19959.39;2025-12-15T11:32:19;2025-12-15T13:32:09;FINISHED;2025-12-16T01:56:46;2025-12-15T10:37:39;absent onset behind;phew searchingly;2025-12-15T14:23:01
+5;instead wisely;../fake-data/blob/hipster.txt;23710.3;14260.06;2025-12-15T21:12:15;2025-12-16T00:49:31;FINISHED;2025-12-15T22:31:43;2025-12-15T09:34:57;oddball extra-large;out;2025-12-15T13:22:19
+6;ouch impossible;../fake-data/blob/hipster.txt;12067.57;12384.91;2025-12-15T07:31:34;2025-12-15T16:43:28;ACTIVE;2025-12-16T06:25:37;2025-12-15T07:05:05;than heavenly sauerkraut;honestly speedy yahoo;2025-12-16T04:40:10
+7;as;../fake-data/blob/hipster.txt;12427.11;22535.33;2025-12-16T01:32:03;2025-12-15T07:51:40;CANCELLED;2025-12-16T06:16:46;2025-12-15T17:22:39;concerning democratize;yowza before;2025-12-16T04:12:21
+8;elevator;../fake-data/blob/hipster.txt;19146.23;32717.53;2025-12-15T21:07:51;2025-12-15T16:52:41;FINISHED;2025-12-15T10:45:15;2025-12-15T15:22:46;interviewer whose;tightly minor;2025-12-15T14:28:38
+9;hm;../fake-data/blob/hipster.txt;15241.44;28829.65;2025-12-15T15:17:53;2025-12-15T07:50:30;FINISHED;2025-12-15T20:03:37;2025-12-15T14:16:18;commonly;upbeat elderly;2025-12-15T22:30:33
+10;thongs gosh peninsula;../fake-data/blob/hipster.txt;11221.23;18053.92;2025-12-15T11:30:43;2025-12-15T16:07:32;FINISHED;2025-12-16T03:26:03;2025-12-16T00:00:39;veto carefully;card;2025-12-16T03:35:44

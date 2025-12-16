@@ -1,0 +1,11 @@
+export enum LedgerReason {
+  PURCHASE = 'PURCHASE',
+
+  COMMISSION = 'COMMISSION',
+
+  PAYOUT = 'PAYOUT',
+
+  REFUND = 'REFUND',
+
+  WALLET_TOP_UP = 'WALLET_TOP_UP',
+}

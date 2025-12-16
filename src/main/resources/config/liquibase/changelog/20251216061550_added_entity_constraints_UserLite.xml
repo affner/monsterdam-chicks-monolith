@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity UserLite.
+    -->
+    <changeSet id="20251216061550-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="profile_id"
+                                 baseTableName="user_lite"
+                                 constraintName="fk_user_lite__profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_profile"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="settings_id"
+                                 baseTableName="user_lite"
+                                 constraintName="fk_user_lite__settings_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_settings"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="country_of_birth_id"
+                                 baseTableName="user_lite"
+                                 constraintName="fk_user_lite__country_of_birth_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="country"
+                                 />
+    </changeSet>
+</databaseChangeLog>

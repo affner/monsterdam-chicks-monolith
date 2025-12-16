@@ -1,0 +1,40 @@
+{
+  "monsterdamChicksApp": {
+    "userProfile": {
+      "home": {
+        "title": "User Profiles",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new User Profile",
+        "createOrEditLabel": "Create or edit a User Profile",
+        "notFound": "No User Profiles found"
+      },
+      "created": "A new User Profile is created with identifier {{ param }}",
+      "updated": "A User Profile is updated with identifier {{ param }}",
+      "deleted": "A User Profile is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Profile {{ id }}?"
+      },
+      "detail": {
+        "title": "User Profile"
+      },
+      "id": "ID",
+      "emailContact": "Email Contact",
+      "profilePhotoS3Key": "Profile Photo S 3 Key",
+      "coverPhotoS3Key": "Cover Photo S 3 Key",
+      "mainContentUrl": "Main Content Url",
+      "mobilePhone": "Mobile Phone",
+      "websiteUrl": "Website Url",
+      "amazonWishlistUrl": "Amazon Wishlist Url",
+      "lastLoginDate": "Last Login Date",
+      "biography": "Biography",
+      "isFree": "Is Free",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "stateOfResidence": "State Of Residence",
+      "user": "User"
+    }
+  }
+}

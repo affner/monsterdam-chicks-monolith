@@ -1,0 +1,33 @@
+{
+  "monsterdamChicksApp": {
+    "videoStory": {
+      "home": {
+        "title": "Video Stories",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Video Story",
+        "createOrEditLabel": "Create or edit a Video Story",
+        "notFound": "No Video Stories found"
+      },
+      "created": "A new Video Story is created with identifier {{ param }}",
+      "updated": "A Video Story is updated with identifier {{ param }}",
+      "deleted": "A Video Story is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Video Story {{ id }}?"
+      },
+      "detail": {
+        "title": "Video Story"
+      },
+      "id": "ID",
+      "thumbnailS3Key": "Thumbnail S 3 Key",
+      "contentS3Key": "Content S 3 Key",
+      "duration": "Duration",
+      "likeCount": "Like Count",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "creator": "Creator"
+    }
+  }
+}

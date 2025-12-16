@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity PurchasedContent.
+    -->
+    <changeSet id="20251216064350-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="content_package_id"
+                                 baseTableName="purchased_content"
+                                 constraintName="fk_purchased_content__content_package_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="content_package"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="payment_id"
+                                 baseTableName="purchased_content"
+                                 constraintName="fk_purchased_content__payment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="viewer_id"
+                                 baseTableName="purchased_content"
+                                 constraintName="fk_purchased_content__viewer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_lite"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="creator_id"
+                                 baseTableName="purchased_content"
+                                 constraintName="fk_purchased_content__creator_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_lite"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,80 @@
+{
+  "annotations": {
+    "changelogDate": "20251216062550"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "startDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "subscriptionStatus",
+      "fieldType": "PurchasedSubscriptionStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PURCHASED (subscription.status.purchased),RENEWED (subscription.status.renewed),PENDING (subscription.status.pending),EXPIRED (subscription.status.expired),CANCELLED (subscription.status.cancelled),SUSPENDED (subscription.status.suspended)"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deletedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "PurchasedSubscription",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "userLite",
+      "otherEntityRelationshipName": "purchasedSubscriptionsAsViewer",
+      "relationshipName": "viewer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "userLite",
+      "otherEntityRelationshipName": "purchasedSubscriptionsAsCreator",
+      "relationshipName": "creator",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "payment",
+      "relationshipName": "payment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "subscriptionPlanOffer",
+      "relationshipName": "subscriptionPlanOffer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

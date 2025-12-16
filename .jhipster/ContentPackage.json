@@ -1,0 +1,68 @@
+{
+  "annotations": {
+    "changelogDate": "20251216064950"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "videoCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "imageCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "isPaidContent",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deletedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "messageId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "postId",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "ContentPackage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "purchasedContent",
+      "otherEntityRelationshipName": "contentPackage",
+      "relationshipName": "purchases",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

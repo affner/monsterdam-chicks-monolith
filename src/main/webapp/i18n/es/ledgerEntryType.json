@@ -1,0 +1,9 @@
+{
+  "monsterdamChicksApp": {
+    "LedgerEntryType": {
+      "null": "",
+      "CREDIT": "CREDIT",
+      "DEBIT": "DEBIT"
+    }
+  }
+}

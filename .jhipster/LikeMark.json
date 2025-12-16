@@ -1,0 +1,66 @@
+{
+  "annotations": {
+    "changelogDate": "20251216065750"
+  },
+  "applications": ["monsterdamChicks"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "entityType",
+      "fieldType": "LikeEntityKind",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "VIDEO (multimedia.entity.kind.video),PHOTO (multimedia.entity.kind.photo),POST (like.entityType.post),MESSAGE (like.entityType.message),COMMENT (like.entityType.comment),STORY (like.entityType.videoStory)"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deletedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "multimediaId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "messageId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "postId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "commentId",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "LikeMark",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "userLite",
+      "otherEntityRelationshipName": "likeMarks",
+      "relationshipName": "liker",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

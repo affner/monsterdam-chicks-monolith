@@ -1,0 +1,30 @@
+{
+  "monsterdamChicksApp": {
+    "helpSubcategory": {
+      "home": {
+        "title": "Help Subcategories",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Help Subcategory",
+        "createOrEditLabel": "Crear o editar Help Subcategory",
+        "notFound": "Ningún Help Subcategories encontrado"
+      },
+      "created": "Un nuevo Help Subcategory ha sido creado con el identificador {{ param }}",
+      "updated": "Un Help Subcategory ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Help Subcategory ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Help Subcategory {{ id }}?"
+      },
+      "detail": {
+        "title": "Help Subcategory"
+      },
+      "id": "ID",
+      "name": "Name",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Last Modified Date",
+      "createdBy": "Created By",
+      "lastModifiedBy": "Last Modified By",
+      "deletedDate": "Deleted Date",
+      "category": "Category"
+    }
+  }
+}
