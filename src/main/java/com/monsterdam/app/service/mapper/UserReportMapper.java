@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserReport} and its DTO {@link UserReportDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserReportMapper extends EntityMapper<UserReportDTO, UserReport> {
     @Mapping(target = "ticket", source = "ticket", qualifiedByName = "assistanceTicketId")
     UserReportDTO toDto(UserReport s);
