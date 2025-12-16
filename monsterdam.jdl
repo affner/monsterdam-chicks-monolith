@@ -91,19 +91,13 @@ enum MoneyWithdrawStatus {
     WITHDRAW_DECLINED("money.withdraw.status.declined")
 }
 
-enum MoneyEarningType {
-    TIP_EARNING("money.earnings.type.tip-earning"),
-    SUBSCRIPTION_EARNING("money.earnings.type.subscription-earning"),
-    POST_EARNING("money.earnings.type.post-earning"),
-    MESSAGE_EARNING("money.earnings.type.message-earning"),
-    WITHDRAW("money.earnings.type.withdraw")
-}
-
 enum ViewerWalletTransactionType {
     TOP_UP("viewer.wallet.transaction.type.top-up"),
+    PURCHASE("viewer.wallet.transaction.type.purchase"),
     WITHDRAW("viewer.wallet.transaction.type.withdraw"),
     REFUND("viewer.wallet.transaction.type.refund")
 }
+
 
 enum GenericStatus {
     PENDING("generic.status.pending"),
@@ -229,23 +223,53 @@ enum EmailTemplateType {
 }
 
 enum ConfigurationValueType {
+
+    /* Valor de configuración en formato de cadena de texto. */
     STRING("configuration.value.type.string"),
+
+    /* Valor de configuración en formato numérico entero. */
     INTEGER("configuration.value.type.integer"),
+
+    /* Valor de configuración en formato booleano (verdadero/falso). */
     BOOLEAN("configuration.value.type.boolean"),
+
+    /* Valor de configuración en formato de punto flotante. */
     FLOAT("configuration.value.type.float"),
+
+    /* Valor de configuración en formato de fecha. */
     DATE("configuration.value.type.date"),
+
+    /* Valor de configuración en formato JSON. */
     JSON("configuration.value.type.json"),
+
+    /* Valor de configuración en formato de texto largo. */
     TEXT("configuration.value.type.text")
 }
 
 enum ConfigurationCategory {
+
+    /* Configuraciones generales de la plataforma. */
     GENERAL("configuration.category.general"),
+
+    /* Configuraciones relacionadas con la seguridad. */
     SECURITY("configuration.category.security"),
+
+    /* Configuraciones de notificaciones. */
     NOTIFICATIONS("configuration.category.notifications"),
+
+    /* Configuraciones de la interfaz de usuario. */
     USER_INTERFACE("configuration.category.user_interface"),
+
+    /* Configuraciones relacionadas con métodos de pago. */
     PAYMENT("configuration.category.payment"),
+
+    /* Configuraciones de integraciones externas. */
     INTEGRATIONS("configuration.category.integrations"),
+
+    /* Configuraciones de contenido. */
     CONTENT("configuration.category.content"),
+
+    /* Configuraciones de SEO. */
     SEO("configuration.category.seo")
 }
 
@@ -261,7 +285,7 @@ entity UserLite {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     nickName String required pattern(/^[a-z0-9_-]{3,16}$/)
     fullName String required pattern(/^[a-zA-Z0-9 ]*$/)
     // countryOfBirthId Long          // FK manejado por relationship UserLite{countryOfBirth} to Country
@@ -282,7 +306,7 @@ entity UserProfile {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // stateOfResidenceId Long       // FK manejado por relationship UserProfile{stateOfResidence} to State
 }
 
@@ -313,7 +337,7 @@ entity UserSettings {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 entity UserAssociation {
@@ -325,8 +349,8 @@ entity UserAssociation {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    ownerId Long required
+    deletedDate Instant
+  //  ownerId Long required
 }
 
 entity UserEvent {
@@ -339,7 +363,7 @@ entity UserEvent {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK manejado por relationship UserEvent{creator} to UserLite
 }
 
@@ -348,7 +372,7 @@ entity BookMark {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // userId Long required          // FK manejado por relationship BookMark{user} to UserLite
     // postId Long                   // FK manejado por relationship BookMark{post} to PostFeed
     // messageId Long                // FK manejado por relationship BookMark{message} to DirectMessage
@@ -363,7 +387,7 @@ entity Feedback {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK manejado por relationship Feedback{creator} to UserLite
 }
 
@@ -375,20 +399,20 @@ entity PersonalSocialLinks {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // socialNetworkId Long required // FK via PersonalSocialLinks{socialNetwork} to SocialNetwork
     // userProfileId Long required   // FK via PersonalSocialLinks{userProfile} to UserProfile
 }
 
-entity StateUserRelation {
-    createdDate Instant required
-    lastModifiedDate Instant
-    createdBy String
-    lastModifiedBy String
-    isDeleted Boolean required
-    // stateId Long required         // FK via StateUserRelation{state} to State
-    // userProfileId Long required   // FK via StateUserRelation{userProfile} to UserProfile
-}
+//entity StateUserRelation {
+//    createdDate Instant required
+//    lastModifiedDate Instant
+//    createdBy String
+//    lastModifiedBy String
+//    deletedDate Instant
+//    // stateId Long required         // FK via StateUserRelation{state} to State
+//    // userProfileId Long required   // FK via StateUserRelation{userProfile} to UserProfile
+//}
 
 entity HashTag {
     tagName String required
@@ -397,7 +421,7 @@ entity HashTag {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 // Premios especiales tipo “usuario del mes”, rifas, reconocimientos, etc.
@@ -410,7 +434,7 @@ entity SpecialAward {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     specialTitleId Long required      // Catálogo de tipo de premio (si lo usamos después)
     // creator/viewer se manejan por relationships ManyToOne a UserLite
 }
@@ -423,9 +447,9 @@ entity PurchasedSubscription {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    viewerId Long required
-    creatorId Long required
+    deletedDate Instant
+  //  viewerId Long required
+   // creatorId Long required
     // subscriptionPlanOfferId Long  // FK via PurchasedSubscription{subscriptionPlanOffer} to SubscriptionPlanOffer
 }
 
@@ -441,7 +465,7 @@ entity Auction {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK via Auction{creator} to UserLite
     // winnerId Long                 // FK via Auction{winner} to UserLite
 }
@@ -456,7 +480,7 @@ entity Country {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 entity State {
@@ -466,8 +490,8 @@ entity State {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    countryId Long required
+    deletedDate Instant
+    // countryId Long required   <-- QUITAR
 }
 
 entity SocialNetwork {
@@ -479,32 +503,69 @@ entity SocialNetwork {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 /* ===========================
- * FINANCE
+ * FINANCE (Stripe-ready + Auditoría)
  * =========================== */
 
+/* Enums nuevos para ledger (evitar strings libres) */
+enum LedgerEntryType {
+    CREDIT,
+    DEBIT
+}
+
+enum LedgerAccountType {
+    PLATFORM,
+    CREATOR,
+    VIEWER_WALLET
+}
+
+enum LedgerReason {
+    PURCHASE,
+    COMMISSION,
+    PAYOUT,
+    REFUND,
+    WALLET_TOP_UP
+}
+
+/* Ajuste: retiro NO es earning */
+enum MoneyEarningType {
+    TIP_EARNING("money.earnings.type.tip-earning"),
+    SUBSCRIPTION_EARNING("money.earnings.type.subscription-earning"),
+    POST_EARNING("money.earnings.type.post-earning"),
+    MESSAGE_EARNING("money.earnings.type.message-earning")
+}
+
+/* MoneyWithdraw se queda, pero le agrego datos de dispersión */
 entity MoneyWithdraw {
     amount BigDecimal required
+    currency String required maxlength(3) // MXN, USD
+    payoutProviderName String maxlength(50) // STRIPE, PAXUM, MANUAL, etc.
+    payoutReferenceId String maxlength(100) // id de transferencia / folio
+    processedAt Instant
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     withdrawStatus MoneyWithdrawStatus required
     // creatorId Long required       // FK via MoneyWithdraw{creator} to UserLite
 }
-
 entity MoneyEarning {
     amount BigDecimal required
+    currency String required maxlength(3)
+    transactionType MoneyEarningType required
+    sourceType String required maxlength(30) // TIP, CONTENT, SUBSCRIPTION, MESSAGE
+    sourceId Long required                  // id de PurchasedContent/PurchasedSubscription/MoneyGift/etc.
+    isPaid Boolean required                 // ya fue liquidado en un withdraw
+    payoutId Long                           // referencia lógica al withdraw (si aplicas)
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    transactionType MoneyEarningType required
+    deletedDate Instant
     // creatorId Long required       // FK via MoneyEarning{creator} to UserLite
 }
 
@@ -515,42 +576,67 @@ entity SubscriptionBundle {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK via SubscriptionBundle{creator} to UserLite
 }
 
 entity ViewerWallet {
     amount BigDecimal required
+    currency String required maxlength(3)
     transactionType ViewerWalletTransactionType required
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    viewerId Long required
+    deletedDate Instant
+  //  viewerId Long required
     // paymentId Long                // FK via ViewerWallet{payment} to Payment
 }
 
+
 entity Payment {
     amount BigDecimal required
+    currency String required maxlength(3) // MXN, USD
     paymentDate Instant required
     paymentStatus GenericStatus required
-    paymentReference String maxlength(100)
-    cloudTransactionId String maxlength(100)
-    viewerId Long required
+
+    /* ids/refs internos */
+    paymentReference String maxlength(100) // tu referencia interna (orden)
+    cloudTransactionId String maxlength(100) // id genérico (legacy/otros)
+
+    /* ids Stripe / PSP (guardarlos te salva en conciliación) */
+    providerPaymentIntentId String maxlength(100) // pi_...
+    providerChargeId String maxlength(100)        // ch_... (si aplica)
+    providerCustomerId String maxlength(100)      // cus_...
+    providerPaymentMethodId String maxlength(100) // pm_...
+    providerEventLastId String maxlength(100)     // último evento procesado (opcional)
+    countryCode String maxlength(2)               // MX, etc.
+
+    /* desglose contable */
+    providerFeeAmount BigDecimal                  // fee del PSP (Stripe)
+    platformFeeAmount BigDecimal required         // tu comisión
+    creatorNetAmount BigDecimal required          // neto creadora
+    taxAmount BigDecimal                          // IVA si aplicas al viewer
+
+    /* para flows async (OXXO/SPEI) */
+    authorizedDate Instant
+    capturedDate Instant
+   // viewerId Long required
     // paymentMethodId Long          // FK via Payment{method} to PaymentMethod
     // paymentProviderId Long        // FK via Payment{provider} to PaymentProvider
 }
 
+/* IMPORTANTE: PaymentMethod/Provider existen, pero NO guardes secretos reales ahí.
+   Para no romper tu modelo, los dejo igual; solo te sugiero mover secretos a env vars después. */
 entity PaymentMethod {
     methodName String required
-    tokenText String required maxlength(100)
+    tokenText String required maxlength(100) // en la práctica: guarda pm_... o token lógico, NO PAN
     expirationDate LocalDate
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 entity PaymentProvider {
@@ -563,19 +649,65 @@ entity PaymentProvider {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
+}
+/* Eventos del proveedor (webhooks / auditoría / idempotencia) */
+entity PaymentProviderEvent {
+    providerName String required maxlength(50) // STRIPE, PAXUM, etc.
+    eventType String required maxlength(80)    // payment_intent.succeeded, charge.refunded, ...
+    eventId String required unique maxlength(120)
+    payloadJson TextBlob required
+    receivedAt Instant required
+    processedAt Instant
+    processingStatus GenericStatus required
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
 }
 
+/* Refunds parciales: obligatorio si quieres “devuelvo 5 aunque cobré 6” */
+entity RefundTransaction {
+    amount BigDecimal required
+    currency String required maxlength(3)
+    reason String maxlength(255)
+    paymentReference String maxlength(100) // opcional: tu referencia
+    providerChargeId String maxlength(100)  // opcional pero útil
+    status GenericStatus required
+    createdDate Instant required
+    processedAt Instant
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
+}
+
+/* Ledger: el “libro” contable que te permite auditoría y balances */
+entity LedgerEntry {
+    amount BigDecimal required
+    currency String required maxlength(3)
+    entryType LedgerEntryType required
+    accountType LedgerAccountType required
+    accountOwnerId Long // userId del owner (creator/viewer); null si PLATFORM global
+    reason LedgerReason required
+    referenceType String required maxlength(40) // PAYMENT, PURCHASED_CONTENT, WITHDRAW, REFUND, WALLET
+    referenceId Long required
+    createdDate Instant required
+    createdBy String
+    deletedDate Instant
+}
+
+/* MoneyGift: hoy no tenía amount; sin eso no sirve para finanzas */
 entity MoneyGift {
+    amount BigDecimal required
+    currency String required maxlength(3)
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     messageId Long
     postId Long
-    viewerId Long required
-    creatorId Long required
+  //  viewerId Long required
+  //  creatorId Long required
     // paymentId Long                // FK via MoneyGift{payment} to Payment
 }
 
@@ -586,7 +718,7 @@ entity TaxInfo {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // countryId Long required       // FK via TaxInfo{country} to Country
 }
 
@@ -601,18 +733,20 @@ entity SubscriptionPlanOffer {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK via SubscriptionPlanOffer{creator} to UserLite
 }
-
+/* PurchasedContent: para soporte/contabilidad necesitas creator y qué compró */
 entity PurchasedContent {
     rating Float
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    viewerId Long required
+    deletedDate Instant
+   // viewerId Long required
+  //  creatorId Long required
+   // contentPackageId Long required
     // paymentId Long                // FK via PurchasedContent{payment} to Payment
 }
 
@@ -626,7 +760,7 @@ entity TrialLink {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // FK via TrialLink{creator} to UserLite
 }
 
@@ -635,24 +769,24 @@ entity TrialLink {
  * =========================== */
 
 entity SingleAudio {
-    // thumbnail ImageBlob required  // almacenado en S3
+    thumbnail ImageBlob required  // almacenado en S3
     thumbnailS3Key String required
-    // content AnyBlob maxbytes(2147483648) // almacenado en S3
+    content AnyBlob // almacenado en S3
     contentS3Key String required
     duration Duration
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // contentPackageId Long        // FK via SingleAudio{contentPackage} to ContentPackage
-    creatorId Long required
+  //  creatorId Long required
 }
 
 entity SingleVideo {
-    // thumbnail ImageBlob required
+    thumbnail ImageBlob required
     thumbnailS3Key String required
-    // content AnyBlob maxbytes(2147483648)
+    content AnyBlob required
     contentS3Key String required
     duration Duration
     likeCount Integer
@@ -660,24 +794,24 @@ entity SingleVideo {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // contentPackageId Long        // FK via SingleVideo{contentPackage} to ContentPackage
-    creatorId Long required
+   // creatorId Long required
 }
 
 entity SinglePhoto {
-    // thumbnail ImageBlob required
+    thumbnail ImageBlob required
     thumbnailS3Key String required
-    // content ImageBlob maxbytes(2147483648)
+    content ImageBlob required
     contentS3Key String required
     likeCount Integer
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // contentPackageId Long        // FK via SinglePhoto{contentPackage} to ContentPackage
-    creatorId Long required
+   // creatorId Long required
 }
 
 entity VideoStory {
@@ -691,8 +825,8 @@ entity VideoStory {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    creatorId Long required
+    deletedDate Instant
+   // creatorId Long required
 }
 
 entity ContentPackage {
@@ -704,7 +838,7 @@ entity ContentPackage {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     messageId Long
     postId Long
 }
@@ -722,7 +856,7 @@ entity PostFeed {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // creatorId Long required       // si luego quieres relationship PostFeed{creator} to UserLite
 }
 
@@ -733,8 +867,8 @@ entity PostComment {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    commenterId Long required
+    deletedDate Instant
+   // commenterId Long required
     // postId Long required          // FK via PostComment{post} to PostFeed
     // responseToId Long             // FK via PostComment{responseTo} to PostComment
 }
@@ -748,22 +882,31 @@ entity PostPoll {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    postId Long required
+    deletedDate Instant
+   // postId Long required
 }
 
+enum ChatRoomType {
+    DIRECT,
+    GROUP
+}
 entity ChatRoom {
+    roomType ChatRoomType required
+    title String maxlength(120)        // solo útil si es GROUP (en DIRECT puedes dejar null/empty)
     lastAction String
     lastConnectionDate Instant
-    muted Boolean
+//    muted Boolean                       // MVP: lo dejas así (luego lo pasas a membership por usuario)
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    participantId Long
+    deletedDate Instant
+    //   participantId Long
 }
-
+//Evitar duplicados de chats DIRECT
+//
+//Con ManyToMany, nada evita que crees 2 rooms DIRECT con las mismas 2 personas.
+//Solución MVP (simple): al crear room DIRECT, busca si ya existe uno con esos 2 participantes y reúsalo.
 entity DirectMessage {
     messageContent TextBlob required
     readDate Instant
@@ -773,9 +916,9 @@ entity DirectMessage {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     repliedStoryId Long
-    senderId Long required
+ //   senderId Long required
     // chatRoomId Long               // FK via DirectMessage{chatRoom} to ChatRoom
 }
 
@@ -784,9 +927,9 @@ entity PostMention {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // originPostId Long required    // FK via PostMention{originPost} to PostFeed
-    mentionedUserId Long required
+ //   mentionedUserId Long required
 }
 
 entity CommentMention {
@@ -794,9 +937,9 @@ entity CommentMention {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     // originPostCommentId Long required // FK via CommentMention{originPostComment} to PostComment
-    mentionedUserId Long required
+ //   mentionedUserId Long required
 }
 
 entity LikeMark {
@@ -805,23 +948,24 @@ entity LikeMark {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     multimediaId Long
     messageId Long
     postId Long
     commentId Long
-    likerId Long required
+   // likerId Long required
 }
 
+//Solución MVP: validar en service: “si ya existe voto para ese voter y ese poll, rechaza o reemplaza”.
 entity PollVote {
     createdDate Instant required
-    votingUserId Long required
+  //  votingUserId Long required
     // pollOptionId Long required    // FK via PollVote{pollOption} to PollOption
 }
 
 entity PollOption {
     optionDescription TextBlob required
-    voteCount Integer required
+   // voteCount Integer required
     // pollId Long required          // FK via PollOption{poll} to PostPoll
 }
 
@@ -832,11 +976,11 @@ entity Notification {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
-    commentedUserId Long
-    messagedUserId Long
-    mentionerIdInPost Long
-    mentionerIdInComment Long
+  //  deletedDate Instant
+   // commentedUserId Long
+  //  messagedUserId Long
+   // mentionerIdInPost Long
+   // mentionerIdInComment Long
     // commentId Long                // FK via Notification{comment} to PostComment
     // postId Long                   // FK via Notification{post} to PostFeed
     // messageId Long                // FK via Notification{message} to DirectMessage
@@ -852,13 +996,13 @@ entity PlatformAdminUser {
     nickName String
     gender AdminGender required
     mobilePhone String
-    lastLoginDate Instant required
+    lastLoginDate Instant
     birthDate LocalDate required
     createdDate Instant required
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
 }
 
 entity IdentityDocumentReview {
@@ -904,7 +1048,7 @@ entity AssistanceTicket {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    userId Long required
+   // userId Long required
     // assignedAdminId Long          // FK via AssistanceTicket{assignedAdmin} to PlatformAdminUser
     // reportId Long                 // FK via AssistanceTicket{report} to UserReport
     // documentsReviewId Long        // FK via AssistanceTicket{documentsReview} to IdentityDocumentReview
@@ -931,25 +1075,42 @@ entity AdminAnnouncement {
 
 entity HelpCategory {
     name String required unique
-    isDeleted Boolean required
+    createdDate Instant required
+    lastModifiedDate Instant
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
 }
 
 entity HelpSubcategory {
     name String required unique
-    isDeleted Boolean required
+    createdDate Instant required
+    lastModifiedDate Instant
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
     // categoryId Long              // FK via HelpSubcategory{category} to HelpCategory
 }
 
 entity HelpQuestion {
     title String required unique
     content TextBlob required
-    isDeleted Boolean required
+    createdDate Instant required
+    lastModifiedDate Instant
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
     // subcategoryId Long           // FK via HelpQuestion{subcategory} to HelpSubcategory
 }
 
 entity HelpRelatedArticle {
     title String required unique
     content TextBlob required
+    createdDate Instant required
+    lastModifiedDate Instant
+    createdBy String
+    lastModifiedBy String
+    deletedDate Instant
 }
 
 entity UserReport {
@@ -959,7 +1120,7 @@ entity UserReport {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isDeleted Boolean required
+    deletedDate Instant
     reportCategory ReportCategory required
     reporterId Long required
     reportedId Long required
@@ -979,7 +1140,7 @@ entity AdminEmailConfigs {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isActive Boolean required
+    deletedDate Instant
 }
 
 entity AdminSystemConfigs {
@@ -993,7 +1154,7 @@ entity AdminSystemConfigs {
     lastModifiedDate Instant
     createdBy String
     lastModifiedBy String
-    isActive Boolean
+    deletedDate Instant
 }
 
 /* ===========================
@@ -1001,8 +1162,8 @@ entity AdminSystemConfigs {
  * =========================== */
 
 relationship OneToOne {
-    UserLite{profile required} to UserProfile{user required},
-    UserLite{settings required} to UserSettings{user required}
+    UserLite{profile} to UserProfile{user required},
+    UserLite{settings} to UserSettings{user required}
 }
 
 relationship ManyToOne {
@@ -1010,8 +1171,12 @@ relationship ManyToOne {
     UserProfile{stateOfResidence} to State,
     PersonalSocialLinks{socialNetwork} to SocialNetwork,
     PersonalSocialLinks{userProfile} to UserProfile,
-    StateUserRelation{state} to State,
-    StateUserRelation{userProfile} to UserProfile,
+    State{country required} to Country{states},
+    PurchasedSubscription{viewer required} to UserLite{purchasedSubscriptionsAsViewer},
+    PurchasedSubscription{creator required} to UserLite{purchasedSubscriptionsAsCreator},
+    PurchasedContent{contentPackage required} to ContentPackage{purchases},
+//    StateUserRelation{state} to State,
+//    StateUserRelation{userProfile} to UserProfile,
     Feedback{creator} to UserLite,
     MoneyGift{payment} to Payment,
     PurchasedContent{payment} to Payment,
@@ -1034,12 +1199,13 @@ relationship ManyToOne {
     SpecialAward{creator} to UserLite,
     SpecialAward{viewer} to UserLite,
     UserEvent{creator} to UserLite,
-    PollVote{pollOption} to PollOption,
+    PollVote{pollOption required} to PollOption{votes},
+    PollVote{voter required} to UserLite{pollVotes},
     PollOption{poll} to PostPoll,
     PostComment{post} to PostFeed,
     PostComment{responseTo} to PostComment,
     DirectMessage{responseTo} to DirectMessage,
-    DirectMessage{chatRoom} to ChatRoom,
+    DirectMessage{chatRoom required} to ChatRoom,
     PostMention{originPost} to PostFeed,
     CommentMention{originPostComment} to PostComment,
     Notification{comment} to PostComment,
@@ -1051,12 +1217,52 @@ relationship ManyToOne {
     HelpSubcategory{category} to HelpCategory,
     HelpQuestion{subcategory} to HelpSubcategory,
     AssistanceTicket{assignedAdmin} to PlatformAdminUser,
-    AssistanceTicket{report} to UserReport,
+   // AssistanceTicket{report} to UserReport,
     AssistanceTicket{documentsReview} to IdentityDocumentReview,
     DocumentReviewObservation{review} to IdentityDocumentReview,
     IdentityDocument{review} to IdentityDocumentReview,
-    UserReport{ticket} to AssistanceTicket
+    UserReport{ticket} to AssistanceTicket,
+
+    PaymentProviderEvent{payment} to Payment,
+    RefundTransaction{payment} to Payment,
+
+    UserAssociation{owner required} to UserLite{associationsAsOwner},
+    PostPoll{post required} to PostFeed{polls},
+    AssistanceTicket{user required} to UserLite{assistanceTickets},
+    Payment{viewer required} to UserLite{payments},
+    PostComment{commenter required} to UserLite{comments},
+
+    ViewerWallet{viewer} to UserLite,
+    MoneyGift{viewer} to UserLite,
+    MoneyGift{creator} to UserLite,
+    PurchasedContent{viewer} to UserLite,
+    PurchasedContent{creator} to UserLite,
+
+    /* === Authorship / Ownership (reemplaza creatorId/senderId/likerId/participantId/mentionedUserId) === */
+    PostFeed{creator required} to UserLite{posts},
+    SingleAudio{creator required} to UserLite{singleAudios},
+    SingleVideo{creator required} to UserLite{singleVideos},
+    SinglePhoto{creator required} to UserLite{singlePhotos},
+    VideoStory{creator required} to UserLite{videoStories},
+
+    DirectMessage{sender required} to UserLite{directMessagesSent},
+
+  //  ChatRoom{creator required} to UserLite{chatRoomsAsCreator},
+  //  ChatRoom{viewer required} to UserLite{chatRoomsAsViewer},
+
+    LikeMark{liker required} to UserLite{likeMarks},
+    Notification{recipient required} to UserLite{notificationsReceived},
+    Notification{actor} to UserLite{notificationsTriggered},
+
+    PostMention{mentionedUser required} to UserLite{postMentions},
+    CommentMention{mentionedUser required} to UserLite{commentMentions}
+
 }
+
+relationship ManyToMany {
+    ChatRoom{participants} to UserLite{chatRooms}
+}
+
 
 /* ===========================
  * DTOs / SERVICES / PAGINACIÓN
