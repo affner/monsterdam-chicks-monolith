@@ -75,6 +75,9 @@
             <column name="last_modified_by" type="string"/>
             <column name="deleted_date" type="date"/>
             <column name="content_package_id" type="numeric"/>
+            <column name="payment_id" type="numeric"/>
+            <column name="viewer_id" type="numeric"/>
+            <column name="creator_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

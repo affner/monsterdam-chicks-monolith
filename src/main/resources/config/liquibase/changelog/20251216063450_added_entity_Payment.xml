@@ -120,6 +120,8 @@
             <column name="authorized_date" type="date"/>
             <column name="captured_date" type="date"/>
             <column name="viewer_id" type="numeric"/>
+            <column name="method_id" type="numeric"/>
+            <column name="provider_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
