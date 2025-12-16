@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ContentPackage} and its DTO {@link ContentPackageDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ContentPackageMapper extends EntityMapper<ContentPackageDTO, ContentPackage> {}

@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link MoneyWithdraw} and its DTO {@link MoneyWithdrawDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MoneyWithdrawMapper extends EntityMapper<MoneyWithdrawDTO, MoneyWithdraw> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     MoneyWithdrawDTO toDto(MoneyWithdraw s);

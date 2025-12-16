@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link SingleVideo} and its DTO {@link SingleVideoDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SingleVideoMapper extends EntityMapper<SingleVideoDTO, SingleVideo> {
     @Mapping(target = "contentPackage", source = "contentPackage", qualifiedByName = "contentPackageId")
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")

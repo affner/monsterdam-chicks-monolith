@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Auction} and its DTO {@link AuctionDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuctionMapper extends EntityMapper<AuctionDTO, Auction> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     @Mapping(target = "winner", source = "winner", qualifiedByName = "userLiteId")

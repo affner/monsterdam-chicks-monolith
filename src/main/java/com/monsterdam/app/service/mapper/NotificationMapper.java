@@ -15,7 +15,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Notification} and its DTO {@link NotificationDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NotificationMapper extends EntityMapper<NotificationDTO, Notification> {
     @Mapping(target = "comment", source = "comment", qualifiedByName = "postCommentId")
     @Mapping(target = "post", source = "post", qualifiedByName = "postFeedId")

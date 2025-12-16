@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link SingleAudio} and its DTO {@link SingleAudioDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SingleAudioMapper extends EntityMapper<SingleAudioDTO, SingleAudio> {
     @Mapping(target = "contentPackage", source = "contentPackage", qualifiedByName = "contentPackageId")
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")

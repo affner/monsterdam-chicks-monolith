@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link TrialLink} and its DTO {@link TrialLinkDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TrialLinkMapper extends EntityMapper<TrialLinkDTO, TrialLink> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     TrialLinkDTO toDto(TrialLink s);

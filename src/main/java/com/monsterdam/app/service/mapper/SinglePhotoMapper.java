@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link SinglePhoto} and its DTO {@link SinglePhotoDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SinglePhotoMapper extends EntityMapper<SinglePhotoDTO, SinglePhoto> {
     @Mapping(target = "contentPackage", source = "contentPackage", qualifiedByName = "contentPackageId")
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")

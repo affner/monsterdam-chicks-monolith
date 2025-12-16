@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link VideoStory} and its DTO {@link VideoStoryDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface VideoStoryMapper extends EntityMapper<VideoStoryDTO, VideoStory> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     VideoStoryDTO toDto(VideoStory s);

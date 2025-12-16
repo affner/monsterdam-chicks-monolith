@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserEvent} and its DTO {@link UserEventDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserEventMapper extends EntityMapper<UserEventDTO, UserEvent> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     UserEventDTO toDto(UserEvent s);

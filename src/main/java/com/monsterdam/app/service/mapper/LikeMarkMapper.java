@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link LikeMark} and its DTO {@link LikeMarkDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LikeMarkMapper extends EntityMapper<LikeMarkDTO, LikeMark> {
     @Mapping(target = "liker", source = "liker", qualifiedByName = "userLiteId")
     LikeMarkDTO toDto(LikeMark s);

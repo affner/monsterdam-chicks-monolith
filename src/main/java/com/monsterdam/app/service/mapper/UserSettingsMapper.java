@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserSettings} and its DTO {@link UserSettingsDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserSettingsMapper extends EntityMapper<UserSettingsDTO, UserSettings> {}

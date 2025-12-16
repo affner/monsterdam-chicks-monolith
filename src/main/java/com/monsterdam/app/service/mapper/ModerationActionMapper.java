@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ModerationAction} and its DTO {@link ModerationActionDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ModerationActionMapper extends EntityMapper<ModerationActionDTO, ModerationAction> {}

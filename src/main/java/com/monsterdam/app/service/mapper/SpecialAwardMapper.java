@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link SpecialAward} and its DTO {@link SpecialAwardDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SpecialAwardMapper extends EntityMapper<SpecialAwardDTO, SpecialAward> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     @Mapping(target = "viewer", source = "viewer", qualifiedByName = "userLiteId")

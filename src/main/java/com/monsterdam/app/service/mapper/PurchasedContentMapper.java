@@ -13,7 +13,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PurchasedContent} and its DTO {@link PurchasedContentDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PurchasedContentMapper extends EntityMapper<PurchasedContentDTO, PurchasedContent> {
     @Mapping(target = "contentPackage", source = "contentPackage", qualifiedByName = "contentPackageId")
     @Mapping(target = "payment", source = "payment", qualifiedByName = "paymentId")

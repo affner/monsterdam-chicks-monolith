@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PaymentProvider} and its DTO {@link PaymentProviderDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentProviderMapper extends EntityMapper<PaymentProviderDTO, PaymentProvider> {}

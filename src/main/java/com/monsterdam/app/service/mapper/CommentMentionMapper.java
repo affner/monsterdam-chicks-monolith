@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link CommentMention} and its DTO {@link CommentMentionDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommentMentionMapper extends EntityMapper<CommentMentionDTO, CommentMention> {
     @Mapping(target = "originPostComment", source = "originPostComment", qualifiedByName = "postCommentId")
     @Mapping(target = "mentionedUser", source = "mentionedUser", qualifiedByName = "userLiteId")

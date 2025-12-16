@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link DirectMessage} and its DTO {@link DirectMessageDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DirectMessageMapper extends EntityMapper<DirectMessageDTO, DirectMessage> {
     @Mapping(target = "responseTo", source = "responseTo", qualifiedByName = "directMessageId")
     @Mapping(target = "chatRoom", source = "chatRoom", qualifiedByName = "chatRoomId")

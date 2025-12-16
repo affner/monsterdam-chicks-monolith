@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ChatRoom} and its DTO {@link ChatRoomDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ChatRoomMapper extends EntityMapper<ChatRoomDTO, ChatRoom> {
     @Mapping(target = "participants", source = "participants", qualifiedByName = "userLiteIdSet")
     ChatRoomDTO toDto(ChatRoom s);

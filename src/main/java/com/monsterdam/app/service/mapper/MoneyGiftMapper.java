@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link MoneyGift} and its DTO {@link MoneyGiftDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MoneyGiftMapper extends EntityMapper<MoneyGiftDTO, MoneyGift> {
     @Mapping(target = "payment", source = "payment", qualifiedByName = "paymentId")
     @Mapping(target = "viewer", source = "viewer", qualifiedByName = "userLiteId")

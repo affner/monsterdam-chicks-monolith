@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link DocumentReviewObservation} and its DTO {@link DocumentReviewObservationDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DocumentReviewObservationMapper extends EntityMapper<DocumentReviewObservationDTO, DocumentReviewObservation> {
     @Mapping(target = "review", source = "review", qualifiedByName = "identityDocumentReviewId")
     DocumentReviewObservationDTO toDto(DocumentReviewObservation s);

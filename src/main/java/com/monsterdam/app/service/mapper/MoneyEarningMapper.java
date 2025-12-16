@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link MoneyEarning} and its DTO {@link MoneyEarningDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MoneyEarningMapper extends EntityMapper<MoneyEarningDTO, MoneyEarning> {
     @Mapping(target = "creator", source = "creator", qualifiedByName = "userLiteId")
     MoneyEarningDTO toDto(MoneyEarning s);

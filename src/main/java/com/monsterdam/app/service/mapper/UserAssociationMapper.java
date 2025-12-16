@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserAssociation} and its DTO {@link UserAssociationDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserAssociationMapper extends EntityMapper<UserAssociationDTO, UserAssociation> {
     @Mapping(target = "owner", source = "owner", qualifiedByName = "userLiteId")
     UserAssociationDTO toDto(UserAssociation s);

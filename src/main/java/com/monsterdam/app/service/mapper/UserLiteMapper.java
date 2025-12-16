@@ -17,7 +17,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserLite} and its DTO {@link UserLiteDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserLiteMapper extends EntityMapper<UserLiteDTO, UserLite> {
     @Mapping(target = "profile", source = "profile", qualifiedByName = "userProfileId")
     @Mapping(target = "settings", source = "settings", qualifiedByName = "userSettingsId")

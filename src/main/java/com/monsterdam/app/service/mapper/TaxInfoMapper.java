@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link TaxInfo} and its DTO {@link TaxInfoDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TaxInfoMapper extends EntityMapper<TaxInfoDTO, TaxInfo> {
     @Mapping(target = "country", source = "country", qualifiedByName = "countryId")
     TaxInfoDTO toDto(TaxInfo s);

@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PollVote} and its DTO {@link PollVoteDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PollVoteMapper extends EntityMapper<PollVoteDTO, PollVote> {
     @Mapping(target = "pollOption", source = "pollOption", qualifiedByName = "pollOptionId")
     @Mapping(target = "voter", source = "voter", qualifiedByName = "userLiteId")

@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link LedgerEntry} and its DTO {@link LedgerEntryDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LedgerEntryMapper extends EntityMapper<LedgerEntryDTO, LedgerEntry> {}

@@ -13,7 +13,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link BookMark} and its DTO {@link BookMarkDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BookMarkMapper extends EntityMapper<BookMarkDTO, BookMark> {
     @Mapping(target = "user", source = "user", qualifiedByName = "userLiteId")
     @Mapping(target = "post", source = "post", qualifiedByName = "postFeedId")

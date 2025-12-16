@@ -7,5 +7,5 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PlatformAdminUser} and its DTO {@link PlatformAdminUserDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PlatformAdminUserMapper extends EntityMapper<PlatformAdminUserDTO, PlatformAdminUser> {}

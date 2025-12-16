@@ -13,7 +13,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link AssistanceTicket} and its DTO {@link AssistanceTicketDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AssistanceTicketMapper extends EntityMapper<AssistanceTicketDTO, AssistanceTicket> {
     @Mapping(target = "assignedAdmin", source = "assignedAdmin", qualifiedByName = "platformAdminUserId")
     @Mapping(target = "documentsReview", source = "documentsReview", qualifiedByName = "identityDocumentReviewId")

@@ -11,7 +11,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PostComment} and its DTO {@link PostCommentDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostCommentMapper extends EntityMapper<PostCommentDTO, PostComment> {
     @Mapping(target = "post", source = "post", qualifiedByName = "postFeedId")
     @Mapping(target = "responseTo", source = "responseTo", qualifiedByName = "postCommentId")

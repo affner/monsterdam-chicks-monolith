@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link IdentityDocument} and its DTO {@link IdentityDocumentDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface IdentityDocumentMapper extends EntityMapper<IdentityDocumentDTO, IdentityDocument> {
     @Mapping(target = "review", source = "review", qualifiedByName = "identityDocumentReviewId")
     IdentityDocumentDTO toDto(IdentityDocument s);

@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link HelpSubcategory} and its DTO {@link HelpSubcategoryDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface HelpSubcategoryMapper extends EntityMapper<HelpSubcategoryDTO, HelpSubcategory> {
     @Mapping(target = "category", source = "category", qualifiedByName = "helpCategoryId")
     HelpSubcategoryDTO toDto(HelpSubcategory s);
