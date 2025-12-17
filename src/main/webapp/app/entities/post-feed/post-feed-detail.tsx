@@ -39,11 +39,11 @@ export const PostFeedDetail = () => {
           </dt>
           <dd>{postFeedEntity.postContent}</dd>
           <dt>
-            <span id="isHidden">
-              <Translate contentKey="monsterdamChicksApp.postFeed.isHidden">Is Hidden</Translate>
+            <span id="isPublic">
+              <Translate contentKey="monsterdamChicksApp.postFeed.isPublic">Is Public</Translate>
             </span>
           </dt>
-          <dd>{postFeedEntity.isHidden ? 'true' : 'false'}</dd>
+          <dd>{postFeedEntity.isPublic ? 'true' : 'false'}</dd>
           <dt>
             <span id="pinnedPost">
               <Translate contentKey="monsterdamChicksApp.postFeed.pinnedPost">Pinned Post</Translate>

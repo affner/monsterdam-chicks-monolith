@@ -40,8 +40,8 @@ class PostFeedResourceIT {
     private static final String DEFAULT_POST_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_POST_CONTENT = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_IS_HIDDEN = false;
-    private static final Boolean UPDATED_IS_HIDDEN = true;
+    private static final Boolean DEFAULT_IS_PUBLIC = false;
+    private static final Boolean UPDATED_IS_PUBLIC = true;
 
     private static final Boolean DEFAULT_PINNED_POST = false;
     private static final Boolean UPDATED_PINNED_POST = true;
@@ -98,7 +98,7 @@ class PostFeedResourceIT {
     public static PostFeed createEntity(EntityManager em) {
         PostFeed postFeed = new PostFeed()
             .postContent(DEFAULT_POST_CONTENT)
-            .isHidden(DEFAULT_IS_HIDDEN)
+            .isPublic(DEFAULT_IS_PUBLIC)
             .pinnedPost(DEFAULT_PINNED_POST)
             .likeCount(DEFAULT_LIKE_COUNT)
             .createdDate(DEFAULT_CREATED_DATE)
@@ -128,7 +128,7 @@ class PostFeedResourceIT {
     public static PostFeed createUpdatedEntity(EntityManager em) {
         PostFeed updatedPostFeed = new PostFeed()
             .postContent(UPDATED_POST_CONTENT)
-            .isHidden(UPDATED_IS_HIDDEN)
+            .isPublic(UPDATED_IS_PUBLIC)
             .pinnedPost(UPDATED_PINNED_POST)
             .likeCount(UPDATED_LIKE_COUNT)
             .createdDate(UPDATED_CREATED_DATE)
@@ -234,7 +234,7 @@ class PostFeedResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(postFeed.getId().intValue())))
             .andExpect(jsonPath("$.[*].postContent").value(hasItem(DEFAULT_POST_CONTENT)))
-            .andExpect(jsonPath("$.[*].isHidden").value(hasItem(DEFAULT_IS_HIDDEN)))
+            .andExpect(jsonPath("$.[*].isPublic").value(hasItem(DEFAULT_IS_PUBLIC)))
             .andExpect(jsonPath("$.[*].pinnedPost").value(hasItem(DEFAULT_PINNED_POST)))
             .andExpect(jsonPath("$.[*].likeCount").value(hasItem(DEFAULT_LIKE_COUNT)))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
@@ -257,7 +257,7 @@ class PostFeedResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(postFeed.getId().intValue()))
             .andExpect(jsonPath("$.postContent").value(DEFAULT_POST_CONTENT))
-            .andExpect(jsonPath("$.isHidden").value(DEFAULT_IS_HIDDEN))
+            .andExpect(jsonPath("$.isPublic").value(DEFAULT_IS_PUBLIC))
             .andExpect(jsonPath("$.pinnedPost").value(DEFAULT_PINNED_POST))
             .andExpect(jsonPath("$.likeCount").value(DEFAULT_LIKE_COUNT))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
@@ -288,7 +288,7 @@ class PostFeedResourceIT {
         em.detach(updatedPostFeed);
         updatedPostFeed
             .postContent(UPDATED_POST_CONTENT)
-            .isHidden(UPDATED_IS_HIDDEN)
+            .isPublic(UPDATED_IS_PUBLIC)
             .pinnedPost(UPDATED_PINNED_POST)
             .likeCount(UPDATED_LIKE_COUNT)
             .createdDate(UPDATED_CREATED_DATE)
@@ -419,7 +419,7 @@ class PostFeedResourceIT {
 
         partialUpdatedPostFeed
             .postContent(UPDATED_POST_CONTENT)
-            .isHidden(UPDATED_IS_HIDDEN)
+            .isPublic(UPDATED_IS_PUBLIC)
             .pinnedPost(UPDATED_PINNED_POST)
             .likeCount(UPDATED_LIKE_COUNT)
             .createdDate(UPDATED_CREATED_DATE)

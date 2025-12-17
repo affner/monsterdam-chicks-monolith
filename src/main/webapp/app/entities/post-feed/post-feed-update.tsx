@@ -119,10 +119,10 @@ export const PostFeedUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('monsterdamChicksApp.postFeed.isHidden')}
-                id="post-feed-isHidden"
-                name="isHidden"
-                data-cy="isHidden"
+                label={translate('monsterdamChicksApp.postFeed.isPublic')}
+                id="post-feed-isPublic"
+                name="isPublic"
+                data-cy="isPublic"
                 check
                 type="checkbox"
               />

@@ -139,6 +139,10 @@ export const SingleVideo = () => {
                   <Translate contentKey="monsterdamChicksApp.singleVideo.likeCount">Like Count</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('likeCount')} />
                 </th>
+                <th className="hand" onClick={sort('isPreview')}>
+                  <Translate contentKey="monsterdamChicksApp.singleVideo.isPreview">Is Preview</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('isPreview')} />
+                </th>
                 <th className="hand" onClick={sort('createdDate')}>
                   <Translate contentKey="monsterdamChicksApp.singleVideo.createdDate">Created Date</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('createdDate')} />
@@ -214,6 +218,7 @@ export const SingleVideo = () => {
                   <td>{singleVideo.contentS3Key}</td>
                   <td>{singleVideo.duration ? <DurationFormat value={singleVideo.duration} /> : null}</td>
                   <td>{singleVideo.likeCount}</td>
+                  <td>{singleVideo.isPreview ? 'true' : 'false'}</td>
                   <td>
                     {singleVideo.createdDate ? <TextFormat type="date" value={singleVideo.createdDate} format={APP_DATE_FORMAT} /> : null}
                   </td>

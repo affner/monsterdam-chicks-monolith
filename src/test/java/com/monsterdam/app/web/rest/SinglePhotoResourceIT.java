@@ -57,6 +57,9 @@ class SinglePhotoResourceIT {
     private static final Integer DEFAULT_LIKE_COUNT = 1;
     private static final Integer UPDATED_LIKE_COUNT = 2;
 
+    private static final Boolean DEFAULT_IS_PREVIEW = false;
+    private static final Boolean UPDATED_IS_PREVIEW = true;
+
     private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -112,6 +115,7 @@ class SinglePhotoResourceIT {
             .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE)
             .contentS3Key(DEFAULT_CONTENT_S_3_KEY)
             .likeCount(DEFAULT_LIKE_COUNT)
+            .isPreview(DEFAULT_IS_PREVIEW)
             .createdDate(DEFAULT_CREATED_DATE)
             .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE)
             .createdBy(DEFAULT_CREATED_BY)
@@ -145,6 +149,7 @@ class SinglePhotoResourceIT {
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .likeCount(UPDATED_LIKE_COUNT)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
@@ -254,6 +259,23 @@ class SinglePhotoResourceIT {
 
     @Test
     @Transactional
+    void checkIsPreviewIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        singlePhoto.setIsPreview(null);
+
+        // Create the SinglePhoto, which fails.
+        SinglePhotoDTO singlePhotoDTO = singlePhotoMapper.toDto(singlePhoto);
+
+        restSinglePhotoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(singlePhotoDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkCreatedDateIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -288,6 +310,7 @@ class SinglePhotoResourceIT {
             .andExpect(jsonPath("$.[*].content").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_CONTENT))))
             .andExpect(jsonPath("$.[*].contentS3Key").value(hasItem(DEFAULT_CONTENT_S_3_KEY)))
             .andExpect(jsonPath("$.[*].likeCount").value(hasItem(DEFAULT_LIKE_COUNT)))
+            .andExpect(jsonPath("$.[*].isPreview").value(hasItem(DEFAULT_IS_PREVIEW.booleanValue())))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
@@ -314,6 +337,7 @@ class SinglePhotoResourceIT {
             .andExpect(jsonPath("$.content").value(Base64.getEncoder().encodeToString(DEFAULT_CONTENT)))
             .andExpect(jsonPath("$.contentS3Key").value(DEFAULT_CONTENT_S_3_KEY))
             .andExpect(jsonPath("$.likeCount").value(DEFAULT_LIKE_COUNT))
+            .andExpect(jsonPath("$.isPreview").value(DEFAULT_IS_PREVIEW.booleanValue()))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
             .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
@@ -447,6 +471,7 @@ class SinglePhotoResourceIT {
             .content(UPDATED_CONTENT)
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .likeCount(UPDATED_LIKE_COUNT)
+            .isPreview(UPDATED_IS_PREVIEW)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .deletedDate(UPDATED_DELETED_DATE);
 
@@ -487,6 +512,7 @@ class SinglePhotoResourceIT {
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .likeCount(UPDATED_LIKE_COUNT)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)

@@ -1,4 +1,4 @@
-id;post_content;is_hidden;pinned_post;like_count;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
+id;post_content;is_public;pinned_post;like_count;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
 1;../fake-data/blob/hipster.txt;false;true;9769;2025-12-15T14:35:34;2025-12-16T01:12:04;crossly quickly hence;deceivingly;2025-12-16T01:46:23;1
 2;../fake-data/blob/hipster.txt;false;true;10116;2025-12-15T13:02:43;2025-12-16T02:49:05;torn charter;duster with;2025-12-15T22:04:55;2
 3;../fake-data/blob/hipster.txt;true;true;26609;2025-12-15T08:12:10;2025-12-15T07:25:54;obesity foolishly why;meanwhile ha typewriter;2025-12-15T12:30:23;3

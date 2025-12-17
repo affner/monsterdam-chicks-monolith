@@ -12,6 +12,7 @@ export interface ISingleVideo {
   contentS3Key?: string;
   duration?: string | null;
   likeCount?: number | null;
+  isPreview?: boolean;
   createdDate?: dayjs.Dayjs;
   lastModifiedDate?: dayjs.Dayjs | null;
   createdBy?: string | null;
@@ -21,4 +22,6 @@ export interface ISingleVideo {
   creator?: IUserLite;
 }
 
-export const defaultValue: Readonly<ISingleVideo> = {};
+export const defaultValue: Readonly<ISingleVideo> = {
+  isPreview: false,
+};

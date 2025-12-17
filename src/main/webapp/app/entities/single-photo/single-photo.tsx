@@ -134,6 +134,10 @@ export const SinglePhoto = () => {
                   <Translate contentKey="monsterdamChicksApp.singlePhoto.likeCount">Like Count</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('likeCount')} />
                 </th>
+                <th className="hand" onClick={sort('isPreview')}>
+                  <Translate contentKey="monsterdamChicksApp.singlePhoto.isPreview">Is Preview</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('isPreview')} />
+                </th>
                 <th className="hand" onClick={sort('createdDate')}>
                   <Translate contentKey="monsterdamChicksApp.singlePhoto.createdDate">Created Date</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('createdDate')} />
@@ -211,6 +215,7 @@ export const SinglePhoto = () => {
                   </td>
                   <td>{singlePhoto.contentS3Key}</td>
                   <td>{singlePhoto.likeCount}</td>
+                  <td>{singlePhoto.isPreview ? 'true' : 'false'}</td>
                   <td>
                     {singlePhoto.createdDate ? <TextFormat type="date" value={singlePhoto.createdDate} format={APP_DATE_FORMAT} /> : null}
                   </td>

@@ -215,9 +215,9 @@ describe('PostFeed e2e test', () => {
       cy.get(`[data-cy="postContent"]`).type('../fake-data/blob/hipster.txt');
       cy.get(`[data-cy="postContent"]`).invoke('val').should('match', new RegExp('../fake-data/blob/hipster.txt'));
 
-      cy.get(`[data-cy="isHidden"]`).should('not.be.checked');
-      cy.get(`[data-cy="isHidden"]`).click();
-      cy.get(`[data-cy="isHidden"]`).should('be.checked');
+      cy.get(`[data-cy="isPublic"]`).should('not.be.checked');
+      cy.get(`[data-cy="isPublic"]`).click();
+      cy.get(`[data-cy="isPublic"]`).should('be.checked');
 
       cy.get(`[data-cy="pinnedPost"]`).should('not.be.checked');
       cy.get(`[data-cy="pinnedPost"]`).click();

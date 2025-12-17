@@ -75,6 +75,7 @@ export const SingleAudioUpdate = () => {
           createdDate: displayDefaultDateTime(),
           lastModifiedDate: displayDefaultDateTime(),
           deletedDate: displayDefaultDateTime(),
+          isPreview: false,
         }
       : {
           ...singleAudioEntity,
@@ -154,6 +155,17 @@ export const SingleAudioUpdate = () => {
                 name="duration"
                 data-cy="duration"
                 type="text"
+              />
+              <ValidatedField
+                label={translate('monsterdamChicksApp.singleAudio.isPreview')}
+                id="single-audio-isPreview"
+                name="isPreview"
+                data-cy="isPreview"
+                check
+                type="checkbox"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
               />
               <ValidatedField
                 label={translate('monsterdamChicksApp.singleAudio.createdDate')}

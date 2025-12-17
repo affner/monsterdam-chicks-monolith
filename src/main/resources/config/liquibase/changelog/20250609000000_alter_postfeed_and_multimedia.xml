@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20250609000000-1" author="jhipster">
+        <renameColumn tableName="post_feed" oldColumnName="is_hidden" newColumnName="is_public" columnDataType="boolean"/>
+    </changeSet>
+
+    <changeSet id="20250609000000-2" author="jhipster">
+        <addColumn tableName="single_audio">
+            <column name="is_preview" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20250609000000-3" author="jhipster">
+        <addColumn tableName="single_video">
+            <column name="is_preview" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20250609000000-4" author="jhipster">
+        <addColumn tableName="single_photo">
+            <column name="is_preview" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -34,6 +34,9 @@ public class SingleAudioDTO implements Serializable {
     private Duration duration;
 
     @NotNull
+    private Boolean isPreview;
+
+    @NotNull
     private Instant createdDate;
 
     private Instant lastModifiedDate;
@@ -111,6 +114,14 @@ public class SingleAudioDTO implements Serializable {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public Boolean getIsPreview() {
+        return isPreview;
+    }
+
+    public void setIsPreview(Boolean isPreview) {
+        this.isPreview = isPreview;
     }
 
     public Instant getCreatedDate() {
@@ -200,6 +211,7 @@ public class SingleAudioDTO implements Serializable {
             ", content='" + getContent() + "'" +
             ", contentS3Key='" + getContentS3Key() + "'" +
             ", duration='" + getDuration() + "'" +
+            ", isPreview='" + getIsPreview() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +

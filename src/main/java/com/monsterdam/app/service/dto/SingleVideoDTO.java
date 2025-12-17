@@ -36,6 +36,9 @@ public class SingleVideoDTO implements Serializable {
     private Integer likeCount;
 
     @NotNull
+    private Boolean isPreview;
+
+    @NotNull
     private Instant createdDate;
 
     private Instant lastModifiedDate;
@@ -121,6 +124,14 @@ public class SingleVideoDTO implements Serializable {
 
     public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public Boolean getIsPreview() {
+        return isPreview;
+    }
+
+    public void setIsPreview(Boolean isPreview) {
+        this.isPreview = isPreview;
     }
 
     public Instant getCreatedDate() {
@@ -211,6 +222,7 @@ public class SingleVideoDTO implements Serializable {
             ", contentS3Key='" + getContentS3Key() + "'" +
             ", duration='" + getDuration() + "'" +
             ", likeCount=" + getLikeCount() +
+            ", isPreview='" + getIsPreview() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +

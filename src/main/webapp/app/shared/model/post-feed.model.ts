@@ -4,7 +4,7 @@ import { IUserLite } from 'app/shared/model/user-lite.model';
 export interface IPostFeed {
   id?: number;
   postContent?: string;
-  isHidden?: boolean | null;
+  isPublic?: boolean | null;
   pinnedPost?: boolean | null;
   likeCount?: number | null;
   createdDate?: dayjs.Dayjs;
@@ -16,6 +16,6 @@ export interface IPostFeed {
 }
 
 export const defaultValue: Readonly<IPostFeed> = {
-  isHidden: false,
+  isPublic: false,
   pinnedPost: false,
 };

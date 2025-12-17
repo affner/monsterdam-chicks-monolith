@@ -30,7 +30,7 @@ describe('PostPoll e2e test', () => {
     cy.authenticatedRequest({
       method: 'POST',
       url: '/api/post-feeds',
-      body: {"postContent":"Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci50eHQ=","isHidden":false,"pinnedPost":true,"likeCount":22387,"createdDate":"2025-12-16T06:30:17.752Z","lastModifiedDate":"2025-12-15T18:44:50.601Z","createdBy":"wisely about quinoa","lastModifiedBy":"instead","deletedDate":"2025-12-15T21:19:00.663Z"},
+      body: {"postContent":"Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci50eHQ=","isPublic":false,"pinnedPost":true,"likeCount":22387,"createdDate":"2025-12-16T06:30:17.752Z","lastModifiedDate":"2025-12-15T18:44:50.601Z","createdBy":"wisely about quinoa","lastModifiedBy":"instead","deletedDate":"2025-12-15T21:19:00.663Z"},
     }).then(({ body }) => {
       postFeed = body;
     });

@@ -58,6 +58,9 @@ class SingleAudioResourceIT {
     private static final Duration DEFAULT_DURATION = Duration.ofHours(6);
     private static final Duration UPDATED_DURATION = Duration.ofHours(12);
 
+    private static final Boolean DEFAULT_IS_PREVIEW = false;
+    private static final Boolean UPDATED_IS_PREVIEW = true;
+
     private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -113,6 +116,7 @@ class SingleAudioResourceIT {
             .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE)
             .contentS3Key(DEFAULT_CONTENT_S_3_KEY)
             .duration(DEFAULT_DURATION)
+            .isPreview(DEFAULT_IS_PREVIEW)
             .createdDate(DEFAULT_CREATED_DATE)
             .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE)
             .createdBy(DEFAULT_CREATED_BY)
@@ -146,6 +150,7 @@ class SingleAudioResourceIT {
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .duration(UPDATED_DURATION)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
@@ -255,6 +260,23 @@ class SingleAudioResourceIT {
 
     @Test
     @Transactional
+    void checkIsPreviewIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        singleAudio.setIsPreview(null);
+
+        // Create the SingleAudio, which fails.
+        SingleAudioDTO singleAudioDTO = singleAudioMapper.toDto(singleAudio);
+
+        restSingleAudioMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(singleAudioDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkCreatedDateIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -289,6 +311,7 @@ class SingleAudioResourceIT {
             .andExpect(jsonPath("$.[*].content").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_CONTENT))))
             .andExpect(jsonPath("$.[*].contentS3Key").value(hasItem(DEFAULT_CONTENT_S_3_KEY)))
             .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())))
+            .andExpect(jsonPath("$.[*].isPreview").value(hasItem(DEFAULT_IS_PREVIEW.booleanValue())))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
@@ -315,6 +338,7 @@ class SingleAudioResourceIT {
             .andExpect(jsonPath("$.content").value(Base64.getEncoder().encodeToString(DEFAULT_CONTENT)))
             .andExpect(jsonPath("$.contentS3Key").value(DEFAULT_CONTENT_S_3_KEY))
             .andExpect(jsonPath("$.duration").value(DEFAULT_DURATION.toString()))
+            .andExpect(jsonPath("$.isPreview").value(DEFAULT_IS_PREVIEW.booleanValue()))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
             .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
@@ -349,6 +373,7 @@ class SingleAudioResourceIT {
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .duration(UPDATED_DURATION)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
@@ -447,6 +472,7 @@ class SingleAudioResourceIT {
             .thumbnail(UPDATED_THUMBNAIL)
             .thumbnailContentType(UPDATED_THUMBNAIL_CONTENT_TYPE)
             .duration(UPDATED_DURATION)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedBy(UPDATED_LAST_MODIFIED_BY);
 

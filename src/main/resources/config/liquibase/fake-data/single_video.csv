@@ -1,6 +1,6 @@
-id;thumbnail;thumbnail_content_type;thumbnail_s_3_key;content;content_content_type;content_s_3_key;duration;like_count;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
-1;../fake-data/blob/hipster.png;image/png;immediate even per;../fake-data/blob/hipster.png;image/png;er;3549;26831;2025-12-15T17:04:19;2025-12-15T23:25:00;knit aside;reapply institutionalize;2025-12-15T15:35:40;1
-2;../fake-data/blob/hipster.png;image/png;after;../fake-data/blob/hipster.png;image/png;spork colorful;29005;22826;2025-12-15T12:53:42;2025-12-15T18:29:01;pneumonia as;gah knavishly;2025-12-15T11:41:13;2
+id;thumbnail;thumbnail_content_type;thumbnail_s_3_key;content;content_content_type;content_s_3_key;duration;like_count;is_preview;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
+1;../fake-data/blob/hipster.png;image/png;immediate even per;../fake-data/blob/hipster.png;image/png;er;3549;26831;false;2025-12-15T17:04:19;2025-12-15T23:25:00;knit aside;reapply institutionalize;2025-12-15T15:35:40;1
+2;../fake-data/blob/hipster.png;image/png;after;../fake-data/blob/hipster.png;image/png;spork colorful;29005;22826;true;2025-12-15T12:53:42;2025-12-15T18:29:01;pneumonia as;gah knavishly;2025-12-15T11:41:13;2
 3;../fake-data/blob/hipster.png;image/png;actually;../fake-data/blob/hipster.png;image/png;jacket;7425;18951;2025-12-16T00:33:57;2025-12-15T22:10:05;woot though;bruised lest;2025-12-15T20:31:37;3
 4;../fake-data/blob/hipster.png;image/png;justly tight;../fake-data/blob/hipster.png;image/png;gadzooks cinder whenever;6718;30569;2025-12-15T10:39:22;2025-12-15T07:15:36;hmph midst;cautiously boiling anticodon;2025-12-15T07:08:20;4
 5;../fake-data/blob/hipster.png;image/png;nab behold barring;../fake-data/blob/hipster.png;image/png;zowie appropriate once;23234;11599;2025-12-15T20:32:38;2025-12-15T15:28:50;persecute eek;utilized cinder now;2025-12-15T18:37:05;5

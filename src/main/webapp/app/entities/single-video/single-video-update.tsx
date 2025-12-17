@@ -78,6 +78,7 @@ export const SingleVideoUpdate = () => {
           createdDate: displayDefaultDateTime(),
           lastModifiedDate: displayDefaultDateTime(),
           deletedDate: displayDefaultDateTime(),
+          isPreview: false,
         }
       : {
           ...singleVideoEntity,
@@ -167,6 +168,17 @@ export const SingleVideoUpdate = () => {
                 name="likeCount"
                 data-cy="likeCount"
                 type="text"
+              />
+              <ValidatedField
+                label={translate('monsterdamChicksApp.singleVideo.isPreview')}
+                id="single-video-isPreview"
+                name="isPreview"
+                data-cy="isPreview"
+                check
+                type="checkbox"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
               />
               <ValidatedField
                 label={translate('monsterdamChicksApp.singleVideo.createdDate')}

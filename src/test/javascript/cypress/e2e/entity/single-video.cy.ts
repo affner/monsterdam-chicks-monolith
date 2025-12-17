@@ -22,6 +22,7 @@ describe('SingleVideo e2e test', () => {
     content: 'Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci5wbmc=',
     contentContentType: 'unknown',
     contentS3Key: 'vary',
+    isPreview: true,
     createdDate: '2025-12-16T02:30:26.987Z',
   };
 
@@ -236,6 +237,10 @@ describe('SingleVideo e2e test', () => {
 
       cy.get(`[data-cy="likeCount"]`).type('3329');
       cy.get(`[data-cy="likeCount"]`).should('have.value', '3329');
+
+      cy.get(`[data-cy="isPreview"]`).should('not.be.checked');
+      cy.get(`[data-cy="isPreview"]`).click();
+      cy.get(`[data-cy="isPreview"]`).should('be.checked');
 
       cy.get(`[data-cy="createdDate"]`).type('2025-12-16T01:17');
       cy.get(`[data-cy="createdDate"]`).blur();

@@ -101,6 +101,12 @@ export const SingleVideoDetail = () => {
           </dt>
           <dd>{singleVideoEntity.likeCount}</dd>
           <dt>
+            <span id="isPreview">
+              <Translate contentKey="monsterdamChicksApp.singleVideo.isPreview">Is Preview</Translate>
+            </span>
+          </dt>
+          <dd>{singleVideoEntity.isPreview ? 'true' : 'false'}</dd>
+          <dt>
             <span id="createdDate">
               <Translate contentKey="monsterdamChicksApp.singleVideo.createdDate">Created Date</Translate>
             </span>
