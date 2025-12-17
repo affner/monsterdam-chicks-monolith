@@ -14,6 +14,7 @@ import tech.jhipster.config.apidoc.customizer.JHipsterOpenApiCustomizer;
 public class OpenApiConfiguration {
 
     public static final String API_FIRST_PACKAGE = "com.monsterdam.app.web.api";
+    public static final String BFF_PACKAGE = "com.monsterdam.app.web.rest.bff";
 
     @Bean
     @ConditionalOnMissingBean(name = "apiFirstGroupedOpenAPI")
@@ -26,6 +27,18 @@ public class OpenApiConfiguration {
             .group("openapi")
             .addOpenApiCustomizer(jhipsterOpenApiCustomizer)
             .packagesToScan(API_FIRST_PACKAGE)
+            .pathsToMatch(properties.getDefaultIncludePattern())
+            .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "bffGroupedOpenAPI")
+    public GroupedOpenApi bffGroupedOpenAPI(JHipsterOpenApiCustomizer jhipsterOpenApiCustomizer, JHipsterProperties jHipsterProperties) {
+        JHipsterProperties.ApiDocs properties = jHipsterProperties.getApiDocs();
+        return GroupedOpenApi.builder()
+            .group("bff")
+            .addOpenApiCustomizer(jhipsterOpenApiCustomizer)
+            .packagesToScan(BFF_PACKAGE)
             .pathsToMatch(properties.getDefaultIncludePattern())
             .build();
     }
