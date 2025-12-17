@@ -7,6 +7,9 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="20250609000000-1" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="post_feed" columnName="is_hidden" />
+        </preConditions>
         <renameColumn tableName="post_feed" oldColumnName="is_hidden" newColumnName="is_public" columnDataType="boolean"/>
     </changeSet>
 
