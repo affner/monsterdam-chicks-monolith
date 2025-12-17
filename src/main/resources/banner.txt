@@ -1,10 +1,27 @@
+${AnsiColor.BRIGHT_MAGENTA}      ███╗   ███╗${AnsiColor.CYAN} ██████╗ ███╗   ██╗███████╗████████╗███████╗██████╗ █████╗   █████╗ ███╗   ███╗
+${AnsiColor.MAGENTA}      ████╗ ████║${AnsiColor.BRIGHT_CYAN}██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗████╗ ████║
+${AnsiColor.BRIGHT_MAGENTA}      ██╔████╔██║${AnsiColor.CYAN}██║   ██║██╔██╗ ██║███████╗   ██║   █████╗  ██████╔╝██║  ██║███████║██╔████╔██║
+${AnsiColor.MAGENTA}      ██║╚██╔╝██║${AnsiColor.BRIGHT_CYAN}██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║  ██║██╔══██║██║╚██╔╝██║
+${AnsiColor.BRIGHT_MAGENTA}      ██║ ╚═╝ ██║${AnsiColor.CYAN}╚██████╔╝██║ ╚████║███████║   ██║   ███████╗██║  ██║█████╔╝ ██║  ██║██║ ╚═╝ ██║
+${AnsiColor.MAGENTA}      ╚═╝     ╚═╝${AnsiColor.BRIGHT_CYAN} ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚════╝  ╚═╝  ╚═╝╚═╝     ╚═╝
 
-  ${AnsiColor.GREEN}      ██╗${AnsiColor.CYAN} ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝
-  ${AnsiColor.GREEN}██╗   ██║${AnsiColor.CYAN} ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║
-  ${AnsiColor.GREEN}╚██████╔╝${AnsiColor.CYAN} ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗
-  ${AnsiColor.GREEN} ╚═════╝ ${AnsiColor.CYAN} ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝
+${AnsiColor.BRIGHT_YELLOW}:: DEPLOY READY 🚀 ::${AnsiColor.DEFAULT}  ${AnsiColor.BRIGHT_BLUE}${spring.application.name}${AnsiColor.DEFAULT}  ${AnsiColor.GREEN}${application.formatted-version}${AnsiColor.DEFAULT}
+${AnsiColor.BRIGHT_BLUE}Spring Boot ${spring-boot.version}${AnsiColor.DEFAULT}  |  Profiles: ${spring.profiles.active}  |  PID: ${PID}
+${AnsiColor.CYAN}Java ${java.version}${AnsiColor.DEFAULT}  |  JVM: ${java.vm.name} (${java.vm.version})  |  User: ${user.name}
 
-${AnsiColor.BRIGHT_BLUE}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} :: Startup profile(s) ${spring.profiles.active} ::
-:: https://www.jhipster.tech ::${AnsiColor.DEFAULT}
+${AnsiColor.BRIGHT_GREEN}Endpoints${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  Health:${AnsiColor.DEFAULT}     ${AnsiColor.CYAN}http://localhost:${server.port}/actuator/health${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  Metrics:${AnsiColor.DEFAULT}    ${AnsiColor.CYAN}http://localhost:${server.port}/actuator/metrics${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  Info:${AnsiColor.DEFAULT}       ${AnsiColor.CYAN}http://localhost:${server.port}/actuator/info${AnsiColor.DEFAULT}
+
+${AnsiColor.BRIGHT_GREEN}Docs${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  OpenAPI:${AnsiColor.DEFAULT}    ${AnsiColor.CYAN}http://localhost:${server.port}/v3/api-docs${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  Swagger UI:${AnsiColor.DEFAULT} ${AnsiColor.CYAN}http://localhost:${server.port}/swagger-ui/index.html${AnsiColor.DEFAULT}
+
+${AnsiColor.BRIGHT_GREEN}Deploy quick-check${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  Log level:${AnsiColor.DEFAULT}  ${AnsiColor.CYAN}${logging.level.root}${AnsiColor.DEFAULT}
+${AnsiColor.GREEN}  DB:${AnsiColor.DEFAULT}         ${AnsiColor.CYAN}${spring.datasource.url}${AnsiColor.DEFAULT}
+
+${AnsiColor.GREEN}  Timezone:${AnsiColor.DEFAULT}   ${AnsiColor.CYAN}${user.timezone}${AnsiColor.DEFAULT}
+
+${AnsiColor.BRIGHT_BLACK}Tip:${AnsiColor.DEFAULT} set ${AnsiColor.CYAN}SPRING_PROFILES_ACTIVE=prod${AnsiColor.DEFAULT} and verify ${AnsiColor.CYAN}/actuator/health${AnsiColor.DEFAULT} before enabling traffic.
