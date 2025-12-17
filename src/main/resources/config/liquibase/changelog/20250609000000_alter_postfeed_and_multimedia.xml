@@ -11,6 +11,11 @@
     </changeSet>
 
     <changeSet id="20250609000000-2" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="single_audio" columnName="is_preview" />
+            </not>
+        </preConditions>
         <addColumn tableName="single_audio">
             <column name="is_preview" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
@@ -20,6 +25,11 @@
     </changeSet>
 
     <changeSet id="20250609000000-3" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="single_video" columnName="is_preview" />
+            </not>
+        </preConditions>
         <addColumn tableName="single_video">
             <column name="is_preview" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
@@ -29,6 +39,11 @@
     </changeSet>
 
     <changeSet id="20250609000000-4" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="single_photo" columnName="is_preview" />
+            </not>
+        </preConditions>
         <addColumn tableName="single_photo">
             <column name="is_preview" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>

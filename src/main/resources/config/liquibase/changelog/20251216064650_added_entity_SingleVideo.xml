@@ -38,6 +38,9 @@
             <column name="like_count" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="is_preview" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
             <column name="created_date" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
@@ -91,6 +94,7 @@
             <column name="content_s_3_key" type="string"/>
             <column name="duration" type="numeric"/>
             <column name="like_count" type="numeric"/>
+            <column name="is_preview" type="boolean"/>
             <column name="created_date" type="date"/>
             <column name="last_modified_date" type="date"/>
             <column name="created_by" type="string"/>
