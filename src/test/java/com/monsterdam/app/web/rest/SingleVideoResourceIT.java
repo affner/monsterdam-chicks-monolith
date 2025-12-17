@@ -61,6 +61,9 @@ class SingleVideoResourceIT {
     private static final Integer DEFAULT_LIKE_COUNT = 1;
     private static final Integer UPDATED_LIKE_COUNT = 2;
 
+    private static final Boolean DEFAULT_IS_PREVIEW = false;
+    private static final Boolean UPDATED_IS_PREVIEW = true;
+
     private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -117,6 +120,7 @@ class SingleVideoResourceIT {
             .contentS3Key(DEFAULT_CONTENT_S_3_KEY)
             .duration(DEFAULT_DURATION)
             .likeCount(DEFAULT_LIKE_COUNT)
+            .isPreview(DEFAULT_IS_PREVIEW)
             .createdDate(DEFAULT_CREATED_DATE)
             .lastModifiedDate(DEFAULT_LAST_MODIFIED_DATE)
             .createdBy(DEFAULT_CREATED_BY)
@@ -151,6 +155,7 @@ class SingleVideoResourceIT {
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .duration(UPDATED_DURATION)
             .likeCount(UPDATED_LIKE_COUNT)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
@@ -260,6 +265,23 @@ class SingleVideoResourceIT {
 
     @Test
     @Transactional
+    void checkIsPreviewIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        singleVideo.setIsPreview(null);
+
+        // Create the SingleVideo, which fails.
+        SingleVideoDTO singleVideoDTO = singleVideoMapper.toDto(singleVideo);
+
+        restSingleVideoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(singleVideoDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkCreatedDateIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -295,6 +317,7 @@ class SingleVideoResourceIT {
             .andExpect(jsonPath("$.[*].contentS3Key").value(hasItem(DEFAULT_CONTENT_S_3_KEY)))
             .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())))
             .andExpect(jsonPath("$.[*].likeCount").value(hasItem(DEFAULT_LIKE_COUNT)))
+            .andExpect(jsonPath("$.[*].isPreview").value(hasItem(DEFAULT_IS_PREVIEW.booleanValue())))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModifiedDate").value(hasItem(DEFAULT_LAST_MODIFIED_DATE.toString())))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
@@ -322,6 +345,7 @@ class SingleVideoResourceIT {
             .andExpect(jsonPath("$.contentS3Key").value(DEFAULT_CONTENT_S_3_KEY))
             .andExpect(jsonPath("$.duration").value(DEFAULT_DURATION.toString()))
             .andExpect(jsonPath("$.likeCount").value(DEFAULT_LIKE_COUNT))
+            .andExpect(jsonPath("$.isPreview").value(DEFAULT_IS_PREVIEW.booleanValue()))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
             .andExpect(jsonPath("$.lastModifiedDate").value(DEFAULT_LAST_MODIFIED_DATE.toString()))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
@@ -456,6 +480,7 @@ class SingleVideoResourceIT {
             .content(UPDATED_CONTENT)
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
             .duration(UPDATED_DURATION)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE);
 
         restSingleVideoMockMvc
@@ -496,6 +521,7 @@ class SingleVideoResourceIT {
             .contentS3Key(UPDATED_CONTENT_S_3_KEY)
             .duration(UPDATED_DURATION)
             .likeCount(UPDATED_LIKE_COUNT)
+            .isPreview(UPDATED_IS_PREVIEW)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)

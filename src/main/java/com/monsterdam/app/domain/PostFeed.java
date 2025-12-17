@@ -34,8 +34,8 @@ public class PostFeed implements Serializable {
     @Column(name = "post_content", nullable = false)
     private String postContent;
 
-    @Column(name = "is_hidden")
-    private Boolean isHidden;
+    @Column(name = "is_public")
+    private Boolean isPublic;
 
     @Column(name = "pinned_post")
     private Boolean pinnedPost;
@@ -126,17 +126,17 @@ public class PostFeed implements Serializable {
         this.postContent = postContent;
     }
 
-    public Boolean getIsHidden() {
-        return this.isHidden;
+    public Boolean getIsPublic() {
+        return this.isPublic;
     }
 
-    public PostFeed isHidden(Boolean isHidden) {
-        this.setIsHidden(isHidden);
+    public PostFeed isPublic(Boolean isPublic) {
+        this.setIsPublic(isPublic);
         return this;
     }
 
-    public void setIsHidden(Boolean isHidden) {
-        this.isHidden = isHidden;
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public Boolean getPinnedPost() {
@@ -299,7 +299,7 @@ public class PostFeed implements Serializable {
         return "PostFeed{" +
             "id=" + getId() +
             ", postContent='" + getPostContent() + "'" +
-            ", isHidden='" + getIsHidden() + "'" +
+            ", isPublic='" + getIsPublic() + "'" +
             ", pinnedPost='" + getPinnedPost() + "'" +
             ", likeCount=" + getLikeCount() +
             ", createdDate='" + getCreatedDate() + "'" +

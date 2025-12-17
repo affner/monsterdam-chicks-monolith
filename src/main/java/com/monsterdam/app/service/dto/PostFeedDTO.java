@@ -17,7 +17,7 @@ public class PostFeedDTO implements Serializable {
     @Lob
     private String postContent;
 
-    private Boolean isHidden;
+    private Boolean isPublic;
 
     private Boolean pinnedPost;
 
@@ -53,12 +53,12 @@ public class PostFeedDTO implements Serializable {
         this.postContent = postContent;
     }
 
-    public Boolean getIsHidden() {
-        return isHidden;
+    public Boolean getIsPublic() {
+        return isPublic;
     }
 
-    public void setIsHidden(Boolean isHidden) {
-        this.isHidden = isHidden;
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public Boolean getPinnedPost() {
@@ -152,7 +152,7 @@ public class PostFeedDTO implements Serializable {
         return "PostFeedDTO{" +
             "id=" + getId() +
             ", postContent='" + getPostContent() + "'" +
-            ", isHidden='" + getIsHidden() + "'" +
+            ", isPublic='" + getIsPublic() + "'" +
             ", pinnedPost='" + getPinnedPost() + "'" +
             ", likeCount=" + getLikeCount() +
             ", createdDate='" + getCreatedDate() + "'" +

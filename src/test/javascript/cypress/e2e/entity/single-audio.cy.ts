@@ -20,6 +20,7 @@ describe('SingleAudio e2e test', () => {
     thumbnailContentType: 'unknown',
     thumbnailS3Key: 'intensely hence',
     contentS3Key: 'amid',
+    isPreview: true,
     createdDate: '2025-12-16T05:23:54.204Z',
   };
 
@@ -230,6 +231,10 @@ describe('SingleAudio e2e test', () => {
       cy.get(`[data-cy="duration"]`).type('PT54M');
       cy.get(`[data-cy="duration"]`).blur();
       cy.get(`[data-cy="duration"]`).should('have.value', 'PT54M');
+
+      cy.get(`[data-cy="isPreview"]`).should('not.be.checked');
+      cy.get(`[data-cy="isPreview"]`).click();
+      cy.get(`[data-cy="isPreview"]`).should('be.checked');
 
       cy.get(`[data-cy="createdDate"]`).type('2025-12-16T02:19');
       cy.get(`[data-cy="createdDate"]`).blur();

@@ -11,6 +11,7 @@ export interface ISingleAudio {
   content?: string | null;
   contentS3Key?: string;
   duration?: string | null;
+  isPreview?: boolean;
   createdDate?: dayjs.Dayjs;
   lastModifiedDate?: dayjs.Dayjs | null;
   createdBy?: string | null;
@@ -20,4 +21,6 @@ export interface ISingleAudio {
   creator?: IUserLite;
 }
 
-export const defaultValue: Readonly<ISingleAudio> = {};
+export const defaultValue: Readonly<ISingleAudio> = {
+  isPreview: false,
+};

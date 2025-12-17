@@ -56,6 +56,10 @@ public class SinglePhoto implements Serializable {
     private Integer likeCount;
 
     @NotNull
+    @Column(name = "is_preview", nullable = false)
+    private Boolean isPreview;
+
+    @NotNull
     @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
@@ -216,6 +220,19 @@ public class SinglePhoto implements Serializable {
         this.likeCount = likeCount;
     }
 
+    public Boolean getIsPreview() {
+        return this.isPreview;
+    }
+
+    public SinglePhoto isPreview(Boolean isPreview) {
+        this.setIsPreview(isPreview);
+        return this;
+    }
+
+    public void setIsPreview(Boolean isPreview) {
+        this.isPreview = isPreview;
+    }
+
     public Instant getCreatedDate() {
         return this.createdDate;
     }
@@ -338,6 +355,7 @@ public class SinglePhoto implements Serializable {
             ", contentContentType='" + getContentContentType() + "'" +
             ", contentS3Key='" + getContentS3Key() + "'" +
             ", likeCount=" + getLikeCount() +
+            ", isPreview='" + getIsPreview() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +

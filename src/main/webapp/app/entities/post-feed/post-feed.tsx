@@ -118,9 +118,9 @@ export const PostFeed = () => {
                   <Translate contentKey="monsterdamChicksApp.postFeed.postContent">Post Content</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('postContent')} />
                 </th>
-                <th className="hand" onClick={sort('isHidden')}>
-                  <Translate contentKey="monsterdamChicksApp.postFeed.isHidden">Is Hidden</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('isHidden')} />
+                <th className="hand" onClick={sort('isPublic')}>
+                  <Translate contentKey="monsterdamChicksApp.postFeed.isPublic">Is Public</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('isPublic')} />
                 </th>
                 <th className="hand" onClick={sort('pinnedPost')}>
                   <Translate contentKey="monsterdamChicksApp.postFeed.pinnedPost">Pinned Post</Translate>{' '}
@@ -165,7 +165,7 @@ export const PostFeed = () => {
                     </Button>
                   </td>
                   <td>{postFeed.postContent}</td>
-                  <td>{postFeed.isHidden ? 'true' : 'false'}</td>
+                  <td>{postFeed.isPublic ? 'true' : 'false'}</td>
                   <td>{postFeed.pinnedPost ? 'true' : 'false'}</td>
                   <td>{postFeed.likeCount}</td>
                   <td>{postFeed.createdDate ? <TextFormat type="date" value={postFeed.createdDate} format={APP_DATE_FORMAT} /> : null}</td>

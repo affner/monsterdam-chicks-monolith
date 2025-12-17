@@ -48,7 +48,7 @@ public class PostFeedAsserts {
         assertThat(actual)
             .as("Verify PostFeed relevant properties")
             .satisfies(a -> assertThat(a.getPostContent()).as("check postContent").isEqualTo(expected.getPostContent()))
-            .satisfies(a -> assertThat(a.getIsHidden()).as("check isHidden").isEqualTo(expected.getIsHidden()))
+            .satisfies(a -> assertThat(a.getIsPublic()).as("check isPublic").isEqualTo(expected.getIsPublic()))
             .satisfies(a -> assertThat(a.getPinnedPost()).as("check pinnedPost").isEqualTo(expected.getPinnedPost()))
             .satisfies(a -> assertThat(a.getLikeCount()).as("check likeCount").isEqualTo(expected.getLikeCount()))
             .satisfies(a -> assertThat(a.getCreatedDate()).as("check createdDate").isEqualTo(expected.getCreatedDate()))

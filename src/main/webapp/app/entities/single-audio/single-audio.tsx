@@ -135,6 +135,10 @@ export const SingleAudio = () => {
                   <Translate contentKey="monsterdamChicksApp.singleAudio.duration">Duration</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('duration')} />
                 </th>
+                <th className="hand" onClick={sort('isPreview')}>
+                  <Translate contentKey="monsterdamChicksApp.singleAudio.isPreview">Is Preview</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('isPreview')} />
+                </th>
                 <th className="hand" onClick={sort('createdDate')}>
                   <Translate contentKey="monsterdamChicksApp.singleAudio.createdDate">Created Date</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('createdDate')} />
@@ -209,6 +213,7 @@ export const SingleAudio = () => {
                   </td>
                   <td>{singleAudio.contentS3Key}</td>
                   <td>{singleAudio.duration ? <DurationFormat value={singleAudio.duration} /> : null}</td>
+                  <td>{singleAudio.isPreview ? 'true' : 'false'}</td>
                   <td>
                     {singleAudio.createdDate ? <TextFormat type="date" value={singleAudio.createdDate} format={APP_DATE_FORMAT} /> : null}
                   </td>

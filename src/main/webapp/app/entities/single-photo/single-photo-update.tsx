@@ -78,6 +78,7 @@ export const SinglePhotoUpdate = () => {
           createdDate: displayDefaultDateTime(),
           lastModifiedDate: displayDefaultDateTime(),
           deletedDate: displayDefaultDateTime(),
+          isPreview: false,
         }
       : {
           ...singlePhotoEntity,
@@ -161,6 +162,17 @@ export const SinglePhotoUpdate = () => {
                 name="likeCount"
                 data-cy="likeCount"
                 type="text"
+              />
+              <ValidatedField
+                label={translate('monsterdamChicksApp.singlePhoto.isPreview')}
+                id="single-photo-isPreview"
+                name="isPreview"
+                data-cy="isPreview"
+                check
+                type="checkbox"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
               />
               <ValidatedField
                 label={translate('monsterdamChicksApp.singlePhoto.createdDate')}

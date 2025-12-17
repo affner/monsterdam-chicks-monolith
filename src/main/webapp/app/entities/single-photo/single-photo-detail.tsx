@@ -95,6 +95,12 @@ export const SinglePhotoDetail = () => {
           </dt>
           <dd>{singlePhotoEntity.likeCount}</dd>
           <dt>
+            <span id="isPreview">
+              <Translate contentKey="monsterdamChicksApp.singlePhoto.isPreview">Is Preview</Translate>
+            </span>
+          </dt>
+          <dd>{singlePhotoEntity.isPreview ? 'true' : 'false'}</dd>
+          <dt>
             <span id="createdDate">
               <Translate contentKey="monsterdamChicksApp.singlePhoto.createdDate">Created Date</Translate>
             </span>

@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "postContent": "Post Content",
-      "isHidden": "Is Hidden",
+      "isPublic": "Est public",
       "pinnedPost": "Pinned Post",
       "likeCount": "Like Count",
       "createdDate": "Created Date",

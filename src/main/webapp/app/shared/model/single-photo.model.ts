@@ -11,6 +11,7 @@ export interface ISinglePhoto {
   content?: string;
   contentS3Key?: string;
   likeCount?: number | null;
+  isPreview?: boolean;
   createdDate?: dayjs.Dayjs;
   lastModifiedDate?: dayjs.Dayjs | null;
   createdBy?: string | null;
@@ -20,4 +21,6 @@ export interface ISinglePhoto {
   creator?: IUserLite;
 }
 
-export const defaultValue: Readonly<ISinglePhoto> = {};
+export const defaultValue: Readonly<ISinglePhoto> = {
+  isPreview: false,
+};

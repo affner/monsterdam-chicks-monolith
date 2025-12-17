@@ -1,6 +1,6 @@
-id;thumbnail;thumbnail_content_type;thumbnail_s_3_key;content;content_content_type;content_s_3_key;like_count;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
-1;../fake-data/blob/hipster.png;image/png;hopelessly below;../fake-data/blob/hipster.png;image/png;blah optimal consequently;18240;2025-12-16T03:54:47;2025-12-15T22:06:29;blaring mid outnumber;preside westernize;2025-12-15T16:15:11;1
-2;../fake-data/blob/hipster.png;image/png;blah helpful;../fake-data/blob/hipster.png;image/png;trench;31522;2025-12-15T23:35:29;2025-12-15T12:26:36;excluding average creamy;into wise;2025-12-15T15:40:19;2
+id;thumbnail;thumbnail_content_type;thumbnail_s_3_key;content;content_content_type;content_s_3_key;like_count;is_preview;created_date;last_modified_date;created_by;last_modified_by;deleted_date;creator_id
+1;../fake-data/blob/hipster.png;image/png;hopelessly below;../fake-data/blob/hipster.png;image/png;blah optimal consequently;18240;false;2025-12-16T03:54:47;2025-12-15T22:06:29;blaring mid outnumber;preside westernize;2025-12-15T16:15:11;1
+2;../fake-data/blob/hipster.png;image/png;blah helpful;../fake-data/blob/hipster.png;image/png;trench;31522;true;2025-12-15T23:35:29;2025-12-15T12:26:36;excluding average creamy;into wise;2025-12-15T15:40:19;2
 3;../fake-data/blob/hipster.png;image/png;yahoo;../fake-data/blob/hipster.png;image/png;ick reckon;23025;2025-12-16T00:21:03;2025-12-16T04:06:30;brr limp unless;once;2025-12-15T14:13:58;3
 4;../fake-data/blob/hipster.png;image/png;pish lively given;../fake-data/blob/hipster.png;image/png;powerless sweetly despite;10602;2025-12-15T23:45:33;2025-12-15T13:15:27;jittery separately;aircraft;2025-12-15T13:15:09;4
 5;../fake-data/blob/hipster.png;image/png;gadzooks;../fake-data/blob/hipster.png;image/png;gracefully where;12484;2025-12-15T15:55:30;2025-12-15T16:06:59;inure;boohoo excluding harp;2025-12-15T20:17:07;5

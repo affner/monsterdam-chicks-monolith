@@ -14,6 +14,7 @@ public class SingleAudioTestSamples {
             .id(1L)
             .thumbnailS3Key("thumbnailS3Key1")
             .contentS3Key("contentS3Key1")
+            .isPreview(false)
             .createdBy("createdBy1")
             .lastModifiedBy("lastModifiedBy1");
     }
@@ -23,6 +24,7 @@ public class SingleAudioTestSamples {
             .id(2L)
             .thumbnailS3Key("thumbnailS3Key2")
             .contentS3Key("contentS3Key2")
+            .isPreview(true)
             .createdBy("createdBy2")
             .lastModifiedBy("lastModifiedBy2");
     }
@@ -32,6 +34,7 @@ public class SingleAudioTestSamples {
             .id(longCount.incrementAndGet())
             .thumbnailS3Key(UUID.randomUUID().toString())
             .contentS3Key(UUID.randomUUID().toString())
+            .isPreview(random.nextBoolean())
             .createdBy(UUID.randomUUID().toString())
             .lastModifiedBy(UUID.randomUUID().toString());
     }

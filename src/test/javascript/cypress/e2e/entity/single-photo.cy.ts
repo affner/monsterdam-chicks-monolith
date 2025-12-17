@@ -22,6 +22,7 @@ describe('SinglePhoto e2e test', () => {
     content: 'Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci5wbmc=',
     contentContentType: 'unknown',
     contentS3Key: 'around',
+    isPreview: true,
     createdDate: '2025-12-16T03:06:17.167Z',
   };
 
@@ -232,6 +233,10 @@ describe('SinglePhoto e2e test', () => {
 
       cy.get(`[data-cy="likeCount"]`).type('26882');
       cy.get(`[data-cy="likeCount"]`).should('have.value', '26882');
+
+      cy.get(`[data-cy="isPreview"]`).should('not.be.checked');
+      cy.get(`[data-cy="isPreview"]`).click();
+      cy.get(`[data-cy="isPreview"]`).should('be.checked');
 
       cy.get(`[data-cy="createdDate"]`).type('2025-12-15T13:10');
       cy.get(`[data-cy="createdDate"]`).blur();

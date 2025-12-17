@@ -56,6 +56,10 @@ public class SingleAudio implements Serializable {
     private Duration duration;
 
     @NotNull
+    @Column(name = "is_preview", nullable = false)
+    private Boolean isPreview;
+
+    @NotNull
     @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
@@ -216,6 +220,19 @@ public class SingleAudio implements Serializable {
         this.duration = duration;
     }
 
+    public Boolean getIsPreview() {
+        return this.isPreview;
+    }
+
+    public SingleAudio isPreview(Boolean isPreview) {
+        this.setIsPreview(isPreview);
+        return this;
+    }
+
+    public void setIsPreview(Boolean isPreview) {
+        this.isPreview = isPreview;
+    }
+
     public Instant getCreatedDate() {
         return this.createdDate;
     }
@@ -338,6 +355,7 @@ public class SingleAudio implements Serializable {
             ", contentContentType='" + getContentContentType() + "'" +
             ", contentS3Key='" + getContentS3Key() + "'" +
             ", duration='" + getDuration() + "'" +
+            ", isPreview='" + getIsPreview() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +

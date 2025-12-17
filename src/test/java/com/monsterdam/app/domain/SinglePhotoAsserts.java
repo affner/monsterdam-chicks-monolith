@@ -58,6 +58,7 @@ public class SinglePhotoAsserts {
             )
             .satisfies(a -> assertThat(a.getContentS3Key()).as("check contentS3Key").isEqualTo(expected.getContentS3Key()))
             .satisfies(a -> assertThat(a.getLikeCount()).as("check likeCount").isEqualTo(expected.getLikeCount()))
+            .satisfies(a -> assertThat(a.getIsPreview()).as("check isPreview").isEqualTo(expected.getIsPreview()))
             .satisfies(a -> assertThat(a.getCreatedDate()).as("check createdDate").isEqualTo(expected.getCreatedDate()))
             .satisfies(a -> assertThat(a.getLastModifiedDate()).as("check lastModifiedDate").isEqualTo(expected.getLastModifiedDate()))
             .satisfies(a -> assertThat(a.getCreatedBy()).as("check createdBy").isEqualTo(expected.getCreatedBy()))

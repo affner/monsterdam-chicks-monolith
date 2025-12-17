@@ -95,6 +95,12 @@ export const SingleAudioDetail = () => {
             {singleAudioEntity.duration ? <DurationFormat value={singleAudioEntity.duration} /> : null} ({singleAudioEntity.duration})
           </dd>
           <dt>
+            <span id="isPreview">
+              <Translate contentKey="monsterdamChicksApp.singleAudio.isPreview">Is Preview</Translate>
+            </span>
+          </dt>
+          <dd>{singleAudioEntity.isPreview ? 'true' : 'false'}</dd>
+          <dt>
             <span id="createdDate">
               <Translate contentKey="monsterdamChicksApp.singleAudio.createdDate">Created Date</Translate>
             </span>

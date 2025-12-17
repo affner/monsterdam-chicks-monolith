@@ -17,6 +17,7 @@ public class SinglePhotoTestSamples {
             .thumbnailS3Key("thumbnailS3Key1")
             .contentS3Key("contentS3Key1")
             .likeCount(1)
+            .isPreview(false)
             .createdBy("createdBy1")
             .lastModifiedBy("lastModifiedBy1");
     }
@@ -27,6 +28,7 @@ public class SinglePhotoTestSamples {
             .thumbnailS3Key("thumbnailS3Key2")
             .contentS3Key("contentS3Key2")
             .likeCount(2)
+            .isPreview(true)
             .createdBy("createdBy2")
             .lastModifiedBy("lastModifiedBy2");
     }
@@ -37,6 +39,7 @@ public class SinglePhotoTestSamples {
             .thumbnailS3Key(UUID.randomUUID().toString())
             .contentS3Key(UUID.randomUUID().toString())
             .likeCount(intCount.incrementAndGet())
+            .isPreview(random.nextBoolean())
             .createdBy(UUID.randomUUID().toString())
             .lastModifiedBy(UUID.randomUUID().toString());
     }
