@@ -4,7 +4,7 @@ import com.monsterdam.app.config.SecurityConfiguration;
 import com.monsterdam.app.config.SecurityJwtConfiguration;
 import com.monsterdam.app.config.WebConfigurer;
 import com.monsterdam.app.management.SecurityMetersService;
-import com.monsterdam.app.web.rest.AuthenticateController;
+import com.monsterdam.app.web.rest.open.AuthenticateController;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

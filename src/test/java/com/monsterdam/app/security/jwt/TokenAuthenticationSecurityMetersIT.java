@@ -79,7 +79,7 @@ class TokenAuthenticationSecurityMetersIT {
     }
 
     private void tryToAuthenticate(String token) throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/api/authenticate").header(AUTHORIZATION, BEARER + token));
+        mvc.perform(MockMvcRequestBuilders.get("/api/bff/open/authenticate").header(AUTHORIZATION, BEARER + token));
     }
 
     private double aggregate(Collection<Counter> counters) {

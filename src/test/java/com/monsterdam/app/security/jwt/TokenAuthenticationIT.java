@@ -43,13 +43,13 @@ class TokenAuthenticationIT {
 
     private void expectOk(String token) throws Exception {
         mvc
-            .perform(MockMvcRequestBuilders.get("/api/authenticate").header(AUTHORIZATION, BEARER + token))
+            .perform(MockMvcRequestBuilders.get("/api/bff/open/authenticate").header(AUTHORIZATION, BEARER + token))
             .andExpect(status().isNoContent());
     }
 
     private void expectUnauthorized(String token) throws Exception {
         mvc
-            .perform(MockMvcRequestBuilders.get("/api/authenticate").header(AUTHORIZATION, BEARER + token))
+            .perform(MockMvcRequestBuilders.get("/api/bff/open/authenticate").header(AUTHORIZATION, BEARER + token))
             .andExpect(status().isUnauthorized());
     }
 }
