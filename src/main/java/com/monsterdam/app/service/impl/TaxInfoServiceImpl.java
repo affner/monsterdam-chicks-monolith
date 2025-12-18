@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TaxInfoServiceImpl implements TaxInfoService {
+public class TaxInfoServiceImpl extends AbstractLogicalDeletionService<TaxInfo, TaxInfoDTO> implements TaxInfoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaxInfoServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class TaxInfoServiceImpl implements TaxInfoService {
     private final TaxInfoMapper taxInfoMapper;
 
     public TaxInfoServiceImpl(TaxInfoRepository taxInfoRepository, TaxInfoMapper taxInfoMapper) {
+        super(taxInfoRepository, taxInfoMapper, TaxInfo::setDeletedDate);
         this.taxInfoRepository = taxInfoRepository;
         this.taxInfoMapper = taxInfoMapper;
     }

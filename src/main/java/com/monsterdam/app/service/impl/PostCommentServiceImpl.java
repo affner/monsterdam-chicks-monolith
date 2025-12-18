@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PostCommentServiceImpl implements PostCommentService {
+public class PostCommentServiceImpl extends AbstractLogicalDeletionService<PostComment, PostCommentDTO> implements PostCommentService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostCommentServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class PostCommentServiceImpl implements PostCommentService {
     private final PostCommentMapper postCommentMapper;
 
     public PostCommentServiceImpl(PostCommentRepository postCommentRepository, PostCommentMapper postCommentMapper) {
+        super(postCommentRepository, postCommentMapper, PostComment::setDeletedDate);
         this.postCommentRepository = postCommentRepository;
         this.postCommentMapper = postCommentMapper;
     }

@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PersonalSocialLinks}.
  */
 @RestController
-@RequestMapping("/api/personal-social-links")
+@RequestMapping("/api")
 public class PersonalSocialLinksResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonalSocialLinksResource.class);
@@ -57,7 +57,7 @@ public class PersonalSocialLinksResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new personalSocialLinksDTO, or with status {@code 400 (Bad Request)} if the personalSocialLinks has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/personal-social-links")
     public ResponseEntity<PersonalSocialLinksDTO> createPersonalSocialLinks(
         @Valid @RequestBody PersonalSocialLinksDTO personalSocialLinksDTO
     ) throws URISyntaxException {
@@ -81,7 +81,7 @@ public class PersonalSocialLinksResource {
      * or with status {@code 500 (Internal Server Error)} if the personalSocialLinksDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/personal-social-links/{id}")
     public ResponseEntity<PersonalSocialLinksDTO> updatePersonalSocialLinks(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PersonalSocialLinksDTO personalSocialLinksDTO
@@ -115,7 +115,7 @@ public class PersonalSocialLinksResource {
      * or with status {@code 500 (Internal Server Error)} if the personalSocialLinksDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/personal-social-links/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PersonalSocialLinksDTO> partialUpdatePersonalSocialLinks(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PersonalSocialLinksDTO personalSocialLinksDTO
@@ -146,7 +146,7 @@ public class PersonalSocialLinksResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of personalSocialLinks in body.
      */
-    @GetMapping("")
+    @GetMapping("/personal-social-links")
     public ResponseEntity<List<PersonalSocialLinksDTO>> getAllPersonalSocialLinks(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -162,7 +162,7 @@ public class PersonalSocialLinksResource {
      * @param id the id of the personalSocialLinksDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the personalSocialLinksDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/personal-social-links/{id}")
     public ResponseEntity<PersonalSocialLinksDTO> getPersonalSocialLinks(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PersonalSocialLinks : {}", id);
         Optional<PersonalSocialLinksDTO> personalSocialLinksDTO = personalSocialLinksService.findOne(id);
@@ -175,12 +175,76 @@ public class PersonalSocialLinksResource {
      * @param id the id of the personalSocialLinksDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/personal-social-links/{id}")
     public ResponseEntity<Void> deletePersonalSocialLinks(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PersonalSocialLinks : {}", id);
         personalSocialLinksService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/personal-social-links} : get all the personal-social-links without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of personal-social-links in body.
+     */
+    @GetMapping("/logical/personal-social-links")
+    public ResponseEntity<List<PersonalSocialLinksDTO>> getAllLogicalPersonalSocialLinkss(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PersonalSocialLinkss without logical deletions");
+        Page<PersonalSocialLinksDTO> page = personalSocialLinksService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/personal-social-links/:id} : get the "id" PersonalSocialLinks if not logically deleted.
+     *
+     * @param id the id of the PersonalSocialLinksDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PersonalSocialLinksDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/personal-social-links/{id}")
+    public ResponseEntity<PersonalSocialLinksDTO> getLogicalPersonalSocialLinks(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PersonalSocialLinks : {}", id);
+        Optional<PersonalSocialLinksDTO> personalSocialLinksDTO = personalSocialLinksService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(personalSocialLinksDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/personal-social-links/:id} : logically delete the "id" PersonalSocialLinks.
+     *
+     * @param id the id of the PersonalSocialLinksDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/personal-social-links/{id}")
+    public ResponseEntity<Void> logicalDeletePersonalSocialLinks(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PersonalSocialLinks : {}", id);
+        if (!personalSocialLinksRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        personalSocialLinksService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/personal-social-links/:id/restore} : restore a logically deleted PersonalSocialLinks.
+     *
+     * @param id the id of the PersonalSocialLinks to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PersonalSocialLinksDTO.
+     */
+    @PutMapping("/logical/personal-social-links/{id}/restore")
+    public ResponseEntity<PersonalSocialLinksDTO> restorePersonalSocialLinks(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PersonalSocialLinks : {}", id);
+        if (!personalSocialLinksRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        personalSocialLinksService.restore(id);
+        Optional<PersonalSocialLinksDTO> restored = personalSocialLinksService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

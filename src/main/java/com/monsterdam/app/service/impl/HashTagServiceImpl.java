@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class HashTagServiceImpl implements HashTagService {
+public class HashTagServiceImpl extends AbstractLogicalDeletionService<HashTag, HashTagDTO> implements HashTagService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HashTagServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class HashTagServiceImpl implements HashTagService {
     private final HashTagMapper hashTagMapper;
 
     public HashTagServiceImpl(HashTagRepository hashTagRepository, HashTagMapper hashTagMapper) {
+        super(hashTagRepository, hashTagMapper, HashTag::setDeletedDate);
         this.hashTagRepository = hashTagRepository;
         this.hashTagMapper = hashTagMapper;
     }

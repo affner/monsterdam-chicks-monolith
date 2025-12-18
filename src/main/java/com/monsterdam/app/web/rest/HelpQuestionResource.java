@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.HelpQuestion}.
  */
 @RestController
-@RequestMapping("/api/help-questions")
+@RequestMapping("/api")
 public class HelpQuestionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpQuestionResource.class);
@@ -54,7 +54,7 @@ public class HelpQuestionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new helpQuestionDTO, or with status {@code 400 (Bad Request)} if the helpQuestion has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/help-questions")
     public ResponseEntity<HelpQuestionDTO> createHelpQuestion(@Valid @RequestBody HelpQuestionDTO helpQuestionDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save HelpQuestion : {}", helpQuestionDTO);
@@ -77,7 +77,7 @@ public class HelpQuestionResource {
      * or with status {@code 500 (Internal Server Error)} if the helpQuestionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/help-questions/{id}")
     public ResponseEntity<HelpQuestionDTO> updateHelpQuestion(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody HelpQuestionDTO helpQuestionDTO
@@ -111,7 +111,7 @@ public class HelpQuestionResource {
      * or with status {@code 500 (Internal Server Error)} if the helpQuestionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/help-questions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HelpQuestionDTO> partialUpdateHelpQuestion(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody HelpQuestionDTO helpQuestionDTO
@@ -142,7 +142,7 @@ public class HelpQuestionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of helpQuestions in body.
      */
-    @GetMapping("")
+    @GetMapping("/help-questions")
     public ResponseEntity<List<HelpQuestionDTO>> getAllHelpQuestions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of HelpQuestions");
         Page<HelpQuestionDTO> page = helpQuestionService.findAll(pageable);
@@ -156,7 +156,7 @@ public class HelpQuestionResource {
      * @param id the id of the helpQuestionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the helpQuestionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/help-questions/{id}")
     public ResponseEntity<HelpQuestionDTO> getHelpQuestion(@PathVariable("id") Long id) {
         LOG.debug("REST request to get HelpQuestion : {}", id);
         Optional<HelpQuestionDTO> helpQuestionDTO = helpQuestionService.findOne(id);
@@ -169,12 +169,76 @@ public class HelpQuestionResource {
      * @param id the id of the helpQuestionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/help-questions/{id}")
     public ResponseEntity<Void> deleteHelpQuestion(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete HelpQuestion : {}", id);
         helpQuestionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/help-questions} : get all the help-questions without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of help-questions in body.
+     */
+    @GetMapping("/logical/help-questions")
+    public ResponseEntity<List<HelpQuestionDTO>> getAllLogicalHelpQuestions(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of HelpQuestions without logical deletions");
+        Page<HelpQuestionDTO> page = helpQuestionService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/help-questions/:id} : get the "id" HelpQuestion if not logically deleted.
+     *
+     * @param id the id of the HelpQuestionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the HelpQuestionDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/help-questions/{id}")
+    public ResponseEntity<HelpQuestionDTO> getLogicalHelpQuestion(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical HelpQuestion : {}", id);
+        Optional<HelpQuestionDTO> helpQuestionDTO = helpQuestionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(helpQuestionDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/help-questions/:id} : logically delete the "id" HelpQuestion.
+     *
+     * @param id the id of the HelpQuestionDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/help-questions/{id}")
+    public ResponseEntity<Void> logicalDeleteHelpQuestion(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete HelpQuestion : {}", id);
+        if (!helpQuestionRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpQuestionService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/help-questions/:id/restore} : restore a logically deleted HelpQuestion.
+     *
+     * @param id the id of the HelpQuestion to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored HelpQuestionDTO.
+     */
+    @PutMapping("/logical/help-questions/{id}/restore")
+    public ResponseEntity<HelpQuestionDTO> restoreHelpQuestion(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore HelpQuestion : {}", id);
+        if (!helpQuestionRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpQuestionService.restore(id);
+        Optional<HelpQuestionDTO> restored = helpQuestionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

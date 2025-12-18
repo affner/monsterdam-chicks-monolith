@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class RefundTransactionServiceImpl implements RefundTransactionService {
+public class RefundTransactionServiceImpl
+    extends AbstractLogicalDeletionService<RefundTransaction, RefundTransactionDTO>
+    implements RefundTransactionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RefundTransactionServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class RefundTransactionServiceImpl implements RefundTransactionService {
         RefundTransactionRepository refundTransactionRepository,
         RefundTransactionMapper refundTransactionMapper
     ) {
+        super(refundTransactionRepository, refundTransactionMapper, RefundTransaction::setDeletedDate);
         this.refundTransactionRepository = refundTransactionRepository;
         this.refundTransactionMapper = refundTransactionMapper;
     }

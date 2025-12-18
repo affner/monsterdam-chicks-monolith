@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PostCommentRepository extends JpaRepository<PostComment, Long> {}
+public interface PostCommentRepository extends LogicalDeletionRepository<PostComment> {}

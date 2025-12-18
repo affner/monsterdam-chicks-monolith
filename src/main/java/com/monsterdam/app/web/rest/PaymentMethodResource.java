@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PaymentMethod}.
  */
 @RestController
-@RequestMapping("/api/payment-methods")
+@RequestMapping("/api")
 public class PaymentMethodResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PaymentMethodResource.class);
@@ -54,7 +54,7 @@ public class PaymentMethodResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paymentMethodDTO, or with status {@code 400 (Bad Request)} if the paymentMethod has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/payment-methods")
     public ResponseEntity<PaymentMethodDTO> createPaymentMethod(@Valid @RequestBody PaymentMethodDTO paymentMethodDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save PaymentMethod : {}", paymentMethodDTO);
@@ -77,7 +77,7 @@ public class PaymentMethodResource {
      * or with status {@code 500 (Internal Server Error)} if the paymentMethodDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/payment-methods/{id}")
     public ResponseEntity<PaymentMethodDTO> updatePaymentMethod(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PaymentMethodDTO paymentMethodDTO
@@ -111,7 +111,7 @@ public class PaymentMethodResource {
      * or with status {@code 500 (Internal Server Error)} if the paymentMethodDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/payment-methods/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PaymentMethodDTO> partialUpdatePaymentMethod(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PaymentMethodDTO paymentMethodDTO
@@ -142,7 +142,7 @@ public class PaymentMethodResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of paymentMethods in body.
      */
-    @GetMapping("")
+    @GetMapping("/payment-methods")
     public ResponseEntity<List<PaymentMethodDTO>> getAllPaymentMethods(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of PaymentMethods");
         Page<PaymentMethodDTO> page = paymentMethodService.findAll(pageable);
@@ -156,7 +156,7 @@ public class PaymentMethodResource {
      * @param id the id of the paymentMethodDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the paymentMethodDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/payment-methods/{id}")
     public ResponseEntity<PaymentMethodDTO> getPaymentMethod(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PaymentMethod : {}", id);
         Optional<PaymentMethodDTO> paymentMethodDTO = paymentMethodService.findOne(id);
@@ -169,12 +169,76 @@ public class PaymentMethodResource {
      * @param id the id of the paymentMethodDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/payment-methods/{id}")
     public ResponseEntity<Void> deletePaymentMethod(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PaymentMethod : {}", id);
         paymentMethodService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/payment-methods} : get all the payment-methods without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payment-methods in body.
+     */
+    @GetMapping("/logical/payment-methods")
+    public ResponseEntity<List<PaymentMethodDTO>> getAllLogicalPaymentMethods(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PaymentMethods without logical deletions");
+        Page<PaymentMethodDTO> page = paymentMethodService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/payment-methods/:id} : get the "id" PaymentMethod if not logically deleted.
+     *
+     * @param id the id of the PaymentMethodDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PaymentMethodDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/payment-methods/{id}")
+    public ResponseEntity<PaymentMethodDTO> getLogicalPaymentMethod(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PaymentMethod : {}", id);
+        Optional<PaymentMethodDTO> paymentMethodDTO = paymentMethodService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(paymentMethodDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/payment-methods/:id} : logically delete the "id" PaymentMethod.
+     *
+     * @param id the id of the PaymentMethodDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/payment-methods/{id}")
+    public ResponseEntity<Void> logicalDeletePaymentMethod(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PaymentMethod : {}", id);
+        if (!paymentMethodRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        paymentMethodService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/payment-methods/:id/restore} : restore a logically deleted PaymentMethod.
+     *
+     * @param id the id of the PaymentMethod to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PaymentMethodDTO.
+     */
+    @PutMapping("/logical/payment-methods/{id}/restore")
+    public ResponseEntity<PaymentMethodDTO> restorePaymentMethod(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PaymentMethod : {}", id);
+        if (!paymentMethodRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        paymentMethodService.restore(id);
+        Optional<PaymentMethodDTO> restored = paymentMethodService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

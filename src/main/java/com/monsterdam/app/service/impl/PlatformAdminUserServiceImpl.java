@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PlatformAdminUserServiceImpl implements PlatformAdminUserService {
+public class PlatformAdminUserServiceImpl
+    extends AbstractLogicalDeletionService<PlatformAdminUser, PlatformAdminUserDTO>
+    implements PlatformAdminUserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlatformAdminUserServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class PlatformAdminUserServiceImpl implements PlatformAdminUserService {
         PlatformAdminUserRepository platformAdminUserRepository,
         PlatformAdminUserMapper platformAdminUserMapper
     ) {
+        super(platformAdminUserRepository, platformAdminUserMapper, PlatformAdminUser::setDeletedDate);
         this.platformAdminUserRepository = platformAdminUserRepository;
         this.platformAdminUserMapper = platformAdminUserMapper;
     }

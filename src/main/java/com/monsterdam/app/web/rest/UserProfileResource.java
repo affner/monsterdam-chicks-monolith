@@ -29,7 +29,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.UserProfile}.
  */
 @RestController
-@RequestMapping("/api/user-profiles")
+@RequestMapping("/api")
 public class UserProfileResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileResource.class);
@@ -55,7 +55,7 @@ public class UserProfileResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userProfileDTO, or with status {@code 400 (Bad Request)} if the userProfile has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/user-profiles")
     public ResponseEntity<UserProfileDTO> createUserProfile(@Valid @RequestBody UserProfileDTO userProfileDTO) throws URISyntaxException {
         LOG.debug("REST request to save UserProfile : {}", userProfileDTO);
         if (userProfileDTO.getId() != null) {
@@ -77,7 +77,7 @@ public class UserProfileResource {
      * or with status {@code 500 (Internal Server Error)} if the userProfileDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/user-profiles/{id}")
     public ResponseEntity<UserProfileDTO> updateUserProfile(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody UserProfileDTO userProfileDTO
@@ -111,7 +111,7 @@ public class UserProfileResource {
      * or with status {@code 500 (Internal Server Error)} if the userProfileDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-profiles/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<UserProfileDTO> partialUpdateUserProfile(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody UserProfileDTO userProfileDTO
@@ -143,7 +143,7 @@ public class UserProfileResource {
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userProfiles in body.
      */
-    @GetMapping("")
+    @GetMapping("/user-profiles")
     public ResponseEntity<List<UserProfileDTO>> getAllUserProfiles(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "filter", required = false) String filter
@@ -164,7 +164,7 @@ public class UserProfileResource {
      * @param id the id of the userProfileDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userProfileDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user-profiles/{id}")
     public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("id") Long id) {
         LOG.debug("REST request to get UserProfile : {}", id);
         Optional<UserProfileDTO> userProfileDTO = userProfileService.findOne(id);
@@ -177,12 +177,76 @@ public class UserProfileResource {
      * @param id the id of the userProfileDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user-profiles/{id}")
     public ResponseEntity<Void> deleteUserProfile(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete UserProfile : {}", id);
         userProfileService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/user-profiles} : get all the user-profiles without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user-profiles in body.
+     */
+    @GetMapping("/logical/user-profiles")
+    public ResponseEntity<List<UserProfileDTO>> getAllLogicalUserProfiles(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of UserProfiles without logical deletions");
+        Page<UserProfileDTO> page = userProfileService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/user-profiles/:id} : get the "id" UserProfile if not logically deleted.
+     *
+     * @param id the id of the UserProfileDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the UserProfileDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/user-profiles/{id}")
+    public ResponseEntity<UserProfileDTO> getLogicalUserProfile(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical UserProfile : {}", id);
+        Optional<UserProfileDTO> userProfileDTO = userProfileService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(userProfileDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/user-profiles/:id} : logically delete the "id" UserProfile.
+     *
+     * @param id the id of the UserProfileDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/user-profiles/{id}")
+    public ResponseEntity<Void> logicalDeleteUserProfile(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete UserProfile : {}", id);
+        if (!userProfileRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userProfileService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/user-profiles/:id/restore} : restore a logically deleted UserProfile.
+     *
+     * @param id the id of the UserProfile to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored UserProfileDTO.
+     */
+    @PutMapping("/logical/user-profiles/{id}/restore")
+    public ResponseEntity<UserProfileDTO> restoreUserProfile(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore UserProfile : {}", id);
+        if (!userProfileRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userProfileService.restore(id);
+        Optional<UserProfileDTO> restored = userProfileService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

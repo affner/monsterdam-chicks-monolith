@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ContentPackageServiceImpl implements ContentPackageService {
+public class ContentPackageServiceImpl
+    extends AbstractLogicalDeletionService<ContentPackage, ContentPackageDTO>
+    implements ContentPackageService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentPackageServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class ContentPackageServiceImpl implements ContentPackageService {
     private final ContentPackageMapper contentPackageMapper;
 
     public ContentPackageServiceImpl(ContentPackageRepository contentPackageRepository, ContentPackageMapper contentPackageMapper) {
+        super(contentPackageRepository, contentPackageMapper, ContentPackage::setDeletedDate);
         this.contentPackageRepository = contentPackageRepository;
         this.contentPackageMapper = contentPackageMapper;
     }

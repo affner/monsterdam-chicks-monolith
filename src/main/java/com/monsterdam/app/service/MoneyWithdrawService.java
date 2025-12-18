@@ -1,5 +1,6 @@
 package com.monsterdam.app.service;
 
+import com.monsterdam.app.service.LogicalDeletionService;
 import com.monsterdam.app.service.dto.MoneyWithdrawDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -8,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * Service Interface for managing {@link com.monsterdam.app.domain.MoneyWithdraw}.
  */
-public interface MoneyWithdrawService {
+public interface MoneyWithdrawService extends LogicalDeletionService<MoneyWithdrawDTO> {
     /**
      * Save a moneyWithdraw.
      *

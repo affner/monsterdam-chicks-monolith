@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.MoneyWithdraw}.
  */
 @RestController
-@RequestMapping("/api/money-withdraws")
+@RequestMapping("/api")
 public class MoneyWithdrawResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoneyWithdrawResource.class);
@@ -54,7 +54,7 @@ public class MoneyWithdrawResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new moneyWithdrawDTO, or with status {@code 400 (Bad Request)} if the moneyWithdraw has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/money-withdraws")
     public ResponseEntity<MoneyWithdrawDTO> createMoneyWithdraw(@Valid @RequestBody MoneyWithdrawDTO moneyWithdrawDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save MoneyWithdraw : {}", moneyWithdrawDTO);
@@ -77,7 +77,7 @@ public class MoneyWithdrawResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyWithdrawDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/money-withdraws/{id}")
     public ResponseEntity<MoneyWithdrawDTO> updateMoneyWithdraw(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody MoneyWithdrawDTO moneyWithdrawDTO
@@ -111,7 +111,7 @@ public class MoneyWithdrawResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyWithdrawDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/money-withdraws/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<MoneyWithdrawDTO> partialUpdateMoneyWithdraw(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody MoneyWithdrawDTO moneyWithdrawDTO
@@ -142,7 +142,7 @@ public class MoneyWithdrawResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of moneyWithdraws in body.
      */
-    @GetMapping("")
+    @GetMapping("/money-withdraws")
     public ResponseEntity<List<MoneyWithdrawDTO>> getAllMoneyWithdraws(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of MoneyWithdraws");
         Page<MoneyWithdrawDTO> page = moneyWithdrawService.findAll(pageable);
@@ -156,7 +156,7 @@ public class MoneyWithdrawResource {
      * @param id the id of the moneyWithdrawDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the moneyWithdrawDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/money-withdraws/{id}")
     public ResponseEntity<MoneyWithdrawDTO> getMoneyWithdraw(@PathVariable("id") Long id) {
         LOG.debug("REST request to get MoneyWithdraw : {}", id);
         Optional<MoneyWithdrawDTO> moneyWithdrawDTO = moneyWithdrawService.findOne(id);
@@ -169,12 +169,76 @@ public class MoneyWithdrawResource {
      * @param id the id of the moneyWithdrawDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/money-withdraws/{id}")
     public ResponseEntity<Void> deleteMoneyWithdraw(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete MoneyWithdraw : {}", id);
         moneyWithdrawService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/money-withdraws} : get all the money-withdraws without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of money-withdraws in body.
+     */
+    @GetMapping("/logical/money-withdraws")
+    public ResponseEntity<List<MoneyWithdrawDTO>> getAllLogicalMoneyWithdraws(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of MoneyWithdraws without logical deletions");
+        Page<MoneyWithdrawDTO> page = moneyWithdrawService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/money-withdraws/:id} : get the "id" MoneyWithdraw if not logically deleted.
+     *
+     * @param id the id of the MoneyWithdrawDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the MoneyWithdrawDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/money-withdraws/{id}")
+    public ResponseEntity<MoneyWithdrawDTO> getLogicalMoneyWithdraw(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical MoneyWithdraw : {}", id);
+        Optional<MoneyWithdrawDTO> moneyWithdrawDTO = moneyWithdrawService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(moneyWithdrawDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/money-withdraws/:id} : logically delete the "id" MoneyWithdraw.
+     *
+     * @param id the id of the MoneyWithdrawDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/money-withdraws/{id}")
+    public ResponseEntity<Void> logicalDeleteMoneyWithdraw(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete MoneyWithdraw : {}", id);
+        if (!moneyWithdrawRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyWithdrawService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/money-withdraws/:id/restore} : restore a logically deleted MoneyWithdraw.
+     *
+     * @param id the id of the MoneyWithdraw to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored MoneyWithdrawDTO.
+     */
+    @PutMapping("/logical/money-withdraws/{id}/restore")
+    public ResponseEntity<MoneyWithdrawDTO> restoreMoneyWithdraw(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore MoneyWithdraw : {}", id);
+        if (!moneyWithdrawRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyWithdrawService.restore(id);
+        Optional<MoneyWithdrawDTO> restored = moneyWithdrawService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

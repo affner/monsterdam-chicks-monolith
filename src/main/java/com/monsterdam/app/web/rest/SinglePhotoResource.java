@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.SinglePhoto}.
  */
 @RestController
-@RequestMapping("/api/single-photos")
+@RequestMapping("/api")
 public class SinglePhotoResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(SinglePhotoResource.class);
@@ -54,7 +54,7 @@ public class SinglePhotoResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new singlePhotoDTO, or with status {@code 400 (Bad Request)} if the singlePhoto has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/single-photos")
     public ResponseEntity<SinglePhotoDTO> createSinglePhoto(@Valid @RequestBody SinglePhotoDTO singlePhotoDTO) throws URISyntaxException {
         LOG.debug("REST request to save SinglePhoto : {}", singlePhotoDTO);
         if (singlePhotoDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class SinglePhotoResource {
      * or with status {@code 500 (Internal Server Error)} if the singlePhotoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/single-photos/{id}")
     public ResponseEntity<SinglePhotoDTO> updateSinglePhoto(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody SinglePhotoDTO singlePhotoDTO
@@ -110,7 +110,7 @@ public class SinglePhotoResource {
      * or with status {@code 500 (Internal Server Error)} if the singlePhotoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/single-photos/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SinglePhotoDTO> partialUpdateSinglePhoto(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SinglePhotoDTO singlePhotoDTO
@@ -141,7 +141,7 @@ public class SinglePhotoResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of singlePhotos in body.
      */
-    @GetMapping("")
+    @GetMapping("/single-photos")
     public ResponseEntity<List<SinglePhotoDTO>> getAllSinglePhotos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of SinglePhotos");
         Page<SinglePhotoDTO> page = singlePhotoService.findAll(pageable);
@@ -155,7 +155,7 @@ public class SinglePhotoResource {
      * @param id the id of the singlePhotoDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the singlePhotoDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/single-photos/{id}")
     public ResponseEntity<SinglePhotoDTO> getSinglePhoto(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SinglePhoto : {}", id);
         Optional<SinglePhotoDTO> singlePhotoDTO = singlePhotoService.findOne(id);
@@ -168,12 +168,76 @@ public class SinglePhotoResource {
      * @param id the id of the singlePhotoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/single-photos/{id}")
     public ResponseEntity<Void> deleteSinglePhoto(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SinglePhoto : {}", id);
         singlePhotoService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/single-photos} : get all the single-photos without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of single-photos in body.
+     */
+    @GetMapping("/logical/single-photos")
+    public ResponseEntity<List<SinglePhotoDTO>> getAllLogicalSinglePhotos(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of SinglePhotos without logical deletions");
+        Page<SinglePhotoDTO> page = singlePhotoService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/single-photos/:id} : get the "id" SinglePhoto if not logically deleted.
+     *
+     * @param id the id of the SinglePhotoDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SinglePhotoDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/single-photos/{id}")
+    public ResponseEntity<SinglePhotoDTO> getLogicalSinglePhoto(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical SinglePhoto : {}", id);
+        Optional<SinglePhotoDTO> singlePhotoDTO = singlePhotoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(singlePhotoDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/single-photos/:id} : logically delete the "id" SinglePhoto.
+     *
+     * @param id the id of the SinglePhotoDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/single-photos/{id}")
+    public ResponseEntity<Void> logicalDeleteSinglePhoto(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete SinglePhoto : {}", id);
+        if (!singlePhotoRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singlePhotoService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/single-photos/:id/restore} : restore a logically deleted SinglePhoto.
+     *
+     * @param id the id of the SinglePhoto to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored SinglePhotoDTO.
+     */
+    @PutMapping("/logical/single-photos/{id}/restore")
+    public ResponseEntity<SinglePhotoDTO> restoreSinglePhoto(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore SinglePhoto : {}", id);
+        if (!singlePhotoRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singlePhotoService.restore(id);
+        Optional<SinglePhotoDTO> restored = singlePhotoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

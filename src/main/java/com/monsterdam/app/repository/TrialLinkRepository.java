@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TrialLinkRepository extends JpaRepository<TrialLink, Long> {}
+public interface TrialLinkRepository extends LogicalDeletionRepository<TrialLink> {}

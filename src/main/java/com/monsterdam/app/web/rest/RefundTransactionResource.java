@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.RefundTransaction}.
  */
 @RestController
-@RequestMapping("/api/refund-transactions")
+@RequestMapping("/api")
 public class RefundTransactionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(RefundTransactionResource.class);
@@ -57,7 +57,7 @@ public class RefundTransactionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new refundTransactionDTO, or with status {@code 400 (Bad Request)} if the refundTransaction has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/refund-transactions")
     public ResponseEntity<RefundTransactionDTO> createRefundTransaction(@Valid @RequestBody RefundTransactionDTO refundTransactionDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save RefundTransaction : {}", refundTransactionDTO);
@@ -80,7 +80,7 @@ public class RefundTransactionResource {
      * or with status {@code 500 (Internal Server Error)} if the refundTransactionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/refund-transactions/{id}")
     public ResponseEntity<RefundTransactionDTO> updateRefundTransaction(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody RefundTransactionDTO refundTransactionDTO
@@ -114,7 +114,7 @@ public class RefundTransactionResource {
      * or with status {@code 500 (Internal Server Error)} if the refundTransactionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/refund-transactions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<RefundTransactionDTO> partialUpdateRefundTransaction(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody RefundTransactionDTO refundTransactionDTO
@@ -145,7 +145,7 @@ public class RefundTransactionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of refundTransactions in body.
      */
-    @GetMapping("")
+    @GetMapping("/refund-transactions")
     public ResponseEntity<List<RefundTransactionDTO>> getAllRefundTransactions(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class RefundTransactionResource {
      * @param id the id of the refundTransactionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the refundTransactionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/refund-transactions/{id}")
     public ResponseEntity<RefundTransactionDTO> getRefundTransaction(@PathVariable("id") Long id) {
         LOG.debug("REST request to get RefundTransaction : {}", id);
         Optional<RefundTransactionDTO> refundTransactionDTO = refundTransactionService.findOne(id);
@@ -174,12 +174,76 @@ public class RefundTransactionResource {
      * @param id the id of the refundTransactionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/refund-transactions/{id}")
     public ResponseEntity<Void> deleteRefundTransaction(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete RefundTransaction : {}", id);
         refundTransactionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/refund-transactions} : get all the refund-transactions without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of refund-transactions in body.
+     */
+    @GetMapping("/logical/refund-transactions")
+    public ResponseEntity<List<RefundTransactionDTO>> getAllLogicalRefundTransactions(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of RefundTransactions without logical deletions");
+        Page<RefundTransactionDTO> page = refundTransactionService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/refund-transactions/:id} : get the "id" RefundTransaction if not logically deleted.
+     *
+     * @param id the id of the RefundTransactionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the RefundTransactionDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/refund-transactions/{id}")
+    public ResponseEntity<RefundTransactionDTO> getLogicalRefundTransaction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical RefundTransaction : {}", id);
+        Optional<RefundTransactionDTO> refundTransactionDTO = refundTransactionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(refundTransactionDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/refund-transactions/:id} : logically delete the "id" RefundTransaction.
+     *
+     * @param id the id of the RefundTransactionDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/refund-transactions/{id}")
+    public ResponseEntity<Void> logicalDeleteRefundTransaction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete RefundTransaction : {}", id);
+        if (!refundTransactionRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        refundTransactionService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/refund-transactions/:id/restore} : restore a logically deleted RefundTransaction.
+     *
+     * @param id the id of the RefundTransaction to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored RefundTransactionDTO.
+     */
+    @PutMapping("/logical/refund-transactions/{id}/restore")
+    public ResponseEntity<RefundTransactionDTO> restoreRefundTransaction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore RefundTransaction : {}", id);
+        if (!refundTransactionRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        refundTransactionService.restore(id);
+        Optional<RefundTransactionDTO> restored = refundTransactionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.HashTag}.
  */
 @RestController
-@RequestMapping("/api/hash-tags")
+@RequestMapping("/api")
 public class HashTagResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(HashTagResource.class);
@@ -54,7 +54,7 @@ public class HashTagResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new hashTagDTO, or with status {@code 400 (Bad Request)} if the hashTag has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/hash-tags")
     public ResponseEntity<HashTagDTO> createHashTag(@Valid @RequestBody HashTagDTO hashTagDTO) throws URISyntaxException {
         LOG.debug("REST request to save HashTag : {}", hashTagDTO);
         if (hashTagDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class HashTagResource {
      * or with status {@code 500 (Internal Server Error)} if the hashTagDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/hash-tags/{id}")
     public ResponseEntity<HashTagDTO> updateHashTag(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody HashTagDTO hashTagDTO
@@ -110,7 +110,7 @@ public class HashTagResource {
      * or with status {@code 500 (Internal Server Error)} if the hashTagDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/hash-tags/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HashTagDTO> partialUpdateHashTag(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody HashTagDTO hashTagDTO
@@ -141,7 +141,7 @@ public class HashTagResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of hashTags in body.
      */
-    @GetMapping("")
+    @GetMapping("/hash-tags")
     public ResponseEntity<List<HashTagDTO>> getAllHashTags(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of HashTags");
         Page<HashTagDTO> page = hashTagService.findAll(pageable);
@@ -155,7 +155,7 @@ public class HashTagResource {
      * @param id the id of the hashTagDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the hashTagDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/hash-tags/{id}")
     public ResponseEntity<HashTagDTO> getHashTag(@PathVariable("id") Long id) {
         LOG.debug("REST request to get HashTag : {}", id);
         Optional<HashTagDTO> hashTagDTO = hashTagService.findOne(id);
@@ -168,12 +168,74 @@ public class HashTagResource {
      * @param id the id of the hashTagDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/hash-tags/{id}")
     public ResponseEntity<Void> deleteHashTag(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete HashTag : {}", id);
         hashTagService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/hash-tags} : get all the hash-tags without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of hash-tags in body.
+     */
+    @GetMapping("/logical/hash-tags")
+    public ResponseEntity<List<HashTagDTO>> getAllLogicalHashTags(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of HashTags without logical deletions");
+        Page<HashTagDTO> page = hashTagService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/hash-tags/:id} : get the "id" HashTag if not logically deleted.
+     *
+     * @param id the id of the HashTagDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the HashTagDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/hash-tags/{id}")
+    public ResponseEntity<HashTagDTO> getLogicalHashTag(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical HashTag : {}", id);
+        Optional<HashTagDTO> hashTagDTO = hashTagService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(hashTagDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/hash-tags/:id} : logically delete the "id" HashTag.
+     *
+     * @param id the id of the HashTagDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/hash-tags/{id}")
+    public ResponseEntity<Void> logicalDeleteHashTag(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete HashTag : {}", id);
+        if (!hashTagRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        hashTagService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/hash-tags/:id/restore} : restore a logically deleted HashTag.
+     *
+     * @param id the id of the HashTag to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored HashTagDTO.
+     */
+    @PutMapping("/logical/hash-tags/{id}/restore")
+    public ResponseEntity<HashTagDTO> restoreHashTag(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore HashTag : {}", id);
+        if (!hashTagRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        hashTagService.restore(id);
+        Optional<HashTagDTO> restored = hashTagService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

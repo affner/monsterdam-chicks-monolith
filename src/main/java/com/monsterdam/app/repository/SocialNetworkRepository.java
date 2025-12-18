@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SocialNetworkRepository extends JpaRepository<SocialNetwork, Long> {}
+public interface SocialNetworkRepository extends LogicalDeletionRepository<SocialNetwork> {}

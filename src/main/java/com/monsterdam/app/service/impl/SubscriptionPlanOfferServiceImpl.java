@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SubscriptionPlanOfferServiceImpl implements SubscriptionPlanOfferService {
+public class SubscriptionPlanOfferServiceImpl
+    extends AbstractLogicalDeletionService<SubscriptionPlanOffer, SubscriptionPlanOfferDTO>
+    implements SubscriptionPlanOfferService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubscriptionPlanOfferServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class SubscriptionPlanOfferServiceImpl implements SubscriptionPlanOfferSe
         SubscriptionPlanOfferRepository subscriptionPlanOfferRepository,
         SubscriptionPlanOfferMapper subscriptionPlanOfferMapper
     ) {
+        super(subscriptionPlanOfferRepository, subscriptionPlanOfferMapper, SubscriptionPlanOffer::setDeletedDate);
         this.subscriptionPlanOfferRepository = subscriptionPlanOfferRepository;
         this.subscriptionPlanOfferMapper = subscriptionPlanOfferMapper;
     }

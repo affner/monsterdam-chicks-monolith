@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LikeMarkRepository extends JpaRepository<LikeMark, Long> {}
+public interface LikeMarkRepository extends LogicalDeletionRepository<LikeMark> {}

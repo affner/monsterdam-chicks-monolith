@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.ViewerWallet}.
  */
 @RestController
-@RequestMapping("/api/viewer-wallets")
+@RequestMapping("/api")
 public class ViewerWalletResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ViewerWalletResource.class);
@@ -54,7 +54,7 @@ public class ViewerWalletResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new viewerWalletDTO, or with status {@code 400 (Bad Request)} if the viewerWallet has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/viewer-wallets")
     public ResponseEntity<ViewerWalletDTO> createViewerWallet(@Valid @RequestBody ViewerWalletDTO viewerWalletDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save ViewerWallet : {}", viewerWalletDTO);
@@ -77,7 +77,7 @@ public class ViewerWalletResource {
      * or with status {@code 500 (Internal Server Error)} if the viewerWalletDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/viewer-wallets/{id}")
     public ResponseEntity<ViewerWalletDTO> updateViewerWallet(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ViewerWalletDTO viewerWalletDTO
@@ -111,7 +111,7 @@ public class ViewerWalletResource {
      * or with status {@code 500 (Internal Server Error)} if the viewerWalletDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/viewer-wallets/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ViewerWalletDTO> partialUpdateViewerWallet(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody ViewerWalletDTO viewerWalletDTO
@@ -142,7 +142,7 @@ public class ViewerWalletResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of viewerWallets in body.
      */
-    @GetMapping("")
+    @GetMapping("/viewer-wallets")
     public ResponseEntity<List<ViewerWalletDTO>> getAllViewerWallets(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of ViewerWallets");
         Page<ViewerWalletDTO> page = viewerWalletService.findAll(pageable);
@@ -156,7 +156,7 @@ public class ViewerWalletResource {
      * @param id the id of the viewerWalletDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the viewerWalletDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/viewer-wallets/{id}")
     public ResponseEntity<ViewerWalletDTO> getViewerWallet(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ViewerWallet : {}", id);
         Optional<ViewerWalletDTO> viewerWalletDTO = viewerWalletService.findOne(id);
@@ -169,12 +169,76 @@ public class ViewerWalletResource {
      * @param id the id of the viewerWalletDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/viewer-wallets/{id}")
     public ResponseEntity<Void> deleteViewerWallet(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ViewerWallet : {}", id);
         viewerWalletService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/viewer-wallets} : get all the viewer-wallets without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of viewer-wallets in body.
+     */
+    @GetMapping("/logical/viewer-wallets")
+    public ResponseEntity<List<ViewerWalletDTO>> getAllLogicalViewerWallets(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of ViewerWallets without logical deletions");
+        Page<ViewerWalletDTO> page = viewerWalletService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/viewer-wallets/:id} : get the "id" ViewerWallet if not logically deleted.
+     *
+     * @param id the id of the ViewerWalletDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ViewerWalletDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/viewer-wallets/{id}")
+    public ResponseEntity<ViewerWalletDTO> getLogicalViewerWallet(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical ViewerWallet : {}", id);
+        Optional<ViewerWalletDTO> viewerWalletDTO = viewerWalletService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(viewerWalletDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/viewer-wallets/:id} : logically delete the "id" ViewerWallet.
+     *
+     * @param id the id of the ViewerWalletDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/viewer-wallets/{id}")
+    public ResponseEntity<Void> logicalDeleteViewerWallet(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete ViewerWallet : {}", id);
+        if (!viewerWalletRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        viewerWalletService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/viewer-wallets/:id/restore} : restore a logically deleted ViewerWallet.
+     *
+     * @param id the id of the ViewerWallet to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored ViewerWalletDTO.
+     */
+    @PutMapping("/logical/viewer-wallets/{id}/restore")
+    public ResponseEntity<ViewerWalletDTO> restoreViewerWallet(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore ViewerWallet : {}", id);
+        if (!viewerWalletRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        viewerWalletService.restore(id);
+        Optional<ViewerWalletDTO> restored = viewerWalletService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

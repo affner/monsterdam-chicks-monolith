@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface ChatRoomRepository extends ChatRoomRepositoryWithBagRelationships, JpaRepository<ChatRoom, Long> {
+public interface ChatRoomRepository extends ChatRoomRepositoryWithBagRelationships, LogicalDeletionRepository<ChatRoom> {
     default Optional<ChatRoom> findOneWithEagerRelationships(Long id) {
         return this.fetchBagRelationships(this.findById(id));
     }

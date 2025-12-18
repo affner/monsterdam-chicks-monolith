@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PurchasedSubscriptionServiceImpl implements PurchasedSubscriptionService {
+public class PurchasedSubscriptionServiceImpl
+    extends AbstractLogicalDeletionService<PurchasedSubscription, PurchasedSubscriptionDTO>
+    implements PurchasedSubscriptionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchasedSubscriptionServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class PurchasedSubscriptionServiceImpl implements PurchasedSubscriptionSe
         PurchasedSubscriptionRepository purchasedSubscriptionRepository,
         PurchasedSubscriptionMapper purchasedSubscriptionMapper
     ) {
+        super(purchasedSubscriptionRepository, purchasedSubscriptionMapper, PurchasedSubscription::setDeletedDate);
         this.purchasedSubscriptionRepository = purchasedSubscriptionRepository;
         this.purchasedSubscriptionMapper = purchasedSubscriptionMapper;
     }

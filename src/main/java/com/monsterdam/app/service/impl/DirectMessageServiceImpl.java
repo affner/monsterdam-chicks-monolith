@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class DirectMessageServiceImpl implements DirectMessageService {
+public class DirectMessageServiceImpl
+    extends AbstractLogicalDeletionService<DirectMessage, DirectMessageDTO>
+    implements DirectMessageService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DirectMessageServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class DirectMessageServiceImpl implements DirectMessageService {
     private final DirectMessageMapper directMessageMapper;
 
     public DirectMessageServiceImpl(DirectMessageRepository directMessageRepository, DirectMessageMapper directMessageMapper) {
+        super(directMessageRepository, directMessageMapper, DirectMessage::setDeletedDate);
         this.directMessageRepository = directMessageRepository;
         this.directMessageMapper = directMessageMapper;
     }

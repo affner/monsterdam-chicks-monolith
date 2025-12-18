@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.AdminSystemConfigs}.
  */
 @RestController
-@RequestMapping("/api/admin-system-configs")
+@RequestMapping("/api")
 public class AdminSystemConfigsResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminSystemConfigsResource.class);
@@ -57,7 +57,7 @@ public class AdminSystemConfigsResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new adminSystemConfigsDTO, or with status {@code 400 (Bad Request)} if the adminSystemConfigs has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/admin-system-configs")
     public ResponseEntity<AdminSystemConfigsDTO> createAdminSystemConfigs(@Valid @RequestBody AdminSystemConfigsDTO adminSystemConfigsDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save AdminSystemConfigs : {}", adminSystemConfigsDTO);
@@ -80,7 +80,7 @@ public class AdminSystemConfigsResource {
      * or with status {@code 500 (Internal Server Error)} if the adminSystemConfigsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/admin-system-configs/{id}")
     public ResponseEntity<AdminSystemConfigsDTO> updateAdminSystemConfigs(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody AdminSystemConfigsDTO adminSystemConfigsDTO
@@ -114,7 +114,7 @@ public class AdminSystemConfigsResource {
      * or with status {@code 500 (Internal Server Error)} if the adminSystemConfigsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/admin-system-configs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<AdminSystemConfigsDTO> partialUpdateAdminSystemConfigs(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody AdminSystemConfigsDTO adminSystemConfigsDTO
@@ -145,7 +145,7 @@ public class AdminSystemConfigsResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of adminSystemConfigs in body.
      */
-    @GetMapping("")
+    @GetMapping("/admin-system-configs")
     public ResponseEntity<List<AdminSystemConfigsDTO>> getAllAdminSystemConfigs(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class AdminSystemConfigsResource {
      * @param id the id of the adminSystemConfigsDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the adminSystemConfigsDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/admin-system-configs/{id}")
     public ResponseEntity<AdminSystemConfigsDTO> getAdminSystemConfigs(@PathVariable("id") Long id) {
         LOG.debug("REST request to get AdminSystemConfigs : {}", id);
         Optional<AdminSystemConfigsDTO> adminSystemConfigsDTO = adminSystemConfigsService.findOne(id);
@@ -174,12 +174,76 @@ public class AdminSystemConfigsResource {
      * @param id the id of the adminSystemConfigsDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin-system-configs/{id}")
     public ResponseEntity<Void> deleteAdminSystemConfigs(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete AdminSystemConfigs : {}", id);
         adminSystemConfigsService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/admin-system-configs} : get all the admin-system-configs without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of admin-system-configs in body.
+     */
+    @GetMapping("/logical/admin-system-configs")
+    public ResponseEntity<List<AdminSystemConfigsDTO>> getAllLogicalAdminSystemConfigss(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of AdminSystemConfigss without logical deletions");
+        Page<AdminSystemConfigsDTO> page = adminSystemConfigsService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/admin-system-configs/:id} : get the "id" AdminSystemConfigs if not logically deleted.
+     *
+     * @param id the id of the AdminSystemConfigsDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the AdminSystemConfigsDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/admin-system-configs/{id}")
+    public ResponseEntity<AdminSystemConfigsDTO> getLogicalAdminSystemConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical AdminSystemConfigs : {}", id);
+        Optional<AdminSystemConfigsDTO> adminSystemConfigsDTO = adminSystemConfigsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(adminSystemConfigsDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/admin-system-configs/:id} : logically delete the "id" AdminSystemConfigs.
+     *
+     * @param id the id of the AdminSystemConfigsDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/admin-system-configs/{id}")
+    public ResponseEntity<Void> logicalDeleteAdminSystemConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete AdminSystemConfigs : {}", id);
+        if (!adminSystemConfigsRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        adminSystemConfigsService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/admin-system-configs/:id/restore} : restore a logically deleted AdminSystemConfigs.
+     *
+     * @param id the id of the AdminSystemConfigs to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored AdminSystemConfigsDTO.
+     */
+    @PutMapping("/logical/admin-system-configs/{id}/restore")
+    public ResponseEntity<AdminSystemConfigsDTO> restoreAdminSystemConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore AdminSystemConfigs : {}", id);
+        if (!adminSystemConfigsRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        adminSystemConfigsService.restore(id);
+        Optional<AdminSystemConfigsDTO> restored = adminSystemConfigsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

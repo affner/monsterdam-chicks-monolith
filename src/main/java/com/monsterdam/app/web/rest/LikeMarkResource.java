@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.LikeMark}.
  */
 @RestController
-@RequestMapping("/api/like-marks")
+@RequestMapping("/api")
 public class LikeMarkResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(LikeMarkResource.class);
@@ -54,7 +54,7 @@ public class LikeMarkResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new likeMarkDTO, or with status {@code 400 (Bad Request)} if the likeMark has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/like-marks")
     public ResponseEntity<LikeMarkDTO> createLikeMark(@Valid @RequestBody LikeMarkDTO likeMarkDTO) throws URISyntaxException {
         LOG.debug("REST request to save LikeMark : {}", likeMarkDTO);
         if (likeMarkDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class LikeMarkResource {
      * or with status {@code 500 (Internal Server Error)} if the likeMarkDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/like-marks/{id}")
     public ResponseEntity<LikeMarkDTO> updateLikeMark(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody LikeMarkDTO likeMarkDTO
@@ -110,7 +110,7 @@ public class LikeMarkResource {
      * or with status {@code 500 (Internal Server Error)} if the likeMarkDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/like-marks/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LikeMarkDTO> partialUpdateLikeMark(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody LikeMarkDTO likeMarkDTO
@@ -141,7 +141,7 @@ public class LikeMarkResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of likeMarks in body.
      */
-    @GetMapping("")
+    @GetMapping("/like-marks")
     public ResponseEntity<List<LikeMarkDTO>> getAllLikeMarks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of LikeMarks");
         Page<LikeMarkDTO> page = likeMarkService.findAll(pageable);
@@ -155,7 +155,7 @@ public class LikeMarkResource {
      * @param id the id of the likeMarkDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the likeMarkDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/like-marks/{id}")
     public ResponseEntity<LikeMarkDTO> getLikeMark(@PathVariable("id") Long id) {
         LOG.debug("REST request to get LikeMark : {}", id);
         Optional<LikeMarkDTO> likeMarkDTO = likeMarkService.findOne(id);
@@ -168,12 +168,74 @@ public class LikeMarkResource {
      * @param id the id of the likeMarkDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/like-marks/{id}")
     public ResponseEntity<Void> deleteLikeMark(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete LikeMark : {}", id);
         likeMarkService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/like-marks} : get all the like-marks without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of like-marks in body.
+     */
+    @GetMapping("/logical/like-marks")
+    public ResponseEntity<List<LikeMarkDTO>> getAllLogicalLikeMarks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of LikeMarks without logical deletions");
+        Page<LikeMarkDTO> page = likeMarkService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/like-marks/:id} : get the "id" LikeMark if not logically deleted.
+     *
+     * @param id the id of the LikeMarkDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the LikeMarkDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/like-marks/{id}")
+    public ResponseEntity<LikeMarkDTO> getLogicalLikeMark(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical LikeMark : {}", id);
+        Optional<LikeMarkDTO> likeMarkDTO = likeMarkService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(likeMarkDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/like-marks/:id} : logically delete the "id" LikeMark.
+     *
+     * @param id the id of the LikeMarkDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/like-marks/{id}")
+    public ResponseEntity<Void> logicalDeleteLikeMark(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete LikeMark : {}", id);
+        if (!likeMarkRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        likeMarkService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/like-marks/:id/restore} : restore a logically deleted LikeMark.
+     *
+     * @param id the id of the LikeMark to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored LikeMarkDTO.
+     */
+    @PutMapping("/logical/like-marks/{id}/restore")
+    public ResponseEntity<LikeMarkDTO> restoreLikeMark(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore LikeMark : {}", id);
+        if (!likeMarkRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        likeMarkService.restore(id);
+        Optional<LikeMarkDTO> restored = likeMarkService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

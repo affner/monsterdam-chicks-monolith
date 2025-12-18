@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ViewerWalletServiceImpl implements ViewerWalletService {
+public class ViewerWalletServiceImpl extends AbstractLogicalDeletionService<ViewerWallet, ViewerWalletDTO> implements ViewerWalletService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ViewerWalletServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class ViewerWalletServiceImpl implements ViewerWalletService {
     private final ViewerWalletMapper viewerWalletMapper;
 
     public ViewerWalletServiceImpl(ViewerWalletRepository viewerWalletRepository, ViewerWalletMapper viewerWalletMapper) {
+        super(viewerWalletRepository, viewerWalletMapper, ViewerWallet::setDeletedDate);
         this.viewerWalletRepository = viewerWalletRepository;
         this.viewerWalletMapper = viewerWalletMapper;
     }

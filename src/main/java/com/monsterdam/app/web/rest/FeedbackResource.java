@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.Feedback}.
  */
 @RestController
-@RequestMapping("/api/feedbacks")
+@RequestMapping("/api")
 public class FeedbackResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(FeedbackResource.class);
@@ -54,7 +54,7 @@ public class FeedbackResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new feedbackDTO, or with status {@code 400 (Bad Request)} if the feedback has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/feedbacks")
     public ResponseEntity<FeedbackDTO> createFeedback(@Valid @RequestBody FeedbackDTO feedbackDTO) throws URISyntaxException {
         LOG.debug("REST request to save Feedback : {}", feedbackDTO);
         if (feedbackDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class FeedbackResource {
      * or with status {@code 500 (Internal Server Error)} if the feedbackDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/feedbacks/{id}")
     public ResponseEntity<FeedbackDTO> updateFeedback(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody FeedbackDTO feedbackDTO
@@ -110,7 +110,7 @@ public class FeedbackResource {
      * or with status {@code 500 (Internal Server Error)} if the feedbackDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/feedbacks/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<FeedbackDTO> partialUpdateFeedback(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody FeedbackDTO feedbackDTO
@@ -141,7 +141,7 @@ public class FeedbackResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of feedbacks in body.
      */
-    @GetMapping("")
+    @GetMapping("/feedbacks")
     public ResponseEntity<List<FeedbackDTO>> getAllFeedbacks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Feedbacks");
         Page<FeedbackDTO> page = feedbackService.findAll(pageable);
@@ -155,7 +155,7 @@ public class FeedbackResource {
      * @param id the id of the feedbackDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the feedbackDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/feedbacks/{id}")
     public ResponseEntity<FeedbackDTO> getFeedback(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Feedback : {}", id);
         Optional<FeedbackDTO> feedbackDTO = feedbackService.findOne(id);
@@ -168,12 +168,74 @@ public class FeedbackResource {
      * @param id the id of the feedbackDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/feedbacks/{id}")
     public ResponseEntity<Void> deleteFeedback(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Feedback : {}", id);
         feedbackService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/feedbacks} : get all the feedbacks without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of feedbacks in body.
+     */
+    @GetMapping("/logical/feedbacks")
+    public ResponseEntity<List<FeedbackDTO>> getAllLogicalFeedbacks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of Feedbacks without logical deletions");
+        Page<FeedbackDTO> page = feedbackService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/feedbacks/:id} : get the "id" Feedback if not logically deleted.
+     *
+     * @param id the id of the FeedbackDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the FeedbackDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/feedbacks/{id}")
+    public ResponseEntity<FeedbackDTO> getLogicalFeedback(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical Feedback : {}", id);
+        Optional<FeedbackDTO> feedbackDTO = feedbackService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(feedbackDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/feedbacks/:id} : logically delete the "id" Feedback.
+     *
+     * @param id the id of the FeedbackDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/feedbacks/{id}")
+    public ResponseEntity<Void> logicalDeleteFeedback(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete Feedback : {}", id);
+        if (!feedbackRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        feedbackService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/feedbacks/:id/restore} : restore a logically deleted Feedback.
+     *
+     * @param id the id of the Feedback to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored FeedbackDTO.
+     */
+    @PutMapping("/logical/feedbacks/{id}/restore")
+    public ResponseEntity<FeedbackDTO> restoreFeedback(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore Feedback : {}", id);
+        if (!feedbackRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        feedbackService.restore(id);
+        Optional<FeedbackDTO> restored = feedbackService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

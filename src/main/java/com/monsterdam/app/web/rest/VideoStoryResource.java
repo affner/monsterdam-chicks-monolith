@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.VideoStory}.
  */
 @RestController
-@RequestMapping("/api/video-stories")
+@RequestMapping("/api")
 public class VideoStoryResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(VideoStoryResource.class);
@@ -54,7 +54,7 @@ public class VideoStoryResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new videoStoryDTO, or with status {@code 400 (Bad Request)} if the videoStory has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/video-stories")
     public ResponseEntity<VideoStoryDTO> createVideoStory(@Valid @RequestBody VideoStoryDTO videoStoryDTO) throws URISyntaxException {
         LOG.debug("REST request to save VideoStory : {}", videoStoryDTO);
         if (videoStoryDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class VideoStoryResource {
      * or with status {@code 500 (Internal Server Error)} if the videoStoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/video-stories/{id}")
     public ResponseEntity<VideoStoryDTO> updateVideoStory(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody VideoStoryDTO videoStoryDTO
@@ -110,7 +110,7 @@ public class VideoStoryResource {
      * or with status {@code 500 (Internal Server Error)} if the videoStoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/video-stories/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<VideoStoryDTO> partialUpdateVideoStory(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody VideoStoryDTO videoStoryDTO
@@ -141,7 +141,7 @@ public class VideoStoryResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of videoStories in body.
      */
-    @GetMapping("")
+    @GetMapping("/video-stories")
     public ResponseEntity<List<VideoStoryDTO>> getAllVideoStories(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of VideoStories");
         Page<VideoStoryDTO> page = videoStoryService.findAll(pageable);
@@ -155,7 +155,7 @@ public class VideoStoryResource {
      * @param id the id of the videoStoryDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the videoStoryDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/video-stories/{id}")
     public ResponseEntity<VideoStoryDTO> getVideoStory(@PathVariable("id") Long id) {
         LOG.debug("REST request to get VideoStory : {}", id);
         Optional<VideoStoryDTO> videoStoryDTO = videoStoryService.findOne(id);
@@ -168,12 +168,74 @@ public class VideoStoryResource {
      * @param id the id of the videoStoryDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/video-stories/{id}")
     public ResponseEntity<Void> deleteVideoStory(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete VideoStory : {}", id);
         videoStoryService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/video-stories} : get all the video-stories without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of video-stories in body.
+     */
+    @GetMapping("/logical/video-stories")
+    public ResponseEntity<List<VideoStoryDTO>> getAllLogicalVideoStorys(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of VideoStorys without logical deletions");
+        Page<VideoStoryDTO> page = videoStoryService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/video-stories/:id} : get the "id" VideoStory if not logically deleted.
+     *
+     * @param id the id of the VideoStoryDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the VideoStoryDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/video-stories/{id}")
+    public ResponseEntity<VideoStoryDTO> getLogicalVideoStory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical VideoStory : {}", id);
+        Optional<VideoStoryDTO> videoStoryDTO = videoStoryService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(videoStoryDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/video-stories/:id} : logically delete the "id" VideoStory.
+     *
+     * @param id the id of the VideoStoryDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/video-stories/{id}")
+    public ResponseEntity<Void> logicalDeleteVideoStory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete VideoStory : {}", id);
+        if (!videoStoryRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        videoStoryService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/video-stories/:id/restore} : restore a logically deleted VideoStory.
+     *
+     * @param id the id of the VideoStory to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored VideoStoryDTO.
+     */
+    @PutMapping("/logical/video-stories/{id}/restore")
+    public ResponseEntity<VideoStoryDTO> restoreVideoStory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore VideoStory : {}", id);
+        if (!videoStoryRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        videoStoryService.restore(id);
+        Optional<VideoStoryDTO> restored = videoStoryService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

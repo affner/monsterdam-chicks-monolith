@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.Auction}.
  */
 @RestController
-@RequestMapping("/api/auctions")
+@RequestMapping("/api")
 public class AuctionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuctionResource.class);
@@ -54,7 +54,7 @@ public class AuctionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new auctionDTO, or with status {@code 400 (Bad Request)} if the auction has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/auctions")
     public ResponseEntity<AuctionDTO> createAuction(@Valid @RequestBody AuctionDTO auctionDTO) throws URISyntaxException {
         LOG.debug("REST request to save Auction : {}", auctionDTO);
         if (auctionDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class AuctionResource {
      * or with status {@code 500 (Internal Server Error)} if the auctionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/auctions/{id}")
     public ResponseEntity<AuctionDTO> updateAuction(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody AuctionDTO auctionDTO
@@ -110,7 +110,7 @@ public class AuctionResource {
      * or with status {@code 500 (Internal Server Error)} if the auctionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/auctions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<AuctionDTO> partialUpdateAuction(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody AuctionDTO auctionDTO
@@ -141,7 +141,7 @@ public class AuctionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of auctions in body.
      */
-    @GetMapping("")
+    @GetMapping("/auctions")
     public ResponseEntity<List<AuctionDTO>> getAllAuctions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Auctions");
         Page<AuctionDTO> page = auctionService.findAll(pageable);
@@ -155,7 +155,7 @@ public class AuctionResource {
      * @param id the id of the auctionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the auctionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/auctions/{id}")
     public ResponseEntity<AuctionDTO> getAuction(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Auction : {}", id);
         Optional<AuctionDTO> auctionDTO = auctionService.findOne(id);
@@ -168,12 +168,74 @@ public class AuctionResource {
      * @param id the id of the auctionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/auctions/{id}")
     public ResponseEntity<Void> deleteAuction(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Auction : {}", id);
         auctionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/auctions} : get all the auctions without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of auctions in body.
+     */
+    @GetMapping("/logical/auctions")
+    public ResponseEntity<List<AuctionDTO>> getAllLogicalAuctions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of Auctions without logical deletions");
+        Page<AuctionDTO> page = auctionService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/auctions/:id} : get the "id" Auction if not logically deleted.
+     *
+     * @param id the id of the AuctionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the AuctionDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/auctions/{id}")
+    public ResponseEntity<AuctionDTO> getLogicalAuction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical Auction : {}", id);
+        Optional<AuctionDTO> auctionDTO = auctionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(auctionDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/auctions/:id} : logically delete the "id" Auction.
+     *
+     * @param id the id of the AuctionDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/auctions/{id}")
+    public ResponseEntity<Void> logicalDeleteAuction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete Auction : {}", id);
+        if (!auctionRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        auctionService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/auctions/:id/restore} : restore a logically deleted Auction.
+     *
+     * @param id the id of the Auction to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored AuctionDTO.
+     */
+    @PutMapping("/logical/auctions/{id}/restore")
+    public ResponseEntity<AuctionDTO> restoreAuction(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore Auction : {}", id);
+        if (!auctionRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        auctionService.restore(id);
+        Optional<AuctionDTO> restored = auctionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class MoneyGiftServiceImpl implements MoneyGiftService {
+public class MoneyGiftServiceImpl extends AbstractLogicalDeletionService<MoneyGift, MoneyGiftDTO> implements MoneyGiftService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoneyGiftServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class MoneyGiftServiceImpl implements MoneyGiftService {
     private final MoneyGiftMapper moneyGiftMapper;
 
     public MoneyGiftServiceImpl(MoneyGiftRepository moneyGiftRepository, MoneyGiftMapper moneyGiftMapper) {
+        super(moneyGiftRepository, moneyGiftMapper, MoneyGift::setDeletedDate);
         this.moneyGiftRepository = moneyGiftRepository;
         this.moneyGiftMapper = moneyGiftMapper;
     }

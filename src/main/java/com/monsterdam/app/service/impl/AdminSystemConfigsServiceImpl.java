@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class AdminSystemConfigsServiceImpl implements AdminSystemConfigsService {
+public class AdminSystemConfigsServiceImpl
+    extends AbstractLogicalDeletionService<AdminSystemConfigs, AdminSystemConfigsDTO>
+    implements AdminSystemConfigsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminSystemConfigsServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class AdminSystemConfigsServiceImpl implements AdminSystemConfigsService 
         AdminSystemConfigsRepository adminSystemConfigsRepository,
         AdminSystemConfigsMapper adminSystemConfigsMapper
     ) {
+        super(adminSystemConfigsRepository, adminSystemConfigsMapper, AdminSystemConfigs::setDeletedDate);
         this.adminSystemConfigsRepository = adminSystemConfigsRepository;
         this.adminSystemConfigsMapper = adminSystemConfigsMapper;
     }

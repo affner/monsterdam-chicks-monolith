@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.HelpSubcategory}.
  */
 @RestController
-@RequestMapping("/api/help-subcategories")
+@RequestMapping("/api")
 public class HelpSubcategoryResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpSubcategoryResource.class);
@@ -54,7 +54,7 @@ public class HelpSubcategoryResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new helpSubcategoryDTO, or with status {@code 400 (Bad Request)} if the helpSubcategory has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/help-subcategories")
     public ResponseEntity<HelpSubcategoryDTO> createHelpSubcategory(@Valid @RequestBody HelpSubcategoryDTO helpSubcategoryDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save HelpSubcategory : {}", helpSubcategoryDTO);
@@ -77,7 +77,7 @@ public class HelpSubcategoryResource {
      * or with status {@code 500 (Internal Server Error)} if the helpSubcategoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/help-subcategories/{id}")
     public ResponseEntity<HelpSubcategoryDTO> updateHelpSubcategory(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody HelpSubcategoryDTO helpSubcategoryDTO
@@ -111,7 +111,7 @@ public class HelpSubcategoryResource {
      * or with status {@code 500 (Internal Server Error)} if the helpSubcategoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/help-subcategories/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HelpSubcategoryDTO> partialUpdateHelpSubcategory(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody HelpSubcategoryDTO helpSubcategoryDTO
@@ -142,7 +142,7 @@ public class HelpSubcategoryResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of helpSubcategories in body.
      */
-    @GetMapping("")
+    @GetMapping("/help-subcategories")
     public ResponseEntity<List<HelpSubcategoryDTO>> getAllHelpSubcategories(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -158,7 +158,7 @@ public class HelpSubcategoryResource {
      * @param id the id of the helpSubcategoryDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the helpSubcategoryDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/help-subcategories/{id}")
     public ResponseEntity<HelpSubcategoryDTO> getHelpSubcategory(@PathVariable("id") Long id) {
         LOG.debug("REST request to get HelpSubcategory : {}", id);
         Optional<HelpSubcategoryDTO> helpSubcategoryDTO = helpSubcategoryService.findOne(id);
@@ -171,12 +171,76 @@ public class HelpSubcategoryResource {
      * @param id the id of the helpSubcategoryDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/help-subcategories/{id}")
     public ResponseEntity<Void> deleteHelpSubcategory(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete HelpSubcategory : {}", id);
         helpSubcategoryService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/help-subcategories} : get all the help-subcategories without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of help-subcategories in body.
+     */
+    @GetMapping("/logical/help-subcategories")
+    public ResponseEntity<List<HelpSubcategoryDTO>> getAllLogicalHelpSubcategorys(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of HelpSubcategorys without logical deletions");
+        Page<HelpSubcategoryDTO> page = helpSubcategoryService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/help-subcategories/:id} : get the "id" HelpSubcategory if not logically deleted.
+     *
+     * @param id the id of the HelpSubcategoryDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the HelpSubcategoryDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/help-subcategories/{id}")
+    public ResponseEntity<HelpSubcategoryDTO> getLogicalHelpSubcategory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical HelpSubcategory : {}", id);
+        Optional<HelpSubcategoryDTO> helpSubcategoryDTO = helpSubcategoryService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(helpSubcategoryDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/help-subcategories/:id} : logically delete the "id" HelpSubcategory.
+     *
+     * @param id the id of the HelpSubcategoryDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/help-subcategories/{id}")
+    public ResponseEntity<Void> logicalDeleteHelpSubcategory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete HelpSubcategory : {}", id);
+        if (!helpSubcategoryRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpSubcategoryService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/help-subcategories/:id/restore} : restore a logically deleted HelpSubcategory.
+     *
+     * @param id the id of the HelpSubcategory to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored HelpSubcategoryDTO.
+     */
+    @PutMapping("/logical/help-subcategories/{id}/restore")
+    public ResponseEntity<HelpSubcategoryDTO> restoreHelpSubcategory(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore HelpSubcategory : {}", id);
+        if (!helpSubcategoryRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpSubcategoryService.restore(id);
+        Optional<HelpSubcategoryDTO> restored = helpSubcategoryService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.TrialLink}.
  */
 @RestController
-@RequestMapping("/api/trial-links")
+@RequestMapping("/api")
 public class TrialLinkResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrialLinkResource.class);
@@ -54,7 +54,7 @@ public class TrialLinkResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new trialLinkDTO, or with status {@code 400 (Bad Request)} if the trialLink has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/trial-links")
     public ResponseEntity<TrialLinkDTO> createTrialLink(@Valid @RequestBody TrialLinkDTO trialLinkDTO) throws URISyntaxException {
         LOG.debug("REST request to save TrialLink : {}", trialLinkDTO);
         if (trialLinkDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class TrialLinkResource {
      * or with status {@code 500 (Internal Server Error)} if the trialLinkDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/trial-links/{id}")
     public ResponseEntity<TrialLinkDTO> updateTrialLink(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody TrialLinkDTO trialLinkDTO
@@ -110,7 +110,7 @@ public class TrialLinkResource {
      * or with status {@code 500 (Internal Server Error)} if the trialLinkDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/trial-links/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TrialLinkDTO> partialUpdateTrialLink(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody TrialLinkDTO trialLinkDTO
@@ -141,7 +141,7 @@ public class TrialLinkResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of trialLinks in body.
      */
-    @GetMapping("")
+    @GetMapping("/trial-links")
     public ResponseEntity<List<TrialLinkDTO>> getAllTrialLinks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of TrialLinks");
         Page<TrialLinkDTO> page = trialLinkService.findAll(pageable);
@@ -155,7 +155,7 @@ public class TrialLinkResource {
      * @param id the id of the trialLinkDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trialLinkDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/trial-links/{id}")
     public ResponseEntity<TrialLinkDTO> getTrialLink(@PathVariable("id") Long id) {
         LOG.debug("REST request to get TrialLink : {}", id);
         Optional<TrialLinkDTO> trialLinkDTO = trialLinkService.findOne(id);
@@ -168,12 +168,74 @@ public class TrialLinkResource {
      * @param id the id of the trialLinkDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/trial-links/{id}")
     public ResponseEntity<Void> deleteTrialLink(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete TrialLink : {}", id);
         trialLinkService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/trial-links} : get all the trial-links without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of trial-links in body.
+     */
+    @GetMapping("/logical/trial-links")
+    public ResponseEntity<List<TrialLinkDTO>> getAllLogicalTrialLinks(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of TrialLinks without logical deletions");
+        Page<TrialLinkDTO> page = trialLinkService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/trial-links/:id} : get the "id" TrialLink if not logically deleted.
+     *
+     * @param id the id of the TrialLinkDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the TrialLinkDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/trial-links/{id}")
+    public ResponseEntity<TrialLinkDTO> getLogicalTrialLink(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical TrialLink : {}", id);
+        Optional<TrialLinkDTO> trialLinkDTO = trialLinkService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(trialLinkDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/trial-links/:id} : logically delete the "id" TrialLink.
+     *
+     * @param id the id of the TrialLinkDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/trial-links/{id}")
+    public ResponseEntity<Void> logicalDeleteTrialLink(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete TrialLink : {}", id);
+        if (!trialLinkRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        trialLinkService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/trial-links/:id/restore} : restore a logically deleted TrialLink.
+     *
+     * @param id the id of the TrialLink to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored TrialLinkDTO.
+     */
+    @PutMapping("/logical/trial-links/{id}/restore")
+    public ResponseEntity<TrialLinkDTO> restoreTrialLink(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore TrialLink : {}", id);
+        if (!trialLinkRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        trialLinkService.restore(id);
+        Optional<TrialLinkDTO> restored = trialLinkService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

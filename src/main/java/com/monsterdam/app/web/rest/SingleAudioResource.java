@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.SingleAudio}.
  */
 @RestController
-@RequestMapping("/api/single-audios")
+@RequestMapping("/api")
 public class SingleAudioResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleAudioResource.class);
@@ -54,7 +54,7 @@ public class SingleAudioResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new singleAudioDTO, or with status {@code 400 (Bad Request)} if the singleAudio has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/single-audios")
     public ResponseEntity<SingleAudioDTO> createSingleAudio(@Valid @RequestBody SingleAudioDTO singleAudioDTO) throws URISyntaxException {
         LOG.debug("REST request to save SingleAudio : {}", singleAudioDTO);
         if (singleAudioDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class SingleAudioResource {
      * or with status {@code 500 (Internal Server Error)} if the singleAudioDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/single-audios/{id}")
     public ResponseEntity<SingleAudioDTO> updateSingleAudio(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody SingleAudioDTO singleAudioDTO
@@ -110,7 +110,7 @@ public class SingleAudioResource {
      * or with status {@code 500 (Internal Server Error)} if the singleAudioDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/single-audios/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SingleAudioDTO> partialUpdateSingleAudio(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SingleAudioDTO singleAudioDTO
@@ -141,7 +141,7 @@ public class SingleAudioResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of singleAudios in body.
      */
-    @GetMapping("")
+    @GetMapping("/single-audios")
     public ResponseEntity<List<SingleAudioDTO>> getAllSingleAudios(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of SingleAudios");
         Page<SingleAudioDTO> page = singleAudioService.findAll(pageable);
@@ -155,7 +155,7 @@ public class SingleAudioResource {
      * @param id the id of the singleAudioDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the singleAudioDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/single-audios/{id}")
     public ResponseEntity<SingleAudioDTO> getSingleAudio(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SingleAudio : {}", id);
         Optional<SingleAudioDTO> singleAudioDTO = singleAudioService.findOne(id);
@@ -168,12 +168,76 @@ public class SingleAudioResource {
      * @param id the id of the singleAudioDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/single-audios/{id}")
     public ResponseEntity<Void> deleteSingleAudio(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SingleAudio : {}", id);
         singleAudioService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/single-audios} : get all the single-audios without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of single-audios in body.
+     */
+    @GetMapping("/logical/single-audios")
+    public ResponseEntity<List<SingleAudioDTO>> getAllLogicalSingleAudios(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of SingleAudios without logical deletions");
+        Page<SingleAudioDTO> page = singleAudioService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/single-audios/:id} : get the "id" SingleAudio if not logically deleted.
+     *
+     * @param id the id of the SingleAudioDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SingleAudioDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/single-audios/{id}")
+    public ResponseEntity<SingleAudioDTO> getLogicalSingleAudio(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical SingleAudio : {}", id);
+        Optional<SingleAudioDTO> singleAudioDTO = singleAudioService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(singleAudioDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/single-audios/:id} : logically delete the "id" SingleAudio.
+     *
+     * @param id the id of the SingleAudioDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/single-audios/{id}")
+    public ResponseEntity<Void> logicalDeleteSingleAudio(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete SingleAudio : {}", id);
+        if (!singleAudioRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singleAudioService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/single-audios/:id/restore} : restore a logically deleted SingleAudio.
+     *
+     * @param id the id of the SingleAudio to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored SingleAudioDTO.
+     */
+    @PutMapping("/logical/single-audios/{id}/restore")
+    public ResponseEntity<SingleAudioDTO> restoreSingleAudio(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore SingleAudio : {}", id);
+        if (!singleAudioRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singleAudioService.restore(id);
+        Optional<SingleAudioDTO> restored = singleAudioService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

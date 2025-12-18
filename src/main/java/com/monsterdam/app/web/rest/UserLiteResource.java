@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.UserLite}.
  */
 @RestController
-@RequestMapping("/api/user-lites")
+@RequestMapping("/api")
 public class UserLiteResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserLiteResource.class);
@@ -54,7 +54,7 @@ public class UserLiteResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userLiteDTO, or with status {@code 400 (Bad Request)} if the userLite has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/user-lites")
     public ResponseEntity<UserLiteDTO> createUserLite(@Valid @RequestBody UserLiteDTO userLiteDTO) throws URISyntaxException {
         LOG.debug("REST request to save UserLite : {}", userLiteDTO);
         if (userLiteDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class UserLiteResource {
      * or with status {@code 500 (Internal Server Error)} if the userLiteDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/user-lites/{id}")
     public ResponseEntity<UserLiteDTO> updateUserLite(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody UserLiteDTO userLiteDTO
@@ -110,7 +110,7 @@ public class UserLiteResource {
      * or with status {@code 500 (Internal Server Error)} if the userLiteDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-lites/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<UserLiteDTO> partialUpdateUserLite(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody UserLiteDTO userLiteDTO
@@ -141,7 +141,7 @@ public class UserLiteResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userLites in body.
      */
-    @GetMapping("")
+    @GetMapping("/user-lites")
     public ResponseEntity<List<UserLiteDTO>> getAllUserLites(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of UserLites");
         Page<UserLiteDTO> page = userLiteService.findAll(pageable);
@@ -155,7 +155,7 @@ public class UserLiteResource {
      * @param id the id of the userLiteDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userLiteDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user-lites/{id}")
     public ResponseEntity<UserLiteDTO> getUserLite(@PathVariable("id") Long id) {
         LOG.debug("REST request to get UserLite : {}", id);
         Optional<UserLiteDTO> userLiteDTO = userLiteService.findOne(id);
@@ -168,12 +168,74 @@ public class UserLiteResource {
      * @param id the id of the userLiteDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user-lites/{id}")
     public ResponseEntity<Void> deleteUserLite(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete UserLite : {}", id);
         userLiteService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/user-lites} : get all the user-lites without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user-lites in body.
+     */
+    @GetMapping("/logical/user-lites")
+    public ResponseEntity<List<UserLiteDTO>> getAllLogicalUserLites(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of UserLites without logical deletions");
+        Page<UserLiteDTO> page = userLiteService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/user-lites/:id} : get the "id" UserLite if not logically deleted.
+     *
+     * @param id the id of the UserLiteDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the UserLiteDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/user-lites/{id}")
+    public ResponseEntity<UserLiteDTO> getLogicalUserLite(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical UserLite : {}", id);
+        Optional<UserLiteDTO> userLiteDTO = userLiteService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(userLiteDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/user-lites/:id} : logically delete the "id" UserLite.
+     *
+     * @param id the id of the UserLiteDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/user-lites/{id}")
+    public ResponseEntity<Void> logicalDeleteUserLite(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete UserLite : {}", id);
+        if (!userLiteRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userLiteService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/user-lites/:id/restore} : restore a logically deleted UserLite.
+     *
+     * @param id the id of the UserLite to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored UserLiteDTO.
+     */
+    @PutMapping("/logical/user-lites/{id}/restore")
+    public ResponseEntity<UserLiteDTO> restoreUserLite(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore UserLite : {}", id);
+        if (!userLiteRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userLiteService.restore(id);
+        Optional<UserLiteDTO> restored = userLiteService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

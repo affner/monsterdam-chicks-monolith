@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface HelpCategoryRepository extends JpaRepository<HelpCategory, Long> {}
+public interface HelpCategoryRepository extends LogicalDeletionRepository<HelpCategory> {}

@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserAssociationServiceImpl implements UserAssociationService {
+public class UserAssociationServiceImpl
+    extends AbstractLogicalDeletionService<UserAssociation, UserAssociationDTO>
+    implements UserAssociationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserAssociationServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class UserAssociationServiceImpl implements UserAssociationService {
     private final UserAssociationMapper userAssociationMapper;
 
     public UserAssociationServiceImpl(UserAssociationRepository userAssociationRepository, UserAssociationMapper userAssociationMapper) {
+        super(userAssociationRepository, userAssociationMapper, UserAssociation::setDeletedDate);
         this.userAssociationRepository = userAssociationRepository;
         this.userAssociationMapper = userAssociationMapper;
     }

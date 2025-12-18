@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PaymentMethodServiceImpl implements PaymentMethodService {
+public class PaymentMethodServiceImpl
+    extends AbstractLogicalDeletionService<PaymentMethod, PaymentMethodDTO>
+    implements PaymentMethodService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PaymentMethodServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     private final PaymentMethodMapper paymentMethodMapper;
 
     public PaymentMethodServiceImpl(PaymentMethodRepository paymentMethodRepository, PaymentMethodMapper paymentMethodMapper) {
+        super(paymentMethodRepository, paymentMethodMapper, PaymentMethod::setDeletedDate);
         this.paymentMethodRepository = paymentMethodRepository;
         this.paymentMethodMapper = paymentMethodMapper;
     }

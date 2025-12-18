@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.MoneyGift}.
  */
 @RestController
-@RequestMapping("/api/money-gifts")
+@RequestMapping("/api")
 public class MoneyGiftResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoneyGiftResource.class);
@@ -54,7 +54,7 @@ public class MoneyGiftResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new moneyGiftDTO, or with status {@code 400 (Bad Request)} if the moneyGift has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/money-gifts")
     public ResponseEntity<MoneyGiftDTO> createMoneyGift(@Valid @RequestBody MoneyGiftDTO moneyGiftDTO) throws URISyntaxException {
         LOG.debug("REST request to save MoneyGift : {}", moneyGiftDTO);
         if (moneyGiftDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class MoneyGiftResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyGiftDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/money-gifts/{id}")
     public ResponseEntity<MoneyGiftDTO> updateMoneyGift(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody MoneyGiftDTO moneyGiftDTO
@@ -110,7 +110,7 @@ public class MoneyGiftResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyGiftDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/money-gifts/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<MoneyGiftDTO> partialUpdateMoneyGift(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody MoneyGiftDTO moneyGiftDTO
@@ -141,7 +141,7 @@ public class MoneyGiftResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of moneyGifts in body.
      */
-    @GetMapping("")
+    @GetMapping("/money-gifts")
     public ResponseEntity<List<MoneyGiftDTO>> getAllMoneyGifts(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of MoneyGifts");
         Page<MoneyGiftDTO> page = moneyGiftService.findAll(pageable);
@@ -155,7 +155,7 @@ public class MoneyGiftResource {
      * @param id the id of the moneyGiftDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the moneyGiftDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/money-gifts/{id}")
     public ResponseEntity<MoneyGiftDTO> getMoneyGift(@PathVariable("id") Long id) {
         LOG.debug("REST request to get MoneyGift : {}", id);
         Optional<MoneyGiftDTO> moneyGiftDTO = moneyGiftService.findOne(id);
@@ -168,12 +168,74 @@ public class MoneyGiftResource {
      * @param id the id of the moneyGiftDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/money-gifts/{id}")
     public ResponseEntity<Void> deleteMoneyGift(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete MoneyGift : {}", id);
         moneyGiftService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/money-gifts} : get all the money-gifts without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of money-gifts in body.
+     */
+    @GetMapping("/logical/money-gifts")
+    public ResponseEntity<List<MoneyGiftDTO>> getAllLogicalMoneyGifts(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of MoneyGifts without logical deletions");
+        Page<MoneyGiftDTO> page = moneyGiftService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/money-gifts/:id} : get the "id" MoneyGift if not logically deleted.
+     *
+     * @param id the id of the MoneyGiftDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the MoneyGiftDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/money-gifts/{id}")
+    public ResponseEntity<MoneyGiftDTO> getLogicalMoneyGift(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical MoneyGift : {}", id);
+        Optional<MoneyGiftDTO> moneyGiftDTO = moneyGiftService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(moneyGiftDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/money-gifts/:id} : logically delete the "id" MoneyGift.
+     *
+     * @param id the id of the MoneyGiftDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/money-gifts/{id}")
+    public ResponseEntity<Void> logicalDeleteMoneyGift(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete MoneyGift : {}", id);
+        if (!moneyGiftRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyGiftService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/money-gifts/:id/restore} : restore a logically deleted MoneyGift.
+     *
+     * @param id the id of the MoneyGift to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored MoneyGiftDTO.
+     */
+    @PutMapping("/logical/money-gifts/{id}/restore")
+    public ResponseEntity<MoneyGiftDTO> restoreMoneyGift(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore MoneyGift : {}", id);
+        if (!moneyGiftRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyGiftService.restore(id);
+        Optional<MoneyGiftDTO> restored = moneyGiftService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

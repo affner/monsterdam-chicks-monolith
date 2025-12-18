@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserLiteServiceImpl implements UserLiteService {
+public class UserLiteServiceImpl extends AbstractLogicalDeletionService<UserLite, UserLiteDTO> implements UserLiteService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserLiteServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class UserLiteServiceImpl implements UserLiteService {
     private final UserLiteMapper userLiteMapper;
 
     public UserLiteServiceImpl(UserLiteRepository userLiteRepository, UserLiteMapper userLiteMapper) {
+        super(userLiteRepository, userLiteMapper, UserLite::setDeletedDate);
         this.userLiteRepository = userLiteRepository;
         this.userLiteMapper = userLiteMapper;
     }

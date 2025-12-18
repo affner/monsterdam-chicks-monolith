@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface BookMarkRepository extends JpaRepository<BookMark, Long> {}
+public interface BookMarkRepository extends LogicalDeletionRepository<BookMark> {}

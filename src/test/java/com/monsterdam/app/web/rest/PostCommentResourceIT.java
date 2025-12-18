@@ -55,11 +55,13 @@ class PostCommentResourceIT {
     private static final String DEFAULT_LAST_MODIFIED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_MODIFIED_BY = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_DELETED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_DELETED_DATE = null;
     private static final Instant UPDATED_DELETED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/post-comments";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+    private static final String ENTITY_LOGICAL_API_URL = "/api/logical/post-comments";
+    private static final String ENTITY_LOGICAL_API_URL_ID = ENTITY_LOGICAL_API_URL + "/{id}";
 
     private static Random random = new Random();
     private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
@@ -504,6 +506,46 @@ class PostCommentResourceIT {
 
         // Validate the database contains one less item
         assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
+    }
+
+    @Test
+    @Transactional
+    void logicalGetAllPostCommentsShouldSkipDeleted() throws Exception {
+        postComment.setDeletedDate(null);
+        insertedPostComment = postCommentRepository.saveAndFlush(postComment);
+
+        PostComment deleted = createUpdatedEntity(em);
+        deleted.setDeletedDate(UPDATED_DELETED_DATE);
+        postCommentRepository.saveAndFlush(deleted);
+
+        restPostCommentMockMvc
+            .perform(get(ENTITY_LOGICAL_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(postComment.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(org.hamcrest.Matchers.not(hasItem(deleted.getId().intValue()))));
+    }
+
+    @Test
+    @Transactional
+    void logicalDeletePostCommentShouldSetDeletedDate() throws Exception {
+        postComment.setDeletedDate(null);
+        insertedPostComment = postCommentRepository.saveAndFlush(postComment);
+
+        restPostCommentMockMvc.perform(delete(ENTITY_LOGICAL_API_URL_ID, postComment.getId())).andExpect(status().isNoContent());
+
+        assertThat(postCommentRepository.findById(postComment.getId()).orElseThrow().getDeletedDate()).isNotNull();
+    }
+
+    @Test
+    @Transactional
+    void restorePostCommentShouldClearDeletedDate() throws Exception {
+        postComment.setDeletedDate(UPDATED_DELETED_DATE);
+        insertedPostComment = postCommentRepository.saveAndFlush(postComment);
+
+        restPostCommentMockMvc.perform(put(ENTITY_LOGICAL_API_URL_ID + "/restore", postComment.getId())).andExpect(status().isOk());
+
+        assertThat(postCommentRepository.findById(postComment.getId()).orElseThrow().getDeletedDate()).isNull();
     }
 
     protected long getRepositoryCount() {

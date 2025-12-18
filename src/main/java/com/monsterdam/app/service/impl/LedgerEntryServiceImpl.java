@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class LedgerEntryServiceImpl implements LedgerEntryService {
+public class LedgerEntryServiceImpl extends AbstractLogicalDeletionService<LedgerEntry, LedgerEntryDTO> implements LedgerEntryService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LedgerEntryServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
     private final LedgerEntryMapper ledgerEntryMapper;
 
     public LedgerEntryServiceImpl(LedgerEntryRepository ledgerEntryRepository, LedgerEntryMapper ledgerEntryMapper) {
+        super(ledgerEntryRepository, ledgerEntryMapper, LedgerEntry::setDeletedDate);
         this.ledgerEntryRepository = ledgerEntryRepository;
         this.ledgerEntryMapper = ledgerEntryMapper;
     }

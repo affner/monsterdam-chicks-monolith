@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TrialLinkServiceImpl implements TrialLinkService {
+public class TrialLinkServiceImpl extends AbstractLogicalDeletionService<TrialLink, TrialLinkDTO> implements TrialLinkService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrialLinkServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class TrialLinkServiceImpl implements TrialLinkService {
     private final TrialLinkMapper trialLinkMapper;
 
     public TrialLinkServiceImpl(TrialLinkRepository trialLinkRepository, TrialLinkMapper trialLinkMapper) {
+        super(trialLinkRepository, trialLinkMapper, TrialLink::setDeletedDate);
         this.trialLinkRepository = trialLinkRepository;
         this.trialLinkMapper = trialLinkMapper;
     }

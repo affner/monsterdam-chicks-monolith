@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.UserReport}.
  */
 @RestController
-@RequestMapping("/api/user-reports")
+@RequestMapping("/api")
 public class UserReportResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserReportResource.class);
@@ -54,7 +54,7 @@ public class UserReportResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userReportDTO, or with status {@code 400 (Bad Request)} if the userReport has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/user-reports")
     public ResponseEntity<UserReportDTO> createUserReport(@Valid @RequestBody UserReportDTO userReportDTO) throws URISyntaxException {
         LOG.debug("REST request to save UserReport : {}", userReportDTO);
         if (userReportDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class UserReportResource {
      * or with status {@code 500 (Internal Server Error)} if the userReportDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/user-reports/{id}")
     public ResponseEntity<UserReportDTO> updateUserReport(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody UserReportDTO userReportDTO
@@ -110,7 +110,7 @@ public class UserReportResource {
      * or with status {@code 500 (Internal Server Error)} if the userReportDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-reports/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<UserReportDTO> partialUpdateUserReport(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody UserReportDTO userReportDTO
@@ -141,7 +141,7 @@ public class UserReportResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userReports in body.
      */
-    @GetMapping("")
+    @GetMapping("/user-reports")
     public ResponseEntity<List<UserReportDTO>> getAllUserReports(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of UserReports");
         Page<UserReportDTO> page = userReportService.findAll(pageable);
@@ -155,7 +155,7 @@ public class UserReportResource {
      * @param id the id of the userReportDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userReportDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user-reports/{id}")
     public ResponseEntity<UserReportDTO> getUserReport(@PathVariable("id") Long id) {
         LOG.debug("REST request to get UserReport : {}", id);
         Optional<UserReportDTO> userReportDTO = userReportService.findOne(id);
@@ -168,12 +168,74 @@ public class UserReportResource {
      * @param id the id of the userReportDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user-reports/{id}")
     public ResponseEntity<Void> deleteUserReport(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete UserReport : {}", id);
         userReportService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/user-reports} : get all the user-reports without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user-reports in body.
+     */
+    @GetMapping("/logical/user-reports")
+    public ResponseEntity<List<UserReportDTO>> getAllLogicalUserReports(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of UserReports without logical deletions");
+        Page<UserReportDTO> page = userReportService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/user-reports/:id} : get the "id" UserReport if not logically deleted.
+     *
+     * @param id the id of the UserReportDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the UserReportDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/user-reports/{id}")
+    public ResponseEntity<UserReportDTO> getLogicalUserReport(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical UserReport : {}", id);
+        Optional<UserReportDTO> userReportDTO = userReportService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(userReportDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/user-reports/:id} : logically delete the "id" UserReport.
+     *
+     * @param id the id of the UserReportDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/user-reports/{id}")
+    public ResponseEntity<Void> logicalDeleteUserReport(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete UserReport : {}", id);
+        if (!userReportRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userReportService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/user-reports/:id/restore} : restore a logically deleted UserReport.
+     *
+     * @param id the id of the UserReport to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored UserReportDTO.
+     */
+    @PutMapping("/logical/user-reports/{id}/restore")
+    public ResponseEntity<UserReportDTO> restoreUserReport(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore UserReport : {}", id);
+        if (!userReportRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userReportService.restore(id);
+        Optional<UserReportDTO> restored = userReportService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -29,7 +29,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.UserSettings}.
  */
 @RestController
-@RequestMapping("/api/user-settings")
+@RequestMapping("/api")
 public class UserSettingsResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserSettingsResource.class);
@@ -55,7 +55,7 @@ public class UserSettingsResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userSettingsDTO, or with status {@code 400 (Bad Request)} if the userSettings has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/user-settings")
     public ResponseEntity<UserSettingsDTO> createUserSettings(@Valid @RequestBody UserSettingsDTO userSettingsDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save UserSettings : {}", userSettingsDTO);
@@ -78,7 +78,7 @@ public class UserSettingsResource {
      * or with status {@code 500 (Internal Server Error)} if the userSettingsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/user-settings/{id}")
     public ResponseEntity<UserSettingsDTO> updateUserSettings(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody UserSettingsDTO userSettingsDTO
@@ -112,7 +112,7 @@ public class UserSettingsResource {
      * or with status {@code 500 (Internal Server Error)} if the userSettingsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/user-settings/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<UserSettingsDTO> partialUpdateUserSettings(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody UserSettingsDTO userSettingsDTO
@@ -144,7 +144,7 @@ public class UserSettingsResource {
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userSettings in body.
      */
-    @GetMapping("")
+    @GetMapping("/user-settings")
     public ResponseEntity<List<UserSettingsDTO>> getAllUserSettings(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "filter", required = false) String filter
@@ -165,7 +165,7 @@ public class UserSettingsResource {
      * @param id the id of the userSettingsDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userSettingsDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user-settings/{id}")
     public ResponseEntity<UserSettingsDTO> getUserSettings(@PathVariable("id") Long id) {
         LOG.debug("REST request to get UserSettings : {}", id);
         Optional<UserSettingsDTO> userSettingsDTO = userSettingsService.findOne(id);
@@ -178,12 +178,76 @@ public class UserSettingsResource {
      * @param id the id of the userSettingsDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user-settings/{id}")
     public ResponseEntity<Void> deleteUserSettings(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete UserSettings : {}", id);
         userSettingsService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/user-settings} : get all the user-settings without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user-settings in body.
+     */
+    @GetMapping("/logical/user-settings")
+    public ResponseEntity<List<UserSettingsDTO>> getAllLogicalUserSettingss(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of UserSettingss without logical deletions");
+        Page<UserSettingsDTO> page = userSettingsService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/user-settings/:id} : get the "id" UserSettings if not logically deleted.
+     *
+     * @param id the id of the UserSettingsDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the UserSettingsDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/user-settings/{id}")
+    public ResponseEntity<UserSettingsDTO> getLogicalUserSettings(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical UserSettings : {}", id);
+        Optional<UserSettingsDTO> userSettingsDTO = userSettingsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(userSettingsDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/user-settings/:id} : logically delete the "id" UserSettings.
+     *
+     * @param id the id of the UserSettingsDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/user-settings/{id}")
+    public ResponseEntity<Void> logicalDeleteUserSettings(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete UserSettings : {}", id);
+        if (!userSettingsRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userSettingsService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/user-settings/:id/restore} : restore a logically deleted UserSettings.
+     *
+     * @param id the id of the UserSettings to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored UserSettingsDTO.
+     */
+    @PutMapping("/logical/user-settings/{id}/restore")
+    public ResponseEntity<UserSettingsDTO> restoreUserSettings(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore UserSettings : {}", id);
+        if (!userSettingsRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        userSettingsService.restore(id);
+        Optional<UserSettingsDTO> restored = userSettingsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

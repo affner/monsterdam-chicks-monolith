@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PersonalSocialLinksServiceImpl implements PersonalSocialLinksService {
+public class PersonalSocialLinksServiceImpl
+    extends AbstractLogicalDeletionService<PersonalSocialLinks, PersonalSocialLinksDTO>
+    implements PersonalSocialLinksService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonalSocialLinksServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class PersonalSocialLinksServiceImpl implements PersonalSocialLinksServic
         PersonalSocialLinksRepository personalSocialLinksRepository,
         PersonalSocialLinksMapper personalSocialLinksMapper
     ) {
+        super(personalSocialLinksRepository, personalSocialLinksMapper, PersonalSocialLinks::setDeletedDate);
         this.personalSocialLinksRepository = personalSocialLinksRepository;
         this.personalSocialLinksMapper = personalSocialLinksMapper;
     }

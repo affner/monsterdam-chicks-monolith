@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.ContentPackage}.
  */
 @RestController
-@RequestMapping("/api/content-packages")
+@RequestMapping("/api")
 public class ContentPackageResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentPackageResource.class);
@@ -54,7 +54,7 @@ public class ContentPackageResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new contentPackageDTO, or with status {@code 400 (Bad Request)} if the contentPackage has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/content-packages")
     public ResponseEntity<ContentPackageDTO> createContentPackage(@Valid @RequestBody ContentPackageDTO contentPackageDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save ContentPackage : {}", contentPackageDTO);
@@ -77,7 +77,7 @@ public class ContentPackageResource {
      * or with status {@code 500 (Internal Server Error)} if the contentPackageDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/content-packages/{id}")
     public ResponseEntity<ContentPackageDTO> updateContentPackage(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ContentPackageDTO contentPackageDTO
@@ -111,7 +111,7 @@ public class ContentPackageResource {
      * or with status {@code 500 (Internal Server Error)} if the contentPackageDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/content-packages/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContentPackageDTO> partialUpdateContentPackage(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody ContentPackageDTO contentPackageDTO
@@ -142,7 +142,7 @@ public class ContentPackageResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contentPackages in body.
      */
-    @GetMapping("")
+    @GetMapping("/content-packages")
     public ResponseEntity<List<ContentPackageDTO>> getAllContentPackages(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -158,7 +158,7 @@ public class ContentPackageResource {
      * @param id the id of the contentPackageDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the contentPackageDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/content-packages/{id}")
     public ResponseEntity<ContentPackageDTO> getContentPackage(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ContentPackage : {}", id);
         Optional<ContentPackageDTO> contentPackageDTO = contentPackageService.findOne(id);
@@ -171,12 +171,76 @@ public class ContentPackageResource {
      * @param id the id of the contentPackageDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/content-packages/{id}")
     public ResponseEntity<Void> deleteContentPackage(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ContentPackage : {}", id);
         contentPackageService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/content-packages} : get all the content-packages without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of content-packages in body.
+     */
+    @GetMapping("/logical/content-packages")
+    public ResponseEntity<List<ContentPackageDTO>> getAllLogicalContentPackages(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of ContentPackages without logical deletions");
+        Page<ContentPackageDTO> page = contentPackageService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/content-packages/:id} : get the "id" ContentPackage if not logically deleted.
+     *
+     * @param id the id of the ContentPackageDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ContentPackageDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/content-packages/{id}")
+    public ResponseEntity<ContentPackageDTO> getLogicalContentPackage(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical ContentPackage : {}", id);
+        Optional<ContentPackageDTO> contentPackageDTO = contentPackageService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(contentPackageDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/content-packages/:id} : logically delete the "id" ContentPackage.
+     *
+     * @param id the id of the ContentPackageDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/content-packages/{id}")
+    public ResponseEntity<Void> logicalDeleteContentPackage(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete ContentPackage : {}", id);
+        if (!contentPackageRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        contentPackageService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/content-packages/:id/restore} : restore a logically deleted ContentPackage.
+     *
+     * @param id the id of the ContentPackage to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored ContentPackageDTO.
+     */
+    @PutMapping("/logical/content-packages/{id}/restore")
+    public ResponseEntity<ContentPackageDTO> restoreContentPackage(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore ContentPackage : {}", id);
+        if (!contentPackageRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        contentPackageService.restore(id);
+        Optional<ContentPackageDTO> restored = contentPackageService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

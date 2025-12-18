@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class AuctionServiceImpl implements AuctionService {
+public class AuctionServiceImpl extends AbstractLogicalDeletionService<Auction, AuctionDTO> implements AuctionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuctionServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class AuctionServiceImpl implements AuctionService {
     private final AuctionMapper auctionMapper;
 
     public AuctionServiceImpl(AuctionRepository auctionRepository, AuctionMapper auctionMapper) {
+        super(auctionRepository, auctionMapper, Auction::setDeletedDate);
         this.auctionRepository = auctionRepository;
         this.auctionMapper = auctionMapper;
     }

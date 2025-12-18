@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PaymentProviderEventRepository extends JpaRepository<PaymentProviderEvent, Long> {}
+public interface PaymentProviderEventRepository extends LogicalDeletionRepository<PaymentProviderEvent> {}

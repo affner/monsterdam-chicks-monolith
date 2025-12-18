@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.State}.
  */
 @RestController
-@RequestMapping("/api/states")
+@RequestMapping("/api")
 public class StateResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(StateResource.class);
@@ -54,7 +54,7 @@ public class StateResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new stateDTO, or with status {@code 400 (Bad Request)} if the state has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/states")
     public ResponseEntity<StateDTO> createState(@Valid @RequestBody StateDTO stateDTO) throws URISyntaxException {
         LOG.debug("REST request to save State : {}", stateDTO);
         if (stateDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class StateResource {
      * or with status {@code 500 (Internal Server Error)} if the stateDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/states/{id}")
     public ResponseEntity<StateDTO> updateState(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody StateDTO stateDTO
@@ -110,7 +110,7 @@ public class StateResource {
      * or with status {@code 500 (Internal Server Error)} if the stateDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/states/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<StateDTO> partialUpdateState(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody StateDTO stateDTO
@@ -141,7 +141,7 @@ public class StateResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of states in body.
      */
-    @GetMapping("")
+    @GetMapping("/states")
     public ResponseEntity<List<StateDTO>> getAllStates(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of States");
         Page<StateDTO> page = stateService.findAll(pageable);
@@ -155,7 +155,7 @@ public class StateResource {
      * @param id the id of the stateDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the stateDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/states/{id}")
     public ResponseEntity<StateDTO> getState(@PathVariable("id") Long id) {
         LOG.debug("REST request to get State : {}", id);
         Optional<StateDTO> stateDTO = stateService.findOne(id);
@@ -168,12 +168,74 @@ public class StateResource {
      * @param id the id of the stateDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/states/{id}")
     public ResponseEntity<Void> deleteState(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete State : {}", id);
         stateService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/states} : get all the states without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of states in body.
+     */
+    @GetMapping("/logical/states")
+    public ResponseEntity<List<StateDTO>> getAllLogicalStates(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of States without logical deletions");
+        Page<StateDTO> page = stateService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/states/:id} : get the "id" State if not logically deleted.
+     *
+     * @param id the id of the StateDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the StateDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/states/{id}")
+    public ResponseEntity<StateDTO> getLogicalState(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical State : {}", id);
+        Optional<StateDTO> stateDTO = stateService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(stateDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/states/:id} : logically delete the "id" State.
+     *
+     * @param id the id of the StateDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/states/{id}")
+    public ResponseEntity<Void> logicalDeleteState(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete State : {}", id);
+        if (!stateRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        stateService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/states/:id/restore} : restore a logically deleted State.
+     *
+     * @param id the id of the State to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored StateDTO.
+     */
+    @PutMapping("/logical/states/{id}/restore")
+    public ResponseEntity<StateDTO> restoreState(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore State : {}", id);
+        if (!stateRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        stateService.restore(id);
+        Optional<StateDTO> restored = stateService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

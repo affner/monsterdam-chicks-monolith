@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ViewerWalletRepository extends JpaRepository<ViewerWallet, Long> {}
+public interface ViewerWalletRepository extends LogicalDeletionRepository<ViewerWallet> {}
