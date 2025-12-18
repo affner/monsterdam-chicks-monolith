@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class AdminEmailConfigsServiceImpl implements AdminEmailConfigsService {
+public class AdminEmailConfigsServiceImpl
+    extends AbstractLogicalDeletionService<AdminEmailConfigs, AdminEmailConfigsDTO>
+    implements AdminEmailConfigsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminEmailConfigsServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class AdminEmailConfigsServiceImpl implements AdminEmailConfigsService {
         AdminEmailConfigsRepository adminEmailConfigsRepository,
         AdminEmailConfigsMapper adminEmailConfigsMapper
     ) {
+        super(adminEmailConfigsRepository, adminEmailConfigsMapper, AdminEmailConfigs::setDeletedDate);
         this.adminEmailConfigsRepository = adminEmailConfigsRepository;
         this.adminEmailConfigsMapper = adminEmailConfigsMapper;
     }

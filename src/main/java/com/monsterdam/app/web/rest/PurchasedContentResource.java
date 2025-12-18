@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PurchasedContent}.
  */
 @RestController
-@RequestMapping("/api/purchased-contents")
+@RequestMapping("/api")
 public class PurchasedContentResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchasedContentResource.class);
@@ -57,7 +57,7 @@ public class PurchasedContentResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchasedContentDTO, or with status {@code 400 (Bad Request)} if the purchasedContent has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/purchased-contents")
     public ResponseEntity<PurchasedContentDTO> createPurchasedContent(@Valid @RequestBody PurchasedContentDTO purchasedContentDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save PurchasedContent : {}", purchasedContentDTO);
@@ -80,7 +80,7 @@ public class PurchasedContentResource {
      * or with status {@code 500 (Internal Server Error)} if the purchasedContentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/purchased-contents/{id}")
     public ResponseEntity<PurchasedContentDTO> updatePurchasedContent(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PurchasedContentDTO purchasedContentDTO
@@ -114,7 +114,7 @@ public class PurchasedContentResource {
      * or with status {@code 500 (Internal Server Error)} if the purchasedContentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/purchased-contents/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PurchasedContentDTO> partialUpdatePurchasedContent(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PurchasedContentDTO purchasedContentDTO
@@ -145,7 +145,7 @@ public class PurchasedContentResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchasedContents in body.
      */
-    @GetMapping("")
+    @GetMapping("/purchased-contents")
     public ResponseEntity<List<PurchasedContentDTO>> getAllPurchasedContents(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class PurchasedContentResource {
      * @param id the id of the purchasedContentDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the purchasedContentDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/purchased-contents/{id}")
     public ResponseEntity<PurchasedContentDTO> getPurchasedContent(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PurchasedContent : {}", id);
         Optional<PurchasedContentDTO> purchasedContentDTO = purchasedContentService.findOne(id);
@@ -174,12 +174,76 @@ public class PurchasedContentResource {
      * @param id the id of the purchasedContentDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/purchased-contents/{id}")
     public ResponseEntity<Void> deletePurchasedContent(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PurchasedContent : {}", id);
         purchasedContentService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/purchased-contents} : get all the purchased-contents without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchased-contents in body.
+     */
+    @GetMapping("/logical/purchased-contents")
+    public ResponseEntity<List<PurchasedContentDTO>> getAllLogicalPurchasedContents(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PurchasedContents without logical deletions");
+        Page<PurchasedContentDTO> page = purchasedContentService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/purchased-contents/:id} : get the "id" PurchasedContent if not logically deleted.
+     *
+     * @param id the id of the PurchasedContentDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PurchasedContentDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/purchased-contents/{id}")
+    public ResponseEntity<PurchasedContentDTO> getLogicalPurchasedContent(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PurchasedContent : {}", id);
+        Optional<PurchasedContentDTO> purchasedContentDTO = purchasedContentService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(purchasedContentDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/purchased-contents/:id} : logically delete the "id" PurchasedContent.
+     *
+     * @param id the id of the PurchasedContentDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/purchased-contents/{id}")
+    public ResponseEntity<Void> logicalDeletePurchasedContent(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PurchasedContent : {}", id);
+        if (!purchasedContentRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        purchasedContentService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/purchased-contents/:id/restore} : restore a logically deleted PurchasedContent.
+     *
+     * @param id the id of the PurchasedContent to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PurchasedContentDTO.
+     */
+    @PutMapping("/logical/purchased-contents/{id}/restore")
+    public ResponseEntity<PurchasedContentDTO> restorePurchasedContent(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PurchasedContent : {}", id);
+        if (!purchasedContentRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        purchasedContentService.restore(id);
+        Optional<PurchasedContentDTO> restored = purchasedContentService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

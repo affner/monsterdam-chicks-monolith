@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.MoneyEarning}.
  */
 @RestController
-@RequestMapping("/api/money-earnings")
+@RequestMapping("/api")
 public class MoneyEarningResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(MoneyEarningResource.class);
@@ -54,7 +54,7 @@ public class MoneyEarningResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new moneyEarningDTO, or with status {@code 400 (Bad Request)} if the moneyEarning has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/money-earnings")
     public ResponseEntity<MoneyEarningDTO> createMoneyEarning(@Valid @RequestBody MoneyEarningDTO moneyEarningDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save MoneyEarning : {}", moneyEarningDTO);
@@ -77,7 +77,7 @@ public class MoneyEarningResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyEarningDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/money-earnings/{id}")
     public ResponseEntity<MoneyEarningDTO> updateMoneyEarning(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody MoneyEarningDTO moneyEarningDTO
@@ -111,7 +111,7 @@ public class MoneyEarningResource {
      * or with status {@code 500 (Internal Server Error)} if the moneyEarningDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/money-earnings/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<MoneyEarningDTO> partialUpdateMoneyEarning(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody MoneyEarningDTO moneyEarningDTO
@@ -142,7 +142,7 @@ public class MoneyEarningResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of moneyEarnings in body.
      */
-    @GetMapping("")
+    @GetMapping("/money-earnings")
     public ResponseEntity<List<MoneyEarningDTO>> getAllMoneyEarnings(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of MoneyEarnings");
         Page<MoneyEarningDTO> page = moneyEarningService.findAll(pageable);
@@ -156,7 +156,7 @@ public class MoneyEarningResource {
      * @param id the id of the moneyEarningDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the moneyEarningDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/money-earnings/{id}")
     public ResponseEntity<MoneyEarningDTO> getMoneyEarning(@PathVariable("id") Long id) {
         LOG.debug("REST request to get MoneyEarning : {}", id);
         Optional<MoneyEarningDTO> moneyEarningDTO = moneyEarningService.findOne(id);
@@ -169,12 +169,76 @@ public class MoneyEarningResource {
      * @param id the id of the moneyEarningDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/money-earnings/{id}")
     public ResponseEntity<Void> deleteMoneyEarning(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete MoneyEarning : {}", id);
         moneyEarningService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/money-earnings} : get all the money-earnings without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of money-earnings in body.
+     */
+    @GetMapping("/logical/money-earnings")
+    public ResponseEntity<List<MoneyEarningDTO>> getAllLogicalMoneyEarnings(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of MoneyEarnings without logical deletions");
+        Page<MoneyEarningDTO> page = moneyEarningService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/money-earnings/:id} : get the "id" MoneyEarning if not logically deleted.
+     *
+     * @param id the id of the MoneyEarningDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the MoneyEarningDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/money-earnings/{id}")
+    public ResponseEntity<MoneyEarningDTO> getLogicalMoneyEarning(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical MoneyEarning : {}", id);
+        Optional<MoneyEarningDTO> moneyEarningDTO = moneyEarningService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(moneyEarningDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/money-earnings/:id} : logically delete the "id" MoneyEarning.
+     *
+     * @param id the id of the MoneyEarningDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/money-earnings/{id}")
+    public ResponseEntity<Void> logicalDeleteMoneyEarning(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete MoneyEarning : {}", id);
+        if (!moneyEarningRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyEarningService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/money-earnings/:id/restore} : restore a logically deleted MoneyEarning.
+     *
+     * @param id the id of the MoneyEarning to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored MoneyEarningDTO.
+     */
+    @PutMapping("/logical/money-earnings/{id}/restore")
+    public ResponseEntity<MoneyEarningDTO> restoreMoneyEarning(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore MoneyEarning : {}", id);
+        if (!moneyEarningRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        moneyEarningService.restore(id);
+        Optional<MoneyEarningDTO> restored = moneyEarningService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

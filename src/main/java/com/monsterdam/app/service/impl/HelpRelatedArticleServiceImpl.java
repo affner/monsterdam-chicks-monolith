@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class HelpRelatedArticleServiceImpl implements HelpRelatedArticleService {
+public class HelpRelatedArticleServiceImpl
+    extends AbstractLogicalDeletionService<HelpRelatedArticle, HelpRelatedArticleDTO>
+    implements HelpRelatedArticleService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpRelatedArticleServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class HelpRelatedArticleServiceImpl implements HelpRelatedArticleService 
         HelpRelatedArticleRepository helpRelatedArticleRepository,
         HelpRelatedArticleMapper helpRelatedArticleMapper
     ) {
+        super(helpRelatedArticleRepository, helpRelatedArticleMapper, HelpRelatedArticle::setDeletedDate);
         this.helpRelatedArticleRepository = helpRelatedArticleRepository;
         this.helpRelatedArticleMapper = helpRelatedArticleMapper;
     }

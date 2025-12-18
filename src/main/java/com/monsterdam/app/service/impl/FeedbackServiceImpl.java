@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class FeedbackServiceImpl implements FeedbackService {
+public class FeedbackServiceImpl extends AbstractLogicalDeletionService<Feedback, FeedbackDTO> implements FeedbackService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FeedbackServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final FeedbackMapper feedbackMapper;
 
     public FeedbackServiceImpl(FeedbackRepository feedbackRepository, FeedbackMapper feedbackMapper) {
+        super(feedbackRepository, feedbackMapper, Feedback::setDeletedDate);
         this.feedbackRepository = feedbackRepository;
         this.feedbackMapper = feedbackMapper;
     }

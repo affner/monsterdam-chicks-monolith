@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PurchasedContentServiceImpl implements PurchasedContentService {
+public class PurchasedContentServiceImpl
+    extends AbstractLogicalDeletionService<PurchasedContent, PurchasedContentDTO>
+    implements PurchasedContentService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchasedContentServiceImpl.class);
 
@@ -30,6 +32,7 @@ public class PurchasedContentServiceImpl implements PurchasedContentService {
         PurchasedContentRepository purchasedContentRepository,
         PurchasedContentMapper purchasedContentMapper
     ) {
+        super(purchasedContentRepository, purchasedContentMapper, PurchasedContent::setDeletedDate);
         this.purchasedContentRepository = purchasedContentRepository;
         this.purchasedContentMapper = purchasedContentMapper;
     }

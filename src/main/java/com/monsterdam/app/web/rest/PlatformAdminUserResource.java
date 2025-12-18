@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PlatformAdminUser}.
  */
 @RestController
-@RequestMapping("/api/platform-admin-users")
+@RequestMapping("/api")
 public class PlatformAdminUserResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlatformAdminUserResource.class);
@@ -57,7 +57,7 @@ public class PlatformAdminUserResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new platformAdminUserDTO, or with status {@code 400 (Bad Request)} if the platformAdminUser has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/platform-admin-users")
     public ResponseEntity<PlatformAdminUserDTO> createPlatformAdminUser(@Valid @RequestBody PlatformAdminUserDTO platformAdminUserDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save PlatformAdminUser : {}", platformAdminUserDTO);
@@ -80,7 +80,7 @@ public class PlatformAdminUserResource {
      * or with status {@code 500 (Internal Server Error)} if the platformAdminUserDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/platform-admin-users/{id}")
     public ResponseEntity<PlatformAdminUserDTO> updatePlatformAdminUser(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PlatformAdminUserDTO platformAdminUserDTO
@@ -114,7 +114,7 @@ public class PlatformAdminUserResource {
      * or with status {@code 500 (Internal Server Error)} if the platformAdminUserDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/platform-admin-users/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PlatformAdminUserDTO> partialUpdatePlatformAdminUser(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PlatformAdminUserDTO platformAdminUserDTO
@@ -145,7 +145,7 @@ public class PlatformAdminUserResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of platformAdminUsers in body.
      */
-    @GetMapping("")
+    @GetMapping("/platform-admin-users")
     public ResponseEntity<List<PlatformAdminUserDTO>> getAllPlatformAdminUsers(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class PlatformAdminUserResource {
      * @param id the id of the platformAdminUserDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the platformAdminUserDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/platform-admin-users/{id}")
     public ResponseEntity<PlatformAdminUserDTO> getPlatformAdminUser(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PlatformAdminUser : {}", id);
         Optional<PlatformAdminUserDTO> platformAdminUserDTO = platformAdminUserService.findOne(id);
@@ -174,12 +174,76 @@ public class PlatformAdminUserResource {
      * @param id the id of the platformAdminUserDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/platform-admin-users/{id}")
     public ResponseEntity<Void> deletePlatformAdminUser(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PlatformAdminUser : {}", id);
         platformAdminUserService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/platform-admin-users} : get all the platform-admin-users without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of platform-admin-users in body.
+     */
+    @GetMapping("/logical/platform-admin-users")
+    public ResponseEntity<List<PlatformAdminUserDTO>> getAllLogicalPlatformAdminUsers(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PlatformAdminUsers without logical deletions");
+        Page<PlatformAdminUserDTO> page = platformAdminUserService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/platform-admin-users/:id} : get the "id" PlatformAdminUser if not logically deleted.
+     *
+     * @param id the id of the PlatformAdminUserDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PlatformAdminUserDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/platform-admin-users/{id}")
+    public ResponseEntity<PlatformAdminUserDTO> getLogicalPlatformAdminUser(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PlatformAdminUser : {}", id);
+        Optional<PlatformAdminUserDTO> platformAdminUserDTO = platformAdminUserService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(platformAdminUserDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/platform-admin-users/:id} : logically delete the "id" PlatformAdminUser.
+     *
+     * @param id the id of the PlatformAdminUserDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/platform-admin-users/{id}")
+    public ResponseEntity<Void> logicalDeletePlatformAdminUser(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PlatformAdminUser : {}", id);
+        if (!platformAdminUserRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        platformAdminUserService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/platform-admin-users/:id/restore} : restore a logically deleted PlatformAdminUser.
+     *
+     * @param id the id of the PlatformAdminUser to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PlatformAdminUserDTO.
+     */
+    @PutMapping("/logical/platform-admin-users/{id}/restore")
+    public ResponseEntity<PlatformAdminUserDTO> restorePlatformAdminUser(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PlatformAdminUser : {}", id);
+        if (!platformAdminUserRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        platformAdminUserService.restore(id);
+        Optional<PlatformAdminUserDTO> restored = platformAdminUserService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

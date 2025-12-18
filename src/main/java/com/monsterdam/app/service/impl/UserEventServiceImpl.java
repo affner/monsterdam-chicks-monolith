@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserEventServiceImpl implements UserEventService {
+public class UserEventServiceImpl extends AbstractLogicalDeletionService<UserEvent, UserEventDTO> implements UserEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserEventServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class UserEventServiceImpl implements UserEventService {
     private final UserEventMapper userEventMapper;
 
     public UserEventServiceImpl(UserEventRepository userEventRepository, UserEventMapper userEventMapper) {
+        super(userEventRepository, userEventMapper, UserEvent::setDeletedDate);
         this.userEventRepository = userEventRepository;
         this.userEventMapper = userEventMapper;
     }

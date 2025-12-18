@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class BookMarkServiceImpl implements BookMarkService {
+public class BookMarkServiceImpl extends AbstractLogicalDeletionService<BookMark, BookMarkDTO> implements BookMarkService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BookMarkServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class BookMarkServiceImpl implements BookMarkService {
     private final BookMarkMapper bookMarkMapper;
 
     public BookMarkServiceImpl(BookMarkRepository bookMarkRepository, BookMarkMapper bookMarkMapper) {
+        super(bookMarkRepository, bookMarkMapper, BookMark::setDeletedDate);
         this.bookMarkRepository = bookMarkRepository;
         this.bookMarkMapper = bookMarkMapper;
     }

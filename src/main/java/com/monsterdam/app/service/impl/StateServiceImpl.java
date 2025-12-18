@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class StateServiceImpl implements StateService {
+public class StateServiceImpl extends AbstractLogicalDeletionService<State, StateDTO> implements StateService {
 
     private static final Logger LOG = LoggerFactory.getLogger(StateServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class StateServiceImpl implements StateService {
     private final StateMapper stateMapper;
 
     public StateServiceImpl(StateRepository stateRepository, StateMapper stateMapper) {
+        super(stateRepository, stateMapper, State::setDeletedDate);
         this.stateRepository = stateRepository;
         this.stateMapper = stateMapper;
     }

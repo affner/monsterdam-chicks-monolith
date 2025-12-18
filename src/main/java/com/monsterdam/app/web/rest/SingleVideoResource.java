@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.SingleVideo}.
  */
 @RestController
-@RequestMapping("/api/single-videos")
+@RequestMapping("/api")
 public class SingleVideoResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleVideoResource.class);
@@ -54,7 +54,7 @@ public class SingleVideoResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new singleVideoDTO, or with status {@code 400 (Bad Request)} if the singleVideo has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/single-videos")
     public ResponseEntity<SingleVideoDTO> createSingleVideo(@Valid @RequestBody SingleVideoDTO singleVideoDTO) throws URISyntaxException {
         LOG.debug("REST request to save SingleVideo : {}", singleVideoDTO);
         if (singleVideoDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class SingleVideoResource {
      * or with status {@code 500 (Internal Server Error)} if the singleVideoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/single-videos/{id}")
     public ResponseEntity<SingleVideoDTO> updateSingleVideo(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody SingleVideoDTO singleVideoDTO
@@ -110,7 +110,7 @@ public class SingleVideoResource {
      * or with status {@code 500 (Internal Server Error)} if the singleVideoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/single-videos/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SingleVideoDTO> partialUpdateSingleVideo(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody SingleVideoDTO singleVideoDTO
@@ -141,7 +141,7 @@ public class SingleVideoResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of singleVideos in body.
      */
-    @GetMapping("")
+    @GetMapping("/single-videos")
     public ResponseEntity<List<SingleVideoDTO>> getAllSingleVideos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of SingleVideos");
         Page<SingleVideoDTO> page = singleVideoService.findAll(pageable);
@@ -155,7 +155,7 @@ public class SingleVideoResource {
      * @param id the id of the singleVideoDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the singleVideoDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/single-videos/{id}")
     public ResponseEntity<SingleVideoDTO> getSingleVideo(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SingleVideo : {}", id);
         Optional<SingleVideoDTO> singleVideoDTO = singleVideoService.findOne(id);
@@ -168,12 +168,76 @@ public class SingleVideoResource {
      * @param id the id of the singleVideoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/single-videos/{id}")
     public ResponseEntity<Void> deleteSingleVideo(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SingleVideo : {}", id);
         singleVideoService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/single-videos} : get all the single-videos without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of single-videos in body.
+     */
+    @GetMapping("/logical/single-videos")
+    public ResponseEntity<List<SingleVideoDTO>> getAllLogicalSingleVideos(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of SingleVideos without logical deletions");
+        Page<SingleVideoDTO> page = singleVideoService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/single-videos/:id} : get the "id" SingleVideo if not logically deleted.
+     *
+     * @param id the id of the SingleVideoDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SingleVideoDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/single-videos/{id}")
+    public ResponseEntity<SingleVideoDTO> getLogicalSingleVideo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical SingleVideo : {}", id);
+        Optional<SingleVideoDTO> singleVideoDTO = singleVideoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(singleVideoDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/single-videos/:id} : logically delete the "id" SingleVideo.
+     *
+     * @param id the id of the SingleVideoDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/single-videos/{id}")
+    public ResponseEntity<Void> logicalDeleteSingleVideo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete SingleVideo : {}", id);
+        if (!singleVideoRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singleVideoService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/single-videos/:id/restore} : restore a logically deleted SingleVideo.
+     *
+     * @param id the id of the SingleVideo to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored SingleVideoDTO.
+     */
+    @PutMapping("/logical/single-videos/{id}/restore")
+    public ResponseEntity<SingleVideoDTO> restoreSingleVideo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore SingleVideo : {}", id);
+        if (!singleVideoRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        singleVideoService.restore(id);
+        Optional<SingleVideoDTO> restored = singleVideoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

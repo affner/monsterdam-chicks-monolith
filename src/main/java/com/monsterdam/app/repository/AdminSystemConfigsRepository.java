@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AdminSystemConfigsRepository extends JpaRepository<AdminSystemConfigs, Long> {}
+public interface AdminSystemConfigsRepository extends LogicalDeletionRepository<AdminSystemConfigs> {}

@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.TaxInfo}.
  */
 @RestController
-@RequestMapping("/api/tax-infos")
+@RequestMapping("/api")
 public class TaxInfoResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaxInfoResource.class);
@@ -54,7 +54,7 @@ public class TaxInfoResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new taxInfoDTO, or with status {@code 400 (Bad Request)} if the taxInfo has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/tax-infos")
     public ResponseEntity<TaxInfoDTO> createTaxInfo(@Valid @RequestBody TaxInfoDTO taxInfoDTO) throws URISyntaxException {
         LOG.debug("REST request to save TaxInfo : {}", taxInfoDTO);
         if (taxInfoDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class TaxInfoResource {
      * or with status {@code 500 (Internal Server Error)} if the taxInfoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/tax-infos/{id}")
     public ResponseEntity<TaxInfoDTO> updateTaxInfo(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody TaxInfoDTO taxInfoDTO
@@ -110,7 +110,7 @@ public class TaxInfoResource {
      * or with status {@code 500 (Internal Server Error)} if the taxInfoDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/tax-infos/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TaxInfoDTO> partialUpdateTaxInfo(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody TaxInfoDTO taxInfoDTO
@@ -141,7 +141,7 @@ public class TaxInfoResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of taxInfos in body.
      */
-    @GetMapping("")
+    @GetMapping("/tax-infos")
     public ResponseEntity<List<TaxInfoDTO>> getAllTaxInfos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of TaxInfos");
         Page<TaxInfoDTO> page = taxInfoService.findAll(pageable);
@@ -155,7 +155,7 @@ public class TaxInfoResource {
      * @param id the id of the taxInfoDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the taxInfoDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/tax-infos/{id}")
     public ResponseEntity<TaxInfoDTO> getTaxInfo(@PathVariable("id") Long id) {
         LOG.debug("REST request to get TaxInfo : {}", id);
         Optional<TaxInfoDTO> taxInfoDTO = taxInfoService.findOne(id);
@@ -168,12 +168,74 @@ public class TaxInfoResource {
      * @param id the id of the taxInfoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/tax-infos/{id}")
     public ResponseEntity<Void> deleteTaxInfo(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete TaxInfo : {}", id);
         taxInfoService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/tax-infos} : get all the tax-infos without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tax-infos in body.
+     */
+    @GetMapping("/logical/tax-infos")
+    public ResponseEntity<List<TaxInfoDTO>> getAllLogicalTaxInfos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of TaxInfos without logical deletions");
+        Page<TaxInfoDTO> page = taxInfoService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/tax-infos/:id} : get the "id" TaxInfo if not logically deleted.
+     *
+     * @param id the id of the TaxInfoDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the TaxInfoDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/tax-infos/{id}")
+    public ResponseEntity<TaxInfoDTO> getLogicalTaxInfo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical TaxInfo : {}", id);
+        Optional<TaxInfoDTO> taxInfoDTO = taxInfoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(taxInfoDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/tax-infos/:id} : logically delete the "id" TaxInfo.
+     *
+     * @param id the id of the TaxInfoDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/tax-infos/{id}")
+    public ResponseEntity<Void> logicalDeleteTaxInfo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete TaxInfo : {}", id);
+        if (!taxInfoRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        taxInfoService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/tax-infos/:id/restore} : restore a logically deleted TaxInfo.
+     *
+     * @param id the id of the TaxInfo to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored TaxInfoDTO.
+     */
+    @PutMapping("/logical/tax-infos/{id}/restore")
+    public ResponseEntity<TaxInfoDTO> restoreTaxInfo(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore TaxInfo : {}", id);
+        if (!taxInfoRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        taxInfoService.restore(id);
+        Optional<TaxInfoDTO> restored = taxInfoService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

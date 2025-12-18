@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SingleAudioServiceImpl implements SingleAudioService {
+public class SingleAudioServiceImpl extends AbstractLogicalDeletionService<SingleAudio, SingleAudioDTO> implements SingleAudioService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleAudioServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class SingleAudioServiceImpl implements SingleAudioService {
     private final SingleAudioMapper singleAudioMapper;
 
     public SingleAudioServiceImpl(SingleAudioRepository singleAudioRepository, SingleAudioMapper singleAudioMapper) {
+        super(singleAudioRepository, singleAudioMapper, SingleAudio::setDeletedDate);
         this.singleAudioRepository = singleAudioRepository;
         this.singleAudioMapper = singleAudioMapper;
     }

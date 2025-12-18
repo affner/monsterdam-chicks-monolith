@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SingleVideoServiceImpl implements SingleVideoService {
+public class SingleVideoServiceImpl extends AbstractLogicalDeletionService<SingleVideo, SingleVideoDTO> implements SingleVideoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleVideoServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class SingleVideoServiceImpl implements SingleVideoService {
     private final SingleVideoMapper singleVideoMapper;
 
     public SingleVideoServiceImpl(SingleVideoRepository singleVideoRepository, SingleVideoMapper singleVideoMapper) {
+        super(singleVideoRepository, singleVideoMapper, SingleVideo::setDeletedDate);
         this.singleVideoRepository = singleVideoRepository;
         this.singleVideoMapper = singleVideoMapper;
     }

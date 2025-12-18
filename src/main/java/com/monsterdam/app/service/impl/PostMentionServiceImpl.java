@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PostMentionServiceImpl implements PostMentionService {
+public class PostMentionServiceImpl extends AbstractLogicalDeletionService<PostMention, PostMentionDTO> implements PostMentionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostMentionServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class PostMentionServiceImpl implements PostMentionService {
     private final PostMentionMapper postMentionMapper;
 
     public PostMentionServiceImpl(PostMentionRepository postMentionRepository, PostMentionMapper postMentionMapper) {
+        super(postMentionRepository, postMentionMapper, PostMention::setDeletedDate);
         this.postMentionRepository = postMentionRepository;
         this.postMentionMapper = postMentionMapper;
     }

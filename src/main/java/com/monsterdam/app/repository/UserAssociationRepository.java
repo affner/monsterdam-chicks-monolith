@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserAssociationRepository extends JpaRepository<UserAssociation, Long> {}
+public interface UserAssociationRepository extends LogicalDeletionRepository<UserAssociation> {}

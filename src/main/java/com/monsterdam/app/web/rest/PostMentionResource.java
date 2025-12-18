@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PostMention}.
  */
 @RestController
-@RequestMapping("/api/post-mentions")
+@RequestMapping("/api")
 public class PostMentionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostMentionResource.class);
@@ -54,7 +54,7 @@ public class PostMentionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new postMentionDTO, or with status {@code 400 (Bad Request)} if the postMention has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/post-mentions")
     public ResponseEntity<PostMentionDTO> createPostMention(@Valid @RequestBody PostMentionDTO postMentionDTO) throws URISyntaxException {
         LOG.debug("REST request to save PostMention : {}", postMentionDTO);
         if (postMentionDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class PostMentionResource {
      * or with status {@code 500 (Internal Server Error)} if the postMentionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/post-mentions/{id}")
     public ResponseEntity<PostMentionDTO> updatePostMention(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PostMentionDTO postMentionDTO
@@ -110,7 +110,7 @@ public class PostMentionResource {
      * or with status {@code 500 (Internal Server Error)} if the postMentionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/post-mentions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PostMentionDTO> partialUpdatePostMention(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PostMentionDTO postMentionDTO
@@ -141,7 +141,7 @@ public class PostMentionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of postMentions in body.
      */
-    @GetMapping("")
+    @GetMapping("/post-mentions")
     public ResponseEntity<List<PostMentionDTO>> getAllPostMentions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of PostMentions");
         Page<PostMentionDTO> page = postMentionService.findAll(pageable);
@@ -155,7 +155,7 @@ public class PostMentionResource {
      * @param id the id of the postMentionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the postMentionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/post-mentions/{id}")
     public ResponseEntity<PostMentionDTO> getPostMention(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PostMention : {}", id);
         Optional<PostMentionDTO> postMentionDTO = postMentionService.findOne(id);
@@ -168,12 +168,76 @@ public class PostMentionResource {
      * @param id the id of the postMentionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/post-mentions/{id}")
     public ResponseEntity<Void> deletePostMention(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PostMention : {}", id);
         postMentionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/post-mentions} : get all the post-mentions without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of post-mentions in body.
+     */
+    @GetMapping("/logical/post-mentions")
+    public ResponseEntity<List<PostMentionDTO>> getAllLogicalPostMentions(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PostMentions without logical deletions");
+        Page<PostMentionDTO> page = postMentionService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/post-mentions/:id} : get the "id" PostMention if not logically deleted.
+     *
+     * @param id the id of the PostMentionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PostMentionDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/post-mentions/{id}")
+    public ResponseEntity<PostMentionDTO> getLogicalPostMention(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PostMention : {}", id);
+        Optional<PostMentionDTO> postMentionDTO = postMentionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(postMentionDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/post-mentions/:id} : logically delete the "id" PostMention.
+     *
+     * @param id the id of the PostMentionDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/post-mentions/{id}")
+    public ResponseEntity<Void> logicalDeletePostMention(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PostMention : {}", id);
+        if (!postMentionRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postMentionService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/post-mentions/:id/restore} : restore a logically deleted PostMention.
+     *
+     * @param id the id of the PostMention to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PostMentionDTO.
+     */
+    @PutMapping("/logical/post-mentions/{id}/restore")
+    public ResponseEntity<PostMentionDTO> restorePostMention(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PostMention : {}", id);
+        if (!postMentionRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postMentionService.restore(id);
+        Optional<PostMentionDTO> restored = postMentionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

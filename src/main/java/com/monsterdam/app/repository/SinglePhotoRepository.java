@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SinglePhotoRepository extends JpaRepository<SinglePhoto, Long> {}
+public interface SinglePhotoRepository extends LogicalDeletionRepository<SinglePhoto> {}

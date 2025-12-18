@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SpecialAwardRepository extends JpaRepository<SpecialAward, Long> {}
+public interface SpecialAwardRepository extends LogicalDeletionRepository<SpecialAward> {}

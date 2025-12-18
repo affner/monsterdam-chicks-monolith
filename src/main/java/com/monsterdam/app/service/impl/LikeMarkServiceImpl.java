@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class LikeMarkServiceImpl implements LikeMarkService {
+public class LikeMarkServiceImpl extends AbstractLogicalDeletionService<LikeMark, LikeMarkDTO> implements LikeMarkService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LikeMarkServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class LikeMarkServiceImpl implements LikeMarkService {
     private final LikeMarkMapper likeMarkMapper;
 
     public LikeMarkServiceImpl(LikeMarkRepository likeMarkRepository, LikeMarkMapper likeMarkMapper) {
+        super(likeMarkRepository, likeMarkMapper, LikeMark::setDeletedDate);
         this.likeMarkRepository = likeMarkRepository;
         this.likeMarkMapper = likeMarkMapper;
     }

@@ -56,7 +56,7 @@ class UserReportResourceIT {
     private static final String DEFAULT_LAST_MODIFIED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_MODIFIED_BY = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_DELETED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_DELETED_DATE = null;
     private static final Instant UPDATED_DELETED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final ReportCategory DEFAULT_REPORT_CATEGORY = ReportCategory.POST_REPORT;

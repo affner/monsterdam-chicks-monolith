@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class CommentMentionServiceImpl implements CommentMentionService {
+public class CommentMentionServiceImpl
+    extends AbstractLogicalDeletionService<CommentMention, CommentMentionDTO>
+    implements CommentMentionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentMentionServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class CommentMentionServiceImpl implements CommentMentionService {
     private final CommentMentionMapper commentMentionMapper;
 
     public CommentMentionServiceImpl(CommentMentionRepository commentMentionRepository, CommentMentionMapper commentMentionMapper) {
+        super(commentMentionRepository, commentMentionMapper, CommentMention::setDeletedDate);
         this.commentMentionRepository = commentMentionRepository;
         this.commentMentionMapper = commentMentionMapper;
     }

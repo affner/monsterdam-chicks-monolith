@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PurchasedSubscriptionRepository extends JpaRepository<PurchasedSubscription, Long> {}
+public interface PurchasedSubscriptionRepository extends LogicalDeletionRepository<PurchasedSubscription> {}

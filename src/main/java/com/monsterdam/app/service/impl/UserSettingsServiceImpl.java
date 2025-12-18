@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserSettingsServiceImpl implements UserSettingsService {
+public class UserSettingsServiceImpl extends AbstractLogicalDeletionService<UserSettings, UserSettingsDTO> implements UserSettingsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserSettingsServiceImpl.class);
 
@@ -31,6 +31,7 @@ public class UserSettingsServiceImpl implements UserSettingsService {
     private final UserSettingsMapper userSettingsMapper;
 
     public UserSettingsServiceImpl(UserSettingsRepository userSettingsRepository, UserSettingsMapper userSettingsMapper) {
+        super(userSettingsRepository, userSettingsMapper, UserSettings::setDeletedDate);
         this.userSettingsRepository = userSettingsRepository;
         this.userSettingsMapper = userSettingsMapper;
     }

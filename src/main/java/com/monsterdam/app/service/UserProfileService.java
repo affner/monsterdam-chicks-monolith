@@ -1,5 +1,6 @@
 package com.monsterdam.app.service;
 
+import com.monsterdam.app.service.LogicalDeletionService;
 import com.monsterdam.app.service.dto.UserProfileDTO;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * Service Interface for managing {@link com.monsterdam.app.domain.UserProfile}.
  */
-public interface UserProfileService {
+public interface UserProfileService extends LogicalDeletionService<UserProfileDTO> {
     /**
      * Save a userProfile.
      *

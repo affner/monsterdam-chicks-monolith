@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DirectMessageRepository extends JpaRepository<DirectMessage, Long> {}
+public interface DirectMessageRepository extends LogicalDeletionRepository<DirectMessage> {}

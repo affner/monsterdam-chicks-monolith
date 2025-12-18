@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class HelpQuestionServiceImpl implements HelpQuestionService {
+public class HelpQuestionServiceImpl extends AbstractLogicalDeletionService<HelpQuestion, HelpQuestionDTO> implements HelpQuestionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpQuestionServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class HelpQuestionServiceImpl implements HelpQuestionService {
     private final HelpQuestionMapper helpQuestionMapper;
 
     public HelpQuestionServiceImpl(HelpQuestionRepository helpQuestionRepository, HelpQuestionMapper helpQuestionMapper) {
+        super(helpQuestionRepository, helpQuestionMapper, HelpQuestion::setDeletedDate);
         this.helpQuestionRepository = helpQuestionRepository;
         this.helpQuestionMapper = helpQuestionMapper;
     }

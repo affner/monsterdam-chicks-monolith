@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.HelpRelatedArticle}.
  */
 @RestController
-@RequestMapping("/api/help-related-articles")
+@RequestMapping("/api")
 public class HelpRelatedArticleResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpRelatedArticleResource.class);
@@ -57,7 +57,7 @@ public class HelpRelatedArticleResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new helpRelatedArticleDTO, or with status {@code 400 (Bad Request)} if the helpRelatedArticle has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/help-related-articles")
     public ResponseEntity<HelpRelatedArticleDTO> createHelpRelatedArticle(@Valid @RequestBody HelpRelatedArticleDTO helpRelatedArticleDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save HelpRelatedArticle : {}", helpRelatedArticleDTO);
@@ -80,7 +80,7 @@ public class HelpRelatedArticleResource {
      * or with status {@code 500 (Internal Server Error)} if the helpRelatedArticleDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/help-related-articles/{id}")
     public ResponseEntity<HelpRelatedArticleDTO> updateHelpRelatedArticle(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody HelpRelatedArticleDTO helpRelatedArticleDTO
@@ -114,7 +114,7 @@ public class HelpRelatedArticleResource {
      * or with status {@code 500 (Internal Server Error)} if the helpRelatedArticleDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/help-related-articles/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HelpRelatedArticleDTO> partialUpdateHelpRelatedArticle(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody HelpRelatedArticleDTO helpRelatedArticleDTO
@@ -145,7 +145,7 @@ public class HelpRelatedArticleResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of helpRelatedArticles in body.
      */
-    @GetMapping("")
+    @GetMapping("/help-related-articles")
     public ResponseEntity<List<HelpRelatedArticleDTO>> getAllHelpRelatedArticles(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class HelpRelatedArticleResource {
      * @param id the id of the helpRelatedArticleDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the helpRelatedArticleDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/help-related-articles/{id}")
     public ResponseEntity<HelpRelatedArticleDTO> getHelpRelatedArticle(@PathVariable("id") Long id) {
         LOG.debug("REST request to get HelpRelatedArticle : {}", id);
         Optional<HelpRelatedArticleDTO> helpRelatedArticleDTO = helpRelatedArticleService.findOne(id);
@@ -174,12 +174,76 @@ public class HelpRelatedArticleResource {
      * @param id the id of the helpRelatedArticleDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/help-related-articles/{id}")
     public ResponseEntity<Void> deleteHelpRelatedArticle(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete HelpRelatedArticle : {}", id);
         helpRelatedArticleService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/help-related-articles} : get all the help-related-articles without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of help-related-articles in body.
+     */
+    @GetMapping("/logical/help-related-articles")
+    public ResponseEntity<List<HelpRelatedArticleDTO>> getAllLogicalHelpRelatedArticles(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of HelpRelatedArticles without logical deletions");
+        Page<HelpRelatedArticleDTO> page = helpRelatedArticleService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/help-related-articles/:id} : get the "id" HelpRelatedArticle if not logically deleted.
+     *
+     * @param id the id of the HelpRelatedArticleDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the HelpRelatedArticleDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/help-related-articles/{id}")
+    public ResponseEntity<HelpRelatedArticleDTO> getLogicalHelpRelatedArticle(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical HelpRelatedArticle : {}", id);
+        Optional<HelpRelatedArticleDTO> helpRelatedArticleDTO = helpRelatedArticleService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(helpRelatedArticleDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/help-related-articles/:id} : logically delete the "id" HelpRelatedArticle.
+     *
+     * @param id the id of the HelpRelatedArticleDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/help-related-articles/{id}")
+    public ResponseEntity<Void> logicalDeleteHelpRelatedArticle(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete HelpRelatedArticle : {}", id);
+        if (!helpRelatedArticleRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpRelatedArticleService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/help-related-articles/:id/restore} : restore a logically deleted HelpRelatedArticle.
+     *
+     * @param id the id of the HelpRelatedArticle to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored HelpRelatedArticleDTO.
+     */
+    @PutMapping("/logical/help-related-articles/{id}/restore")
+    public ResponseEntity<HelpRelatedArticleDTO> restoreHelpRelatedArticle(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore HelpRelatedArticle : {}", id);
+        if (!helpRelatedArticleRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        helpRelatedArticleService.restore(id);
+        Optional<HelpRelatedArticleDTO> restored = helpRelatedArticleService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

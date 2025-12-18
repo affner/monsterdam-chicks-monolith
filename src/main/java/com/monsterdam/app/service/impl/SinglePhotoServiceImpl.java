@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SinglePhotoServiceImpl implements SinglePhotoService {
+public class SinglePhotoServiceImpl extends AbstractLogicalDeletionService<SinglePhoto, SinglePhotoDTO> implements SinglePhotoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SinglePhotoServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class SinglePhotoServiceImpl implements SinglePhotoService {
     private final SinglePhotoMapper singlePhotoMapper;
 
     public SinglePhotoServiceImpl(SinglePhotoRepository singlePhotoRepository, SinglePhotoMapper singlePhotoMapper) {
+        super(singlePhotoRepository, singlePhotoMapper, SinglePhoto::setDeletedDate);
         this.singlePhotoRepository = singlePhotoRepository;
         this.singlePhotoMapper = singlePhotoMapper;
     }

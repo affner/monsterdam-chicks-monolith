@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PaymentProvider}.
  */
 @RestController
-@RequestMapping("/api/payment-providers")
+@RequestMapping("/api")
 public class PaymentProviderResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PaymentProviderResource.class);
@@ -54,7 +54,7 @@ public class PaymentProviderResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paymentProviderDTO, or with status {@code 400 (Bad Request)} if the paymentProvider has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/payment-providers")
     public ResponseEntity<PaymentProviderDTO> createPaymentProvider(@Valid @RequestBody PaymentProviderDTO paymentProviderDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save PaymentProvider : {}", paymentProviderDTO);
@@ -77,7 +77,7 @@ public class PaymentProviderResource {
      * or with status {@code 500 (Internal Server Error)} if the paymentProviderDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/payment-providers/{id}")
     public ResponseEntity<PaymentProviderDTO> updatePaymentProvider(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PaymentProviderDTO paymentProviderDTO
@@ -111,7 +111,7 @@ public class PaymentProviderResource {
      * or with status {@code 500 (Internal Server Error)} if the paymentProviderDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/payment-providers/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PaymentProviderDTO> partialUpdatePaymentProvider(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PaymentProviderDTO paymentProviderDTO
@@ -142,7 +142,7 @@ public class PaymentProviderResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of paymentProviders in body.
      */
-    @GetMapping("")
+    @GetMapping("/payment-providers")
     public ResponseEntity<List<PaymentProviderDTO>> getAllPaymentProviders(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -158,7 +158,7 @@ public class PaymentProviderResource {
      * @param id the id of the paymentProviderDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the paymentProviderDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/payment-providers/{id}")
     public ResponseEntity<PaymentProviderDTO> getPaymentProvider(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PaymentProvider : {}", id);
         Optional<PaymentProviderDTO> paymentProviderDTO = paymentProviderService.findOne(id);
@@ -171,12 +171,76 @@ public class PaymentProviderResource {
      * @param id the id of the paymentProviderDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/payment-providers/{id}")
     public ResponseEntity<Void> deletePaymentProvider(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PaymentProvider : {}", id);
         paymentProviderService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/payment-providers} : get all the payment-providers without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payment-providers in body.
+     */
+    @GetMapping("/logical/payment-providers")
+    public ResponseEntity<List<PaymentProviderDTO>> getAllLogicalPaymentProviders(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PaymentProviders without logical deletions");
+        Page<PaymentProviderDTO> page = paymentProviderService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/payment-providers/:id} : get the "id" PaymentProvider if not logically deleted.
+     *
+     * @param id the id of the PaymentProviderDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PaymentProviderDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/payment-providers/{id}")
+    public ResponseEntity<PaymentProviderDTO> getLogicalPaymentProvider(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PaymentProvider : {}", id);
+        Optional<PaymentProviderDTO> paymentProviderDTO = paymentProviderService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(paymentProviderDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/payment-providers/:id} : logically delete the "id" PaymentProvider.
+     *
+     * @param id the id of the PaymentProviderDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/payment-providers/{id}")
+    public ResponseEntity<Void> logicalDeletePaymentProvider(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PaymentProvider : {}", id);
+        if (!paymentProviderRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        paymentProviderService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/payment-providers/:id/restore} : restore a logically deleted PaymentProvider.
+     *
+     * @param id the id of the PaymentProvider to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PaymentProviderDTO.
+     */
+    @PutMapping("/logical/payment-providers/{id}/restore")
+    public ResponseEntity<PaymentProviderDTO> restorePaymentProvider(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PaymentProvider : {}", id);
+        if (!paymentProviderRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        paymentProviderService.restore(id);
+        Optional<PaymentProviderDTO> restored = paymentProviderService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

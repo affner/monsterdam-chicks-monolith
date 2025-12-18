@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class HelpCategoryServiceImpl implements HelpCategoryService {
+public class HelpCategoryServiceImpl extends AbstractLogicalDeletionService<HelpCategory, HelpCategoryDTO> implements HelpCategoryService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HelpCategoryServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class HelpCategoryServiceImpl implements HelpCategoryService {
     private final HelpCategoryMapper helpCategoryMapper;
 
     public HelpCategoryServiceImpl(HelpCategoryRepository helpCategoryRepository, HelpCategoryMapper helpCategoryMapper) {
+        super(helpCategoryRepository, helpCategoryMapper, HelpCategory::setDeletedDate);
         this.helpCategoryRepository = helpCategoryRepository;
         this.helpCategoryMapper = helpCategoryMapper;
     }

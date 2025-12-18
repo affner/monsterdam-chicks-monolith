@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PostFeed}.
  */
 @RestController
-@RequestMapping("/api/post-feeds")
+@RequestMapping("/api")
 public class PostFeedResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostFeedResource.class);
@@ -54,7 +54,7 @@ public class PostFeedResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new postFeedDTO, or with status {@code 400 (Bad Request)} if the postFeed has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/post-feeds")
     public ResponseEntity<PostFeedDTO> createPostFeed(@Valid @RequestBody PostFeedDTO postFeedDTO) throws URISyntaxException {
         LOG.debug("REST request to save PostFeed : {}", postFeedDTO);
         if (postFeedDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class PostFeedResource {
      * or with status {@code 500 (Internal Server Error)} if the postFeedDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/post-feeds/{id}")
     public ResponseEntity<PostFeedDTO> updatePostFeed(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PostFeedDTO postFeedDTO
@@ -110,7 +110,7 @@ public class PostFeedResource {
      * or with status {@code 500 (Internal Server Error)} if the postFeedDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/post-feeds/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PostFeedDTO> partialUpdatePostFeed(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PostFeedDTO postFeedDTO
@@ -141,7 +141,7 @@ public class PostFeedResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of postFeeds in body.
      */
-    @GetMapping("")
+    @GetMapping("/post-feeds")
     public ResponseEntity<List<PostFeedDTO>> getAllPostFeeds(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of PostFeeds");
         Page<PostFeedDTO> page = postFeedService.findAll(pageable);
@@ -155,7 +155,7 @@ public class PostFeedResource {
      * @param id the id of the postFeedDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the postFeedDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/post-feeds/{id}")
     public ResponseEntity<PostFeedDTO> getPostFeed(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PostFeed : {}", id);
         Optional<PostFeedDTO> postFeedDTO = postFeedService.findOne(id);
@@ -168,12 +168,74 @@ public class PostFeedResource {
      * @param id the id of the postFeedDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/post-feeds/{id}")
     public ResponseEntity<Void> deletePostFeed(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PostFeed : {}", id);
         postFeedService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/post-feeds} : get all the post-feeds without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of post-feeds in body.
+     */
+    @GetMapping("/logical/post-feeds")
+    public ResponseEntity<List<PostFeedDTO>> getAllLogicalPostFeeds(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of PostFeeds without logical deletions");
+        Page<PostFeedDTO> page = postFeedService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/post-feeds/:id} : get the "id" PostFeed if not logically deleted.
+     *
+     * @param id the id of the PostFeedDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PostFeedDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/post-feeds/{id}")
+    public ResponseEntity<PostFeedDTO> getLogicalPostFeed(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PostFeed : {}", id);
+        Optional<PostFeedDTO> postFeedDTO = postFeedService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(postFeedDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/post-feeds/:id} : logically delete the "id" PostFeed.
+     *
+     * @param id the id of the PostFeedDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/post-feeds/{id}")
+    public ResponseEntity<Void> logicalDeletePostFeed(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PostFeed : {}", id);
+        if (!postFeedRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postFeedService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/post-feeds/:id/restore} : restore a logically deleted PostFeed.
+     *
+     * @param id the id of the PostFeed to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PostFeedDTO.
+     */
+    @PutMapping("/logical/post-feeds/{id}/restore")
+    public ResponseEntity<PostFeedDTO> restorePostFeed(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PostFeed : {}", id);
+        if (!postFeedRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postFeedService.restore(id);
+        Optional<PostFeedDTO> restored = postFeedService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

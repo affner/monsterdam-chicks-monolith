@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SpecialAwardServiceImpl implements SpecialAwardService {
+public class SpecialAwardServiceImpl extends AbstractLogicalDeletionService<SpecialAward, SpecialAwardDTO> implements SpecialAwardService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SpecialAwardServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class SpecialAwardServiceImpl implements SpecialAwardService {
     private final SpecialAwardMapper specialAwardMapper;
 
     public SpecialAwardServiceImpl(SpecialAwardRepository specialAwardRepository, SpecialAwardMapper specialAwardMapper) {
+        super(specialAwardRepository, specialAwardMapper, SpecialAward::setDeletedDate);
         this.specialAwardRepository = specialAwardRepository;
         this.specialAwardMapper = specialAwardMapper;
     }

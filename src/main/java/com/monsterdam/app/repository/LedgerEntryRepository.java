@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, Long> {}
+public interface LedgerEntryRepository extends LogicalDeletionRepository<LedgerEntry> {}

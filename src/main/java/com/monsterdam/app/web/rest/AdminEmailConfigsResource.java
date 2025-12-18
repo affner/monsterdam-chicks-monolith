@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.AdminEmailConfigs}.
  */
 @RestController
-@RequestMapping("/api/admin-email-configs")
+@RequestMapping("/api")
 public class AdminEmailConfigsResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminEmailConfigsResource.class);
@@ -57,7 +57,7 @@ public class AdminEmailConfigsResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new adminEmailConfigsDTO, or with status {@code 400 (Bad Request)} if the adminEmailConfigs has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/admin-email-configs")
     public ResponseEntity<AdminEmailConfigsDTO> createAdminEmailConfigs(@Valid @RequestBody AdminEmailConfigsDTO adminEmailConfigsDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save AdminEmailConfigs : {}", adminEmailConfigsDTO);
@@ -80,7 +80,7 @@ public class AdminEmailConfigsResource {
      * or with status {@code 500 (Internal Server Error)} if the adminEmailConfigsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/admin-email-configs/{id}")
     public ResponseEntity<AdminEmailConfigsDTO> updateAdminEmailConfigs(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody AdminEmailConfigsDTO adminEmailConfigsDTO
@@ -114,7 +114,7 @@ public class AdminEmailConfigsResource {
      * or with status {@code 500 (Internal Server Error)} if the adminEmailConfigsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/admin-email-configs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<AdminEmailConfigsDTO> partialUpdateAdminEmailConfigs(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody AdminEmailConfigsDTO adminEmailConfigsDTO
@@ -145,7 +145,7 @@ public class AdminEmailConfigsResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of adminEmailConfigs in body.
      */
-    @GetMapping("")
+    @GetMapping("/admin-email-configs")
     public ResponseEntity<List<AdminEmailConfigsDTO>> getAllAdminEmailConfigs(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -161,7 +161,7 @@ public class AdminEmailConfigsResource {
      * @param id the id of the adminEmailConfigsDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the adminEmailConfigsDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/admin-email-configs/{id}")
     public ResponseEntity<AdminEmailConfigsDTO> getAdminEmailConfigs(@PathVariable("id") Long id) {
         LOG.debug("REST request to get AdminEmailConfigs : {}", id);
         Optional<AdminEmailConfigsDTO> adminEmailConfigsDTO = adminEmailConfigsService.findOne(id);
@@ -174,12 +174,76 @@ public class AdminEmailConfigsResource {
      * @param id the id of the adminEmailConfigsDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin-email-configs/{id}")
     public ResponseEntity<Void> deleteAdminEmailConfigs(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete AdminEmailConfigs : {}", id);
         adminEmailConfigsService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/admin-email-configs} : get all the admin-email-configs without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of admin-email-configs in body.
+     */
+    @GetMapping("/logical/admin-email-configs")
+    public ResponseEntity<List<AdminEmailConfigsDTO>> getAllLogicalAdminEmailConfigss(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of AdminEmailConfigss without logical deletions");
+        Page<AdminEmailConfigsDTO> page = adminEmailConfigsService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/admin-email-configs/:id} : get the "id" AdminEmailConfigs if not logically deleted.
+     *
+     * @param id the id of the AdminEmailConfigsDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the AdminEmailConfigsDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/admin-email-configs/{id}")
+    public ResponseEntity<AdminEmailConfigsDTO> getLogicalAdminEmailConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical AdminEmailConfigs : {}", id);
+        Optional<AdminEmailConfigsDTO> adminEmailConfigsDTO = adminEmailConfigsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(adminEmailConfigsDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/admin-email-configs/:id} : logically delete the "id" AdminEmailConfigs.
+     *
+     * @param id the id of the AdminEmailConfigsDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/admin-email-configs/{id}")
+    public ResponseEntity<Void> logicalDeleteAdminEmailConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete AdminEmailConfigs : {}", id);
+        if (!adminEmailConfigsRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        adminEmailConfigsService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/admin-email-configs/:id/restore} : restore a logically deleted AdminEmailConfigs.
+     *
+     * @param id the id of the AdminEmailConfigs to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored AdminEmailConfigsDTO.
+     */
+    @PutMapping("/logical/admin-email-configs/{id}/restore")
+    public ResponseEntity<AdminEmailConfigsDTO> restoreAdminEmailConfigs(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore AdminEmailConfigs : {}", id);
+        if (!adminEmailConfigsRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        adminEmailConfigsService.restore(id);
+        Optional<AdminEmailConfigsDTO> restored = adminEmailConfigsService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -1,5 +1,6 @@
 package com.monsterdam.app.service;
 
+import com.monsterdam.app.service.LogicalDeletionService;
 import com.monsterdam.app.service.dto.TrialLinkDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -8,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * Service Interface for managing {@link com.monsterdam.app.domain.TrialLink}.
  */
-public interface TrialLinkService {
+public interface TrialLinkService extends LogicalDeletionService<TrialLinkDTO> {
     /**
      * Save a trialLink.
      *

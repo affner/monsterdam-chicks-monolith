@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AdminEmailConfigsRepository extends JpaRepository<AdminEmailConfigs, Long> {}
+public interface AdminEmailConfigsRepository extends LogicalDeletionRepository<AdminEmailConfigs> {}

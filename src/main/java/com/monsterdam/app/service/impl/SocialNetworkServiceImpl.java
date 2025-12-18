@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class SocialNetworkServiceImpl implements SocialNetworkService {
+public class SocialNetworkServiceImpl
+    extends AbstractLogicalDeletionService<SocialNetwork, SocialNetworkDTO>
+    implements SocialNetworkService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SocialNetworkServiceImpl.class);
 
@@ -27,6 +29,7 @@ public class SocialNetworkServiceImpl implements SocialNetworkService {
     private final SocialNetworkMapper socialNetworkMapper;
 
     public SocialNetworkServiceImpl(SocialNetworkRepository socialNetworkRepository, SocialNetworkMapper socialNetworkMapper) {
+        super(socialNetworkRepository, socialNetworkMapper, SocialNetwork::setDeletedDate);
         this.socialNetworkRepository = socialNetworkRepository;
         this.socialNetworkMapper = socialNetworkMapper;
     }

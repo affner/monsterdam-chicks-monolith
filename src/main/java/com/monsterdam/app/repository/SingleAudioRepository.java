@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SingleAudioRepository extends JpaRepository<SingleAudio, Long> {}
+public interface SingleAudioRepository extends LogicalDeletionRepository<SingleAudio> {}

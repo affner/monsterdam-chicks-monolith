@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MoneyGiftRepository extends JpaRepository<MoneyGift, Long> {}
+public interface MoneyGiftRepository extends LogicalDeletionRepository<MoneyGift> {}

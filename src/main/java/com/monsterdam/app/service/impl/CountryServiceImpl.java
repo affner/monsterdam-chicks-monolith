@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class CountryServiceImpl implements CountryService {
+public class CountryServiceImpl extends AbstractLogicalDeletionService<Country, CountryDTO> implements CountryService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountryServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class CountryServiceImpl implements CountryService {
     private final CountryMapper countryMapper;
 
     public CountryServiceImpl(CountryRepository countryRepository, CountryMapper countryMapper) {
+        super(countryRepository, countryMapper, Country::setDeletedDate);
         this.countryRepository = countryRepository;
         this.countryMapper = countryMapper;
     }

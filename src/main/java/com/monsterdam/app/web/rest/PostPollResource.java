@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PostPoll}.
  */
 @RestController
-@RequestMapping("/api/post-polls")
+@RequestMapping("/api")
 public class PostPollResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostPollResource.class);
@@ -54,7 +54,7 @@ public class PostPollResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new postPollDTO, or with status {@code 400 (Bad Request)} if the postPoll has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/post-polls")
     public ResponseEntity<PostPollDTO> createPostPoll(@Valid @RequestBody PostPollDTO postPollDTO) throws URISyntaxException {
         LOG.debug("REST request to save PostPoll : {}", postPollDTO);
         if (postPollDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class PostPollResource {
      * or with status {@code 500 (Internal Server Error)} if the postPollDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/post-polls/{id}")
     public ResponseEntity<PostPollDTO> updatePostPoll(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PostPollDTO postPollDTO
@@ -110,7 +110,7 @@ public class PostPollResource {
      * or with status {@code 500 (Internal Server Error)} if the postPollDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/post-polls/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PostPollDTO> partialUpdatePostPoll(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PostPollDTO postPollDTO
@@ -141,7 +141,7 @@ public class PostPollResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of postPolls in body.
      */
-    @GetMapping("")
+    @GetMapping("/post-polls")
     public ResponseEntity<List<PostPollDTO>> getAllPostPolls(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of PostPolls");
         Page<PostPollDTO> page = postPollService.findAll(pageable);
@@ -155,7 +155,7 @@ public class PostPollResource {
      * @param id the id of the postPollDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the postPollDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/post-polls/{id}")
     public ResponseEntity<PostPollDTO> getPostPoll(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PostPoll : {}", id);
         Optional<PostPollDTO> postPollDTO = postPollService.findOne(id);
@@ -168,12 +168,74 @@ public class PostPollResource {
      * @param id the id of the postPollDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/post-polls/{id}")
     public ResponseEntity<Void> deletePostPoll(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PostPoll : {}", id);
         postPollService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/post-polls} : get all the post-polls without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of post-polls in body.
+     */
+    @GetMapping("/logical/post-polls")
+    public ResponseEntity<List<PostPollDTO>> getAllLogicalPostPolls(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of PostPolls without logical deletions");
+        Page<PostPollDTO> page = postPollService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/post-polls/:id} : get the "id" PostPoll if not logically deleted.
+     *
+     * @param id the id of the PostPollDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PostPollDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/post-polls/{id}")
+    public ResponseEntity<PostPollDTO> getLogicalPostPoll(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PostPoll : {}", id);
+        Optional<PostPollDTO> postPollDTO = postPollService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(postPollDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/post-polls/:id} : logically delete the "id" PostPoll.
+     *
+     * @param id the id of the PostPollDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/post-polls/{id}")
+    public ResponseEntity<Void> logicalDeletePostPoll(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PostPoll : {}", id);
+        if (!postPollRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postPollService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/post-polls/:id/restore} : restore a logically deleted PostPoll.
+     *
+     * @param id the id of the PostPoll to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PostPollDTO.
+     */
+    @PutMapping("/logical/post-polls/{id}/restore")
+    public ResponseEntity<PostPollDTO> restorePostPoll(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PostPoll : {}", id);
+        if (!postPollRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        postPollService.restore(id);
+        Optional<PostPollDTO> restored = postPollService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PostFeedServiceImpl implements PostFeedService {
+public class PostFeedServiceImpl extends AbstractLogicalDeletionService<PostFeed, PostFeedDTO> implements PostFeedService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostFeedServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class PostFeedServiceImpl implements PostFeedService {
     private final PostFeedMapper postFeedMapper;
 
     public PostFeedServiceImpl(PostFeedRepository postFeedRepository, PostFeedMapper postFeedMapper) {
+        super(postFeedRepository, postFeedMapper, PostFeed::setDeletedDate);
         this.postFeedRepository = postFeedRepository;
         this.postFeedMapper = postFeedMapper;
     }

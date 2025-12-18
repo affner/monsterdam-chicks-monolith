@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PostPollServiceImpl implements PostPollService {
+public class PostPollServiceImpl extends AbstractLogicalDeletionService<PostPoll, PostPollDTO> implements PostPollService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostPollServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class PostPollServiceImpl implements PostPollService {
     private final PostPollMapper postPollMapper;
 
     public PostPollServiceImpl(PostPollRepository postPollRepository, PostPollMapper postPollMapper) {
+        super(postPollRepository, postPollMapper, PostPoll::setDeletedDate);
         this.postPollRepository = postPollRepository;
         this.postPollMapper = postPollMapper;
     }

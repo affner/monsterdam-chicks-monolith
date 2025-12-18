@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ChatRoomServiceImpl implements ChatRoomService {
+public class ChatRoomServiceImpl extends AbstractLogicalDeletionService<ChatRoom, ChatRoomDTO> implements ChatRoomService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChatRoomServiceImpl.class);
 
@@ -27,6 +27,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final ChatRoomMapper chatRoomMapper;
 
     public ChatRoomServiceImpl(ChatRoomRepository chatRoomRepository, ChatRoomMapper chatRoomMapper) {
+        super(chatRoomRepository, chatRoomMapper, ChatRoom::setDeletedDate);
         this.chatRoomRepository = chatRoomRepository;
         this.chatRoomMapper = chatRoomMapper;
     }

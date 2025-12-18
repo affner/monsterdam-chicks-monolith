@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.PurchasedSubscription}.
  */
 @RestController
-@RequestMapping("/api/purchased-subscriptions")
+@RequestMapping("/api")
 public class PurchasedSubscriptionResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchasedSubscriptionResource.class);
@@ -57,7 +57,7 @@ public class PurchasedSubscriptionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchasedSubscriptionDTO, or with status {@code 400 (Bad Request)} if the purchasedSubscription has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/purchased-subscriptions")
     public ResponseEntity<PurchasedSubscriptionDTO> createPurchasedSubscription(
         @Valid @RequestBody PurchasedSubscriptionDTO purchasedSubscriptionDTO
     ) throws URISyntaxException {
@@ -81,7 +81,7 @@ public class PurchasedSubscriptionResource {
      * or with status {@code 500 (Internal Server Error)} if the purchasedSubscriptionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/purchased-subscriptions/{id}")
     public ResponseEntity<PurchasedSubscriptionDTO> updatePurchasedSubscription(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody PurchasedSubscriptionDTO purchasedSubscriptionDTO
@@ -115,7 +115,7 @@ public class PurchasedSubscriptionResource {
      * or with status {@code 500 (Internal Server Error)} if the purchasedSubscriptionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/purchased-subscriptions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PurchasedSubscriptionDTO> partialUpdatePurchasedSubscription(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody PurchasedSubscriptionDTO purchasedSubscriptionDTO
@@ -146,7 +146,7 @@ public class PurchasedSubscriptionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchasedSubscriptions in body.
      */
-    @GetMapping("")
+    @GetMapping("/purchased-subscriptions")
     public ResponseEntity<List<PurchasedSubscriptionDTO>> getAllPurchasedSubscriptions(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
@@ -162,7 +162,7 @@ public class PurchasedSubscriptionResource {
      * @param id the id of the purchasedSubscriptionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the purchasedSubscriptionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/purchased-subscriptions/{id}")
     public ResponseEntity<PurchasedSubscriptionDTO> getPurchasedSubscription(@PathVariable("id") Long id) {
         LOG.debug("REST request to get PurchasedSubscription : {}", id);
         Optional<PurchasedSubscriptionDTO> purchasedSubscriptionDTO = purchasedSubscriptionService.findOne(id);
@@ -175,12 +175,76 @@ public class PurchasedSubscriptionResource {
      * @param id the id of the purchasedSubscriptionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/purchased-subscriptions/{id}")
     public ResponseEntity<Void> deletePurchasedSubscription(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete PurchasedSubscription : {}", id);
         purchasedSubscriptionService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/purchased-subscriptions} : get all the purchased-subscriptions without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchased-subscriptions in body.
+     */
+    @GetMapping("/logical/purchased-subscriptions")
+    public ResponseEntity<List<PurchasedSubscriptionDTO>> getAllLogicalPurchasedSubscriptions(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of PurchasedSubscriptions without logical deletions");
+        Page<PurchasedSubscriptionDTO> page = purchasedSubscriptionService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/purchased-subscriptions/:id} : get the "id" PurchasedSubscription if not logically deleted.
+     *
+     * @param id the id of the PurchasedSubscriptionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the PurchasedSubscriptionDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/purchased-subscriptions/{id}")
+    public ResponseEntity<PurchasedSubscriptionDTO> getLogicalPurchasedSubscription(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical PurchasedSubscription : {}", id);
+        Optional<PurchasedSubscriptionDTO> purchasedSubscriptionDTO = purchasedSubscriptionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(purchasedSubscriptionDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/purchased-subscriptions/:id} : logically delete the "id" PurchasedSubscription.
+     *
+     * @param id the id of the PurchasedSubscriptionDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/purchased-subscriptions/{id}")
+    public ResponseEntity<Void> logicalDeletePurchasedSubscription(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete PurchasedSubscription : {}", id);
+        if (!purchasedSubscriptionRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        purchasedSubscriptionService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/purchased-subscriptions/:id/restore} : restore a logically deleted PurchasedSubscription.
+     *
+     * @param id the id of the PurchasedSubscription to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored PurchasedSubscriptionDTO.
+     */
+    @PutMapping("/logical/purchased-subscriptions/{id}/restore")
+    public ResponseEntity<PurchasedSubscriptionDTO> restorePurchasedSubscription(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore PurchasedSubscription : {}", id);
+        if (!purchasedSubscriptionRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        purchasedSubscriptionService.restore(id);
+        Optional<PurchasedSubscriptionDTO> restored = purchasedSubscriptionService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }

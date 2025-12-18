@@ -71,7 +71,7 @@ class LedgerEntryResourceIT {
     private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
     private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_DELETED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_DELETED_DATE = null;
     private static final Instant UPDATED_DELETED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/ledger-entries";

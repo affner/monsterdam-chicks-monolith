@@ -28,7 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.monsterdam.app.domain.ChatRoom}.
  */
 @RestController
-@RequestMapping("/api/chat-rooms")
+@RequestMapping("/api")
 public class ChatRoomResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChatRoomResource.class);
@@ -54,7 +54,7 @@ public class ChatRoomResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new chatRoomDTO, or with status {@code 400 (Bad Request)} if the chatRoom has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/chat-rooms")
     public ResponseEntity<ChatRoomDTO> createChatRoom(@Valid @RequestBody ChatRoomDTO chatRoomDTO) throws URISyntaxException {
         LOG.debug("REST request to save ChatRoom : {}", chatRoomDTO);
         if (chatRoomDTO.getId() != null) {
@@ -76,7 +76,7 @@ public class ChatRoomResource {
      * or with status {@code 500 (Internal Server Error)} if the chatRoomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/chat-rooms/{id}")
     public ResponseEntity<ChatRoomDTO> updateChatRoom(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ChatRoomDTO chatRoomDTO
@@ -110,7 +110,7 @@ public class ChatRoomResource {
      * or with status {@code 500 (Internal Server Error)} if the chatRoomDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/chat-rooms/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ChatRoomDTO> partialUpdateChatRoom(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody ChatRoomDTO chatRoomDTO
@@ -142,7 +142,7 @@ public class ChatRoomResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of chatRooms in body.
      */
-    @GetMapping("")
+    @GetMapping("/chat-rooms")
     public ResponseEntity<List<ChatRoomDTO>> getAllChatRooms(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
@@ -164,7 +164,7 @@ public class ChatRoomResource {
      * @param id the id of the chatRoomDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the chatRoomDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/chat-rooms/{id}")
     public ResponseEntity<ChatRoomDTO> getChatRoom(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ChatRoom : {}", id);
         Optional<ChatRoomDTO> chatRoomDTO = chatRoomService.findOne(id);
@@ -177,12 +177,74 @@ public class ChatRoomResource {
      * @param id the id of the chatRoomDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/chat-rooms/{id}")
     public ResponseEntity<Void> deleteChatRoom(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ChatRoom : {}", id);
         chatRoomService.delete(id);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /logical/chat-rooms} : get all the chat-rooms without logical deletions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of chat-rooms in body.
+     */
+    @GetMapping("/logical/chat-rooms")
+    public ResponseEntity<List<ChatRoomDTO>> getAllLogicalChatRooms(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get a page of ChatRooms without logical deletions");
+        Page<ChatRoomDTO> page = chatRoomService.logicalFindAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /logical/chat-rooms/:id} : get the "id" ChatRoom if not logically deleted.
+     *
+     * @param id the id of the ChatRoomDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ChatRoomDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/logical/chat-rooms/{id}")
+    public ResponseEntity<ChatRoomDTO> getLogicalChatRoom(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get logical ChatRoom : {}", id);
+        Optional<ChatRoomDTO> chatRoomDTO = chatRoomService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(chatRoomDTO);
+    }
+
+    /**
+     * {@code DELETE  /logical/chat-rooms/:id} : logically delete the "id" ChatRoom.
+     *
+     * @param id the id of the ChatRoomDTO to logically delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/logical/chat-rooms/{id}")
+    public ResponseEntity<Void> logicalDeleteChatRoom(@PathVariable("id") Long id) {
+        LOG.debug("REST request to logical delete ChatRoom : {}", id);
+        if (!chatRoomRepository.existsByIdAndDeletedDateIsNull(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        chatRoomService.logicalDelete(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code PUT  /logical/chat-rooms/:id/restore} : restore a logically deleted ChatRoom.
+     *
+     * @param id the id of the ChatRoom to restore.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the restored ChatRoomDTO.
+     */
+    @PutMapping("/logical/chat-rooms/{id}/restore")
+    public ResponseEntity<ChatRoomDTO> restoreChatRoom(@PathVariable("id") Long id) {
+        LOG.debug("REST request to restore ChatRoom : {}", id);
+        if (!chatRoomRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        chatRoomService.restore(id);
+        Optional<ChatRoomDTO> restored = chatRoomService.logicalGet(id);
+        return ResponseUtil.wrapOrNotFound(restored, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()));
     }
 }
