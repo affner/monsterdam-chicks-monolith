@@ -1,6 +1,7 @@
 package com.monsterdam.app.repository;
 
 import com.monsterdam.app.domain.SingleVideo;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SingleVideoRepository extends LogicalDeletionRepository<SingleVideo> {}
+public interface SingleVideoRepository extends LogicalDeletionRepository<SingleVideo> {
+    List<SingleVideo> findAllByContentPackage_IdAndDeletedDateIsNull(Long contentPackageId);
+}
