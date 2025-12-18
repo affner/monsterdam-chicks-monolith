@@ -1,6 +1,7 @@
 package com.monsterdam.app.repository;
 
 import com.monsterdam.app.domain.SingleAudio;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SingleAudioRepository extends LogicalDeletionRepository<SingleAudio> {}
+public interface SingleAudioRepository extends LogicalDeletionRepository<SingleAudio> {
+    List<SingleAudio> findAllByContentPackage_IdAndDeletedDateIsNull(Long contentPackageId);
+}
