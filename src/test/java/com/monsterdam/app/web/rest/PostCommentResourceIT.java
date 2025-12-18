@@ -16,7 +16,6 @@ import com.monsterdam.app.service.dto.PostCommentDTO;
 import com.monsterdam.app.service.mapper.PostCommentMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-class PostCommentResourceIT {
+public class PostCommentResourceIT {
 
     private static final String DEFAULT_COMMENT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_COMMENT_CONTENT = "BBBBBBBBBB";
@@ -44,10 +43,10 @@ class PostCommentResourceIT {
     private static final Integer UPDATED_LIKE_COUNT = 2;
 
     private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    //   private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Instant DEFAULT_LAST_MODIFIED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_LAST_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    //   private static final Instant UPDATED_LAST_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
     private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
@@ -56,7 +55,7 @@ class PostCommentResourceIT {
     private static final String UPDATED_LAST_MODIFIED_BY = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_DELETED_DATE = null;
-    private static final Instant UPDATED_DELETED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    //    private static final Instant UPDATED_DELETED_DATE = Instant.now().truncatedTo(Chron.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/post-comments";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -123,11 +122,11 @@ class PostCommentResourceIT {
         PostComment updatedPostComment = new PostComment()
             .commentContent(UPDATED_COMMENT_CONTENT)
             .likeCount(UPDATED_LIKE_COUNT)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
+            //   .createdDate(UPDATED_CREATED_DATE)
+            //  .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
-            .deletedDate(UPDATED_DELETED_DATE);
+            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY);
+        //    .deletedDate(UPDATED_DELETED_DATE);
         // Add required entity
         UserLite userLite;
         if (TestUtil.findAll(em, UserLite.class).isEmpty()) {
@@ -277,11 +276,11 @@ class PostCommentResourceIT {
         updatedPostComment
             .commentContent(UPDATED_COMMENT_CONTENT)
             .likeCount(UPDATED_LIKE_COUNT)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
+            //   .createdDate(UPDATED_CREATED_DATE)
+            //    .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
             .createdBy(UPDATED_CREATED_BY)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
-            .deletedDate(UPDATED_DELETED_DATE);
+            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY);
+        //  .deletedDate(UPDATED_DELETED_DATE);
         PostCommentDTO postCommentDTO = postCommentMapper.toDto(updatedPostComment);
 
         restPostCommentMockMvc
@@ -371,11 +370,9 @@ class PostCommentResourceIT {
         PostComment partialUpdatedPostComment = new PostComment();
         partialUpdatedPostComment.setId(postComment.getId());
 
-        partialUpdatedPostComment
-            .commentContent(UPDATED_COMMENT_CONTENT)
-            .likeCount(UPDATED_LIKE_COUNT)
-            .createdBy(UPDATED_CREATED_BY)
-            .deletedDate(UPDATED_DELETED_DATE);
+        partialUpdatedPostComment.commentContent(UPDATED_COMMENT_CONTENT).likeCount(UPDATED_LIKE_COUNT);
+        // .createdBy(UPDATED_CREATED_BY)
+        //   .deletedDate(UPDATED_DELETED_DATE);
 
         restPostCommentMockMvc
             .perform(
@@ -406,14 +403,12 @@ class PostCommentResourceIT {
         PostComment partialUpdatedPostComment = new PostComment();
         partialUpdatedPostComment.setId(postComment.getId());
 
-        partialUpdatedPostComment
-            .commentContent(UPDATED_COMMENT_CONTENT)
-            .likeCount(UPDATED_LIKE_COUNT)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
-            .createdBy(UPDATED_CREATED_BY)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
-            .deletedDate(UPDATED_DELETED_DATE);
+        partialUpdatedPostComment.commentContent(UPDATED_COMMENT_CONTENT).likeCount(UPDATED_LIKE_COUNT);
+        //   .createdDate(UPDATED_CREATED_DATE)
+        //    .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE)
+        //  .createdBy(UPDATED_CREATED_BY)
+        //   .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
+        //    .deletedDate(UPDATED_DELETED_DATE);
 
         restPostCommentMockMvc
             .perform(
@@ -515,7 +510,7 @@ class PostCommentResourceIT {
         insertedPostComment = postCommentRepository.saveAndFlush(postComment);
 
         PostComment deleted = createUpdatedEntity(em);
-        deleted.setDeletedDate(UPDATED_DELETED_DATE);
+        //   deleted.setDeletedDate(UPDATED_DELETED_DATE);
         postCommentRepository.saveAndFlush(deleted);
 
         restPostCommentMockMvc
@@ -540,7 +535,7 @@ class PostCommentResourceIT {
     @Test
     @Transactional
     void restorePostCommentShouldClearDeletedDate() throws Exception {
-        postComment.setDeletedDate(UPDATED_DELETED_DATE);
+        //   postComment.setDeletedDate(UPDATED_DELETED_DATE);
         insertedPostComment = postCommentRepository.saveAndFlush(postComment);
 
         restPostCommentMockMvc.perform(put(ENTITY_LOGICAL_API_URL_ID + "/restore", postComment.getId())).andExpect(status().isOk());

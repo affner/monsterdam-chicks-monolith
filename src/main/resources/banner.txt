@@ -1,11 +1,11 @@
-${AnsiColor.BRIGHT_MAGENTA}      ███╗   ███╗${AnsiColor.CYAN} ██████╗ ███╗   ██╗███████╗████████╗███████╗██████╗ █████╗   █████╗ ███╗   ███╗
-${AnsiColor.MAGENTA}      ████╗ ████║${AnsiColor.BRIGHT_CYAN}██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗████╗ ████║
-${AnsiColor.BRIGHT_MAGENTA}      ██╔████╔██║${AnsiColor.CYAN}██║   ██║██╔██╗ ██║███████╗   ██║   █████╗  ██████╔╝██║  ██║███████║██╔████╔██║
-${AnsiColor.MAGENTA}      ██║╚██╔╝██║${AnsiColor.BRIGHT_CYAN}██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║  ██║██╔══██║██║╚██╔╝██║
-${AnsiColor.BRIGHT_MAGENTA}      ██║ ╚═╝ ██║${AnsiColor.CYAN}╚██████╔╝██║ ╚████║███████║   ██║   ███████╗██║  ██║█████╔╝ ██║  ██║██║ ╚═╝ ██║
-${AnsiColor.MAGENTA}      ╚═╝     ╚═╝${AnsiColor.BRIGHT_CYAN} ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚════╝  ╚═╝  ╚═╝╚═╝     ╚═╝
+${AnsiColor.BRIGHT_MAGENTA}      ███╗   ███╗${AnsiColor.BRIGHT_CYAN} ██████╗ ███╗   ██╗███████╗████████╗███████╗██████╗ █████╗   █████╗ ${AnsiColor.BRIGHT_MAGENTA}███╗   ███╗
+${AnsiColor.BRIGHT_MAGENTA}      ████╗ ████║${AnsiColor.BRIGHT_CYAN}██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗${AnsiColor.BRIGHT_MAGENTA}████╗ ████║
+${AnsiColor.BRIGHT_MAGENTA}      ██╔████╔██║${AnsiColor.BRIGHT_CYAN}██║   ██║██╔██╗ ██║███████╗   ██║   █████╗  ██████╔╝██║  ██║███████║${AnsiColor.BRIGHT_MAGENTA}██╔████╔██║
+${AnsiColor.BRIGHT_MAGENTA}      ██║╚██╔╝██║${AnsiColor.BRIGHT_CYAN}██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║  ██║██╔══██║${AnsiColor.BRIGHT_MAGENTA}██║╚██╔╝██║
+${AnsiColor.BRIGHT_MAGENTA}      ██║ ╚═╝ ██║${AnsiColor.BRIGHT_CYAN}╚██████╔╝██║ ╚████║███████║   ██║   ███████╗██║  ██║█████╔╝ ██║  ██║${AnsiColor.BRIGHT_MAGENTA}██║ ╚═╝ ██║
+${AnsiColor.BRIGHT_MAGENTA}      ╚═╝     ╚═╝${AnsiColor.BRIGHT_CYAN} ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚════╝  ╚═╝  ╚═╝${AnsiColor.BRIGHT_MAGENTA}╚═╝     ╚═╝
 
-${AnsiColor.BRIGHT_YELLOW}:: DEPLOY READY 🚀 ::${AnsiColor.DEFAULT}  ${AnsiColor.BRIGHT_BLUE}${spring.application.name}${AnsiColor.DEFAULT}  ${AnsiColor.GREEN}${application.formatted-version}${AnsiColor.DEFAULT}
+${AnsiColor.BRIGHT_YELLOW}:: DEPLOY READY  ::${AnsiColor.DEFAULT}  ${AnsiColor.BRIGHT_BLUE}${spring.application.name}${AnsiColor.DEFAULT}  ${AnsiColor.GREEN}${application.formatted-version}${AnsiColor.DEFAULT}
 ${AnsiColor.BRIGHT_BLUE}Spring Boot ${spring-boot.version}${AnsiColor.DEFAULT}  |  Profiles: ${spring.profiles.active}  |  PID: ${PID}
 ${AnsiColor.CYAN}Java ${java.version}${AnsiColor.DEFAULT}  |  JVM: ${java.vm.name} (${java.vm.version})  |  User: ${user.name}
 
