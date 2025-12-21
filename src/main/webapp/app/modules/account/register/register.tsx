@@ -22,15 +22,13 @@ export const RegisterPage = () => {
 
   const currentLocale = useAppSelector(state => state.locale.currentLocale);
 
-  const handleValidSubmit = ({ username, email, firstPassword, firstName, lastName, nickName, fullName, birthDate, gender }) => {
+  const handleValidSubmit = ({ username, email, firstPassword, nickName, fullName, birthDate, gender }) => {
     dispatch(
       handleRegister({
         login: username,
         email,
         password: firstPassword,
         langKey: currentLocale,
-        firstName,
-        lastName,
         nickName,
         fullName,
         birthDate,
@@ -61,28 +59,6 @@ export const RegisterPage = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <ValidatedForm id="register-form" onSubmit={handleValidSubmit}>
-            <ValidatedField
-              name="firstName"
-              label={translate('register.form.firstName.label')}
-              placeholder={translate('register.form.firstName.placeholder')}
-              validate={{
-                required: { value: true, message: translate('register.messages.validate.firstName.required') },
-                minLength: { value: 1, message: translate('register.messages.validate.firstName.minlength') },
-                maxLength: { value: 50, message: translate('register.messages.validate.firstName.maxlength') },
-              }}
-              data-cy="firstName"
-            />
-            <ValidatedField
-              name="lastName"
-              label={translate('register.form.lastName.label')}
-              placeholder={translate('register.form.lastName.placeholder')}
-              validate={{
-                required: { value: true, message: translate('register.messages.validate.lastName.required') },
-                minLength: { value: 1, message: translate('register.messages.validate.lastName.minlength') },
-                maxLength: { value: 50, message: translate('register.messages.validate.lastName.maxlength') },
-              }}
-              data-cy="lastName"
-            />
             <ValidatedField
               name="fullName"
               label={translate('register.form.fullName.label')}

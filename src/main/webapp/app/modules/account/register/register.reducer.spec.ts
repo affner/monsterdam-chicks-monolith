@@ -85,8 +85,6 @@ describe('Creating account tests', () => {
         login: '',
         email: '',
         password: '',
-        firstName: '',
-        lastName: '',
         nickName: 'nick',
         fullName: 'Full Name',
         birthDate: '2000-01-01',

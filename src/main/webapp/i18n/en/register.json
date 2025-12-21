@@ -2,14 +2,6 @@
   "register": {
     "title": "Registration",
     "form": {
-      "firstName": {
-        "label": "First name",
-        "placeholder": "Your first name"
-      },
-      "lastName": {
-        "label": "Last name",
-        "placeholder": "Your last name"
-      },
       "fullName": {
         "label": "Full name",
         "placeholder": "Display name"
@@ -28,16 +20,6 @@
     },
     "messages": {
       "validate": {
-        "firstName": {
-          "required": "Your first name is required.",
-          "minlength": "Your first name is required to be at least 1 character.",
-          "maxlength": "Your first name cannot be longer than 50 characters."
-        },
-        "lastName": {
-          "required": "Your last name is required.",
-          "minlength": "Your last name is required to be at least 1 character.",
-          "maxlength": "Your last name cannot be longer than 50 characters."
-        },
         "fullName": {
           "required": "Your full name is required.",
           "pattern": "Only letters, numbers and spaces are allowed."
