@@ -3,11 +3,16 @@ package com.monsterdam.app.service;
 import com.monsterdam.app.config.Constants;
 import com.monsterdam.app.domain.Authority;
 import com.monsterdam.app.domain.User;
+import com.monsterdam.app.domain.UserLite;
+import com.monsterdam.app.domain.UserProfile;
 import com.monsterdam.app.repository.AuthorityRepository;
+import com.monsterdam.app.repository.UserLiteRepository;
+import com.monsterdam.app.repository.UserProfileRepository;
 import com.monsterdam.app.repository.UserRepository;
 import com.monsterdam.app.security.AuthoritiesConstants;
 import com.monsterdam.app.security.SecurityUtils;
 import com.monsterdam.app.service.dto.AdminUserDTO;
+import com.monsterdam.app.service.dto.RegisterUserDTO;
 import com.monsterdam.app.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -38,10 +43,22 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final UserLiteRepository userLiteRepository;
+
+    private final UserProfileRepository userProfileRepository;
+
+    public UserService(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        AuthorityRepository authorityRepository,
+        UserLiteRepository userLiteRepository,
+        UserProfileRepository userProfileRepository
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.userLiteRepository = userLiteRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -81,7 +98,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(AdminUserDTO userDTO, String password) {
+    public User registerUser(RegisterUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -118,6 +135,27 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.VIEWER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+
+        UserProfile userProfile = new UserProfile();
+        userProfile.setId(newUser.getId());
+        userProfile.setEmailContact(newUser.getEmail());
+        userProfile.setLastLoginDate(Instant.now());
+        userProfile.setCreatedDate(Instant.now());
+        userProfile.setIsFree(Boolean.TRUE);
+        userProfileRepository.save(userProfile);
+
+        UserLite userLite = new UserLite();
+        userLite.setId(newUser.getId());
+        userLite.setBirthDate(userDTO.getBirthDate());
+        userLite.setGender(userDTO.getGender());
+        userLite.setCreatedDate(Instant.now());
+        userLite.setNickName(userDTO.getNickName());
+        userLite.setFullName(userDTO.getFullName());
+        userLite.setProfile(userProfile);
+        userLiteRepository.save(userLite);
+
+        userProfile.setUser(userLite);
+        userProfileRepository.save(userProfile);
         LOG.debug("Created Information for User: {}", newUser);
         return newUser;
     }

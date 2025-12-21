@@ -14,8 +14,8 @@ import com.monsterdam.app.security.AuthoritiesConstants;
 import com.monsterdam.app.service.UserService;
 import com.monsterdam.app.service.dto.AdminUserDTO;
 import com.monsterdam.app.service.dto.PasswordChangeDTO;
+import com.monsterdam.app.service.dto.RegisterUserDTO;
 import com.monsterdam.app.web.rest.vm.KeyAndPasswordVM;
-import com.monsterdam.app.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Stream;
@@ -124,7 +124,7 @@ class AccountResourceIT {
     @Test
     @Transactional
     void testRegisterValid() throws Exception {
-        ManagedUserVM validUser = new ManagedUserVM();
+        RegisterUserDTO validUser = new RegisterUserDTO();
         validUser.setLogin("test-register-valid");
         validUser.setPassword("password");
         validUser.setFirstName("Alice");
@@ -133,6 +133,10 @@ class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.VIEWER));
+        validUser.setNickName("alice_test");
+        validUser.setFullName("Alice Test");
+        validUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        validUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.FEMALE);
         assertThat(userRepository.findOneByLogin("test-register-valid")).isEmpty();
 
         restAccountMockMvc
@@ -147,7 +151,7 @@ class AccountResourceIT {
     @Test
     @Transactional
     void testRegisterInvalidLogin() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM();
+        RegisterUserDTO invalidUser = new RegisterUserDTO();
         invalidUser.setLogin("funky-log(n"); // <-- invalid
         invalidUser.setPassword("password");
         invalidUser.setFirstName("Funky");
@@ -157,6 +161,10 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.VIEWER));
+        invalidUser.setNickName("funky_name");
+        invalidUser.setFullName("Funky One");
+        invalidUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        invalidUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.MALE);
 
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(invalidUser)))
@@ -166,7 +174,7 @@ class AccountResourceIT {
         assertThat(user).isEmpty();
     }
 
-    static Stream<ManagedUserVM> invalidUsers() {
+    static Stream<RegisterUserDTO> invalidUsers() {
         return Stream.of(
             createInvalidUser("bob", "password", "Bob", "Green", "invalid", true), // <-- invalid
             createInvalidUser("bob", "123", "Bob", "Green", "bob@example.com", true), // password with only 3 digits
@@ -177,7 +185,7 @@ class AccountResourceIT {
     @ParameterizedTest
     @MethodSource("invalidUsers")
     @Transactional
-    void testRegisterInvalidUsers(ManagedUserVM invalidUser) throws Exception {
+    void testRegisterInvalidUsers(RegisterUserDTO invalidUser) throws Exception {
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(invalidUser)))
             .andExpect(status().isBadRequest());
@@ -186,7 +194,7 @@ class AccountResourceIT {
         assertThat(user).isEmpty();
     }
 
-    private static ManagedUserVM createInvalidUser(
+    private static RegisterUserDTO createInvalidUser(
         String login,
         String password,
         String firstName,
@@ -194,7 +202,7 @@ class AccountResourceIT {
         String email,
         boolean activated
     ) {
-        ManagedUserVM invalidUser = new ManagedUserVM();
+        RegisterUserDTO invalidUser = new RegisterUserDTO();
         invalidUser.setLogin(login);
         invalidUser.setPassword(password);
         invalidUser.setFirstName(firstName);
@@ -204,6 +212,10 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.VIEWER));
+        invalidUser.setNickName("bob_user");
+        invalidUser.setFullName("Bob Green");
+        invalidUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        invalidUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.MALE);
         return invalidUser;
     }
 
@@ -211,7 +223,7 @@ class AccountResourceIT {
     @Transactional
     void testRegisterDuplicateLogin() throws Exception {
         // First registration
-        ManagedUserVM firstUser = new ManagedUserVM();
+        RegisterUserDTO firstUser = new RegisterUserDTO();
         firstUser.setLogin("alice");
         firstUser.setPassword("password");
         firstUser.setFirstName("Alice");
@@ -220,9 +232,13 @@ class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.VIEWER));
+        firstUser.setNickName("alice_user");
+        firstUser.setFullName("Alice Something");
+        firstUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        firstUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.FEMALE);
 
         // Duplicate login, different email
-        ManagedUserVM secondUser = new ManagedUserVM();
+        RegisterUserDTO secondUser = new RegisterUserDTO();
         secondUser.setLogin(firstUser.getLogin());
         secondUser.setPassword(firstUser.getPassword());
         secondUser.setFirstName(firstUser.getFirstName());
@@ -235,6 +251,10 @@ class AccountResourceIT {
         secondUser.setLastModifiedBy(firstUser.getLastModifiedBy());
         secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setNickName("alice_user2");
+        secondUser.setFullName("Alice Something");
+        secondUser.setBirthDate(firstUser.getBirthDate());
+        secondUser.setGender(firstUser.getGender());
 
         // First user
         restAccountMockMvc
@@ -263,7 +283,7 @@ class AccountResourceIT {
     @Transactional
     void testRegisterDuplicateEmail() throws Exception {
         // First user
-        ManagedUserVM firstUser = new ManagedUserVM();
+        RegisterUserDTO firstUser = new RegisterUserDTO();
         firstUser.setLogin("test-register-duplicate-email");
         firstUser.setPassword("password");
         firstUser.setFirstName("Alice");
@@ -272,6 +292,10 @@ class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.VIEWER));
+        firstUser.setNickName("alice_dup");
+        firstUser.setFullName("Alice Test");
+        firstUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        firstUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.FEMALE);
 
         // Register first user
         restAccountMockMvc
@@ -282,7 +306,7 @@ class AccountResourceIT {
         assertThat(testUser1).isPresent();
 
         // Duplicate email, different login
-        ManagedUserVM secondUser = new ManagedUserVM();
+        RegisterUserDTO secondUser = new RegisterUserDTO();
         secondUser.setLogin("test-register-duplicate-email-2");
         secondUser.setPassword(firstUser.getPassword());
         secondUser.setFirstName(firstUser.getFirstName());
@@ -291,6 +315,10 @@ class AccountResourceIT {
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setNickName("alice_dup2");
+        secondUser.setFullName(firstUser.getFullName());
+        secondUser.setBirthDate(firstUser.getBirthDate());
+        secondUser.setGender(firstUser.getGender());
 
         // Register second (non activated) user
         restAccountMockMvc
@@ -304,7 +332,7 @@ class AccountResourceIT {
         assertThat(testUser3).isPresent();
 
         // Duplicate email - with uppercase email address
-        ManagedUserVM userWithUpperCaseEmail = new ManagedUserVM();
+        RegisterUserDTO userWithUpperCaseEmail = new RegisterUserDTO();
         userWithUpperCaseEmail.setId(firstUser.getId());
         userWithUpperCaseEmail.setLogin("test-register-duplicate-email-3");
         userWithUpperCaseEmail.setPassword(firstUser.getPassword());
@@ -314,6 +342,10 @@ class AccountResourceIT {
         userWithUpperCaseEmail.setImageUrl(firstUser.getImageUrl());
         userWithUpperCaseEmail.setLangKey(firstUser.getLangKey());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        userWithUpperCaseEmail.setNickName("alice_dup3");
+        userWithUpperCaseEmail.setFullName(firstUser.getFullName());
+        userWithUpperCaseEmail.setBirthDate(firstUser.getBirthDate());
+        userWithUpperCaseEmail.setGender(firstUser.getGender());
 
         // Register third (not activated) user
         restAccountMockMvc
@@ -338,7 +370,7 @@ class AccountResourceIT {
     @Test
     @Transactional
     void testRegisterAdminIsIgnored() throws Exception {
-        ManagedUserVM validUser = new ManagedUserVM();
+        RegisterUserDTO validUser = new RegisterUserDTO();
         validUser.setLogin("badguy");
         validUser.setPassword("password");
         validUser.setFirstName("Bad");
@@ -348,6 +380,10 @@ class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
+        validUser.setNickName("bad_guy");
+        validUser.setFullName("Bad Guy");
+        validUser.setBirthDate(Instant.now().atZone(java.time.ZoneOffset.UTC).toLocalDate());
+        validUser.setGender(com.monsterdam.app.domain.enumeration.UserGender.MALE);
 
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(validUser)))
@@ -591,7 +627,7 @@ class AccountResourceIT {
         user.setEmail("change-password-too-small@example.com");
         userRepository.saveAndFlush(user);
 
-        String newPassword = RandomStringUtils.insecure().next(ManagedUserVM.PASSWORD_MIN_LENGTH - 1);
+        String newPassword = RandomStringUtils.insecure().next(RegisterUserDTO.PASSWORD_MIN_LENGTH - 1);
 
         restAccountMockMvc
             .perform(
@@ -618,7 +654,7 @@ class AccountResourceIT {
         user.setEmail("change-password-too-long@example.com");
         userRepository.saveAndFlush(user);
 
-        String newPassword = RandomStringUtils.insecure().next(ManagedUserVM.PASSWORD_MAX_LENGTH + 1);
+        String newPassword = RandomStringUtils.insecure().next(RegisterUserDTO.PASSWORD_MAX_LENGTH + 1);
 
         restAccountMockMvc
             .perform(

@@ -2,10 +2,56 @@
   "register": {
     "title": "Création de compte utilisateur",
     "form": {
+      "firstName": {
+        "label": "Prénom",
+        "placeholder": "Votre prénom"
+      },
+      "lastName": {
+        "label": "Nom",
+        "placeholder": "Votre nom"
+      },
+      "fullName": {
+        "label": "Nom complet",
+        "placeholder": "Nom d'affichage"
+      },
+      "nickName": {
+        "label": "Surnom",
+        "placeholder": "Surnom unique"
+      },
+      "birthDate": {
+        "label": "Date de naissance"
+      },
+      "gender": {
+        "label": "Genre"
+      },
       "button": "Enregistrement"
     },
     "messages": {
       "validate": {
+        "firstName": {
+          "required": "Votre prénom est requis.",
+          "minlength": "Votre prénom doit contenir au moins 1 caractère.",
+          "maxlength": "Votre prénom ne peut pas dépasser 50 caractères."
+        },
+        "lastName": {
+          "required": "Votre nom est requis.",
+          "minlength": "Votre nom doit contenir au moins 1 caractère.",
+          "maxlength": "Votre nom ne peut pas dépasser 50 caractères."
+        },
+        "fullName": {
+          "required": "Votre nom complet est requis.",
+          "pattern": "Seules les lettres, chiffres et espaces sont autorisés."
+        },
+        "nickName": {
+          "required": "Votre surnom est requis.",
+          "pattern": "Le surnom doit contenir entre 3 et 16 caractères en minuscules, chiffres, tiret bas ou tiret."
+        },
+        "birthDate": {
+          "required": "La date de naissance est requise."
+        },
+        "gender": {
+          "required": "Veuillez sélectionner un genre."
+        },
         "login": {
           "required": "Votre nom d'utilisateur est obligatoire.",
           "minlength": "Votre nom d'utilisateur doit contenir plus d'un caractère.",

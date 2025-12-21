@@ -2,10 +2,56 @@
   "register": {
     "title": "Registration",
     "form": {
+      "firstName": {
+        "label": "First name",
+        "placeholder": "Your first name"
+      },
+      "lastName": {
+        "label": "Last name",
+        "placeholder": "Your last name"
+      },
+      "fullName": {
+        "label": "Full name",
+        "placeholder": "Display name"
+      },
+      "nickName": {
+        "label": "Nickname",
+        "placeholder": "Unique nickname"
+      },
+      "birthDate": {
+        "label": "Birth date"
+      },
+      "gender": {
+        "label": "Gender"
+      },
       "button": "Register"
     },
     "messages": {
       "validate": {
+        "firstName": {
+          "required": "Your first name is required.",
+          "minlength": "Your first name is required to be at least 1 character.",
+          "maxlength": "Your first name cannot be longer than 50 characters."
+        },
+        "lastName": {
+          "required": "Your last name is required.",
+          "minlength": "Your last name is required to be at least 1 character.",
+          "maxlength": "Your last name cannot be longer than 50 characters."
+        },
+        "fullName": {
+          "required": "Your full name is required.",
+          "pattern": "Only letters, numbers and spaces are allowed."
+        },
+        "nickName": {
+          "required": "Your nickname is required.",
+          "pattern": "Nickname must be 3-16 characters using lowercase letters, numbers, underscores or dashes."
+        },
+        "birthDate": {
+          "required": "Your birth date is required."
+        },
+        "gender": {
+          "required": "Please select a gender."
+        },
         "login": {
           "required": "Your username is required.",
           "minlength": "Your username is required to be at least 1 character.",
