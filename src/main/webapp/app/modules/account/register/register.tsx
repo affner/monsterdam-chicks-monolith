@@ -22,10 +22,10 @@ export const RegisterPage = () => {
 
   const currentLocale = useAppSelector(state => state.locale.currentLocale);
 
-  const handleValidSubmit = ({ username, email, firstPassword, nickName, fullName, birthDate, gender }) => {
+  const handleValidSubmit = ({ nickName, email, firstPassword, fullName, birthDate, gender }) => {
     dispatch(
       handleRegister({
-        login: username,
+        login: nickName,
         email,
         password: firstPassword,
         langKey: currentLocale,
@@ -104,21 +104,6 @@ export const RegisterPage = () => {
                 </option>
               ))}
             </ValidatedField>
-            <ValidatedField
-              name="username"
-              label={translate('global.form.username.label')}
-              placeholder={translate('global.form.username.placeholder')}
-              validate={{
-                required: { value: true, message: translate('register.messages.validate.login.required') },
-                pattern: {
-                  value: /^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/,
-                  message: translate('register.messages.validate.login.pattern'),
-                },
-                minLength: { value: 1, message: translate('register.messages.validate.login.minlength') },
-                maxLength: { value: 50, message: translate('register.messages.validate.login.maxlength') },
-              }}
-              data-cy="username"
-            />
             <ValidatedField
               name="email"
               label={translate('global.form.email.label')}

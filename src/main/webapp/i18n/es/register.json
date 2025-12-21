@@ -7,8 +7,8 @@
         "placeholder": "Nombre a mostrar"
       },
       "nickName": {
-        "label": "Apodo",
-        "placeholder": "Apodo único"
+        "label": "Nickname",
+        "placeholder": "Nickname (será tu usuario)"
       },
       "birthDate": {
         "label": "Fecha de nacimiento"
@@ -25,8 +25,8 @@
           "pattern": "Solo se permiten letras, números y espacios."
         },
         "nickName": {
-          "required": "Se requiere que ingreses tu apodo.",
-          "pattern": "El apodo debe tener entre 3 y 16 caracteres usando minúsculas, números, guiones bajos o guiones."
+          "required": "Tu nickname (usuario) es obligatorio.",
+          "pattern": "El nickname debe tener entre 3 y 16 caracteres usando minúsculas, números, guiones bajos o guiones."
         },
         "birthDate": {
           "required": "La fecha de nacimiento es obligatoria."
@@ -44,7 +44,7 @@
       "success": "<strong>¡Registro guardado!</strong> Por favor, revise su correo electrónico para confirmar.",
       "error": {
         "fail": "<strong>¡El registro ha fallado!</strong> Por favor, inténtelo de nuevo más tarde.",
-        "userexists": "<strong>¡El nombre de usuario ya está registrado!</strong> Por favor, escoja otro usuario.",
+        "userexists": "<strong>¡El nickname ya está registrado!</strong> Por favor, elige otro.",
         "emailexists": "<strong>¡El correo electrónico ya está en uso!</strong> Por favor, escoja otro email."
       }
     }

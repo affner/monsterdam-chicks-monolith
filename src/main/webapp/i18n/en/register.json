@@ -8,7 +8,7 @@
       },
       "nickName": {
         "label": "Nickname",
-        "placeholder": "Unique nickname"
+        "placeholder": "Nickname (used as your username)"
       },
       "birthDate": {
         "label": "Birth date"
@@ -25,8 +25,8 @@
           "pattern": "Only letters, numbers and spaces are allowed."
         },
         "nickName": {
-          "required": "Your nickname is required.",
-          "pattern": "Nickname must be 3-16 characters using lowercase letters, numbers, underscores or dashes."
+          "required": "Your nickname (used to log in) is required.",
+          "pattern": "Use 3-16 characters with lowercase letters, numbers, underscores or dashes for your nickname."
         },
         "birthDate": {
           "required": "Your birth date is required."
@@ -44,7 +44,7 @@
       "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
       "error": {
         "fail": "<strong>Registration failed!</strong> Please try again later.",
-        "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
+        "userexists": "<strong>Nickname is already registered!</strong> Please choose another one.",
         "emailexists": "<strong>Email is already in use!</strong> Please choose another one."
       }
     }
