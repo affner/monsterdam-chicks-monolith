@@ -23,7 +23,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/viewer/profile")
+@RequestMapping("/api/viewer/profile")
 @Tag(name = "BFF Viewer Profile")
 public class ViewerProfileController {
 

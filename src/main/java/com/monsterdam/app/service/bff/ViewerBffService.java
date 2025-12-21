@@ -340,7 +340,7 @@ public class ViewerBffService {
         if (post.isEmpty()) {
             return Optional.empty();
         }
-        if (context.anonymous() && !Boolean.TRUE.equals(post.get().getIsPublic())) {
+        if (context.anonymous() && !Boolean.TRUE.equals(post.orElseThrow(IllegalStateException::new).getIsPublic())) {
             return Optional.empty();
         }
         return post;
@@ -408,7 +408,10 @@ public class ViewerBffService {
         if (currentUserId.isEmpty()) {
             return false;
         }
-        return purchasedContentRepository.existsByContentPackage_IdAndViewer_IdAndDeletedDateIsNull(contentPackageId, currentUserId.get());
+        return purchasedContentRepository.existsByContentPackage_IdAndViewer_IdAndDeletedDateIsNull(
+            contentPackageId,
+            currentUserId.orElseThrow(IllegalStateException::new)
+        );
     }
 
     private String buildTitle(ContentPackage contentPackage, PostFeed post) {

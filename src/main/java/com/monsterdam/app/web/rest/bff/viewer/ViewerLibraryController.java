@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
 @RestController
-@RequestMapping("/api/bff/viewer/library")
+@RequestMapping("/api/viewer/library")
 @Tag(name = "BFF Viewer Library")
 public class ViewerLibraryController {
 

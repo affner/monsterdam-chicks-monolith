@@ -33,12 +33,6 @@ public class ViewerPublicController {
         this.viewerBffService = viewerBffService;
     }
 
-    @GetMapping("/menu")
-    public ResponseEntity<MenuDTO> getMenu() {
-        LOG.debug("REST request to get viewer menu");
-        return ResponseEntity.ok(viewerBffService.buildMenu());
-    }
-
     @GetMapping("/set/list")
     public ResponseEntity<List<SingleSetDTO>> listSets(
         @RequestParam(value = "sort", required = false) String sort,
@@ -56,4 +50,13 @@ public class ViewerPublicController {
         LOG.debug("REST request to get content set {}", id);
         return ResponseEntity.ok(viewerBffService.getContentSet(id));
     }
+
+    @GetMapping("/model/list")
+    public ResponseEntity<ContentSetDTO> getModels() {
+        // aqui se traeran la lista de modelos, pero sera aleatoria y solo regresara maximo 10
+        //  LOG.debug("REST request to get content set {}", id);
+        return null;
+    }
+    //  @GetMapping("/model/profile")
+
 }

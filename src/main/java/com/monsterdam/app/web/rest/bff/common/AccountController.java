@@ -20,7 +20,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/account")
+@RequestMapping("/api/account")
 @Tag(name = "BFF Account")
 public class AccountController {
 

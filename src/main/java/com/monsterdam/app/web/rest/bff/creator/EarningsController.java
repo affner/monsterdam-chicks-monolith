@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
 @RestController
-@RequestMapping("/api/bff/creator/earnings")
+@RequestMapping("/api/creator/earnings")
 @Tag(name = "BFF Creator Earnings")
 public class EarningsController {
 

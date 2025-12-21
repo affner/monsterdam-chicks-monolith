@@ -24,7 +24,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/catalog")
+@RequestMapping("/api/catalog")
 @Tag(name = "BFF Catalog")
 public class CatalogController {
 

@@ -30,7 +30,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/settings")
+@RequestMapping("/api/settings")
 @Tag(name = "BFF User Settings")
 public class UserSettingsController {
 

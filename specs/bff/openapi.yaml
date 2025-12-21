@@ -1,0 +1,363 @@
+openapi: 3.0.3
+info:
+  title: MonsterdamChicks BFF (MVP)
+  version: 0.1.0
+  description: >
+    Contrato OpenAPI para endpoints BFF públicos (MVP).
+    JWT es opcional en endpoints públicos: si llega, enriquece roles y estado de desbloqueo.
+servers:
+  - url: /
+
+tags:
+  - name: Public Viewer BFF
+    description: Endpoints públicos para viewer (Discovery, Menu, Preview/Content)
+  - name: Public Creator BFF
+    description: Endpoints públicos para perfil de creador
+  - name: Public Set Detail BFF
+    description: Endpoint público para detalle de set
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Role:
+      type: string
+      enum: [ANONYMOUS, VIEWER, CREATOR, ADMIN]
+
+    MenuSectionDTO:
+      type: object
+      required: [key, label, path]
+      properties:
+        key:
+          type: string
+          example: DISCOVERY
+        label:
+          type: string
+          example: Descubrir
+        path:
+          type: string
+          example: /discover
+
+    MenuDTO:
+      type: object
+      required: [roles, sections]
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuSectionDTO'
+
+    SingleSetDTO:
+      type: object
+      description: DTO resumido para Discovery.
+      required: [id, creatorId, title, isFree, canUnlock]
+      properties:
+        id:
+          type: integer
+          format: int64
+        creatorId:
+          type: integer
+          format: int64
+        creatorName:
+          type: string
+        title:
+          type: string
+        descriptionShort:
+          type: string
+        coverUrl:
+          type: string
+        isFree:
+          type: boolean
+        price:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: USD
+        rating:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        canUnlock:
+          type: boolean
+
+    MediaType:
+      type: string
+      enum: [PHOTO, VIDEO, AUDIO]
+
+    MediaItemDTO:
+      type: object
+      description: Item de media del set (preview o completo).
+      required: [id, type, url, isPublic]
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          $ref: '#/components/schemas/MediaType'
+        url:
+          type: string
+        durationSeconds:
+          type: integer
+          minimum: 0
+        isPublic:
+          type: boolean
+
+    ContentSetDTO:
+      type: object
+      required: [set, items, unlocked]
+      properties:
+        set:
+          $ref: '#/components/schemas/SingleSetDTO'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaItemDTO'
+        unlocked:
+          type: boolean
+        downloadUrl:
+          type: string
+          description: >
+            Presente solo cuando unlocked=true. En MVP es la descarga ZIP del contenido.
+
+    SetDetailDTO:
+      type: object
+      required: [setId, title, unlocked, items]
+      properties:
+        setId:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        creatorId:
+          type: integer
+          format: int64
+        creatorName:
+          type: string
+        isFree:
+          type: boolean
+        price:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: USD
+        canUnlock:
+          type: boolean
+        unlocked:
+          type: boolean
+        downloadUrl:
+          type: string
+          description: Presente solo cuando unlocked=true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaItemDTO'
+
+    CreatorLinkDTO:
+      type: object
+      required: [type, url]
+      properties:
+        type:
+          type: string
+          example: instagram
+        url:
+          type: string
+
+    CreatorProfileDTO:
+      type: object
+      required: [creatorId, displayName, sets]
+      properties:
+        creatorId:
+          type: integer
+          format: int64
+        displayName:
+          type: string
+        bioShort:
+          type: string
+        avatarUrl:
+          type: string
+        coverUrl:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatorLinkDTO'
+        sets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleSetDTO'
+
+paths:
+  /api/viewer/menu:
+    get:
+      tags: [Public Viewer BFF]
+      summary: Obtener menú según rol (JWT opcional)
+      description: >
+        Si viene Authorization: Bearer <JWT>, se determinan roles y se enriquece el menú.
+        Si no viene JWT, se asume ANONYMOUS.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuDTO'
+
+  /api/viewer/set/list:
+    get:
+      tags: [Public Viewer BFF]
+      summary: Listado de sets para Discovery
+      description: >
+        Regresa una lista paginada de sets (SingleSetDTO) y headers de paginación estilo JHipster.
+        sort: RATING|RANDOM|RECENT
+        type: FREE|PAID|ALL
+      parameters:
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+            enum: [RATING, RANDOM, RECENT]
+            default: RECENT
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum: [FREE, PAID, ALL]
+            default: ALL
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - in: query
+          name: size
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: >
+            OK. Incluye headers de paginación (X-Total-Count y Link).
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: Total de elementos
+            Link:
+              schema:
+                type: string
+              description: Links RFC5988 para paginación
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SingleSetDTO'
+
+  /api/viewer/set/content/{id}:
+    get:
+      tags: [Public Viewer BFF]
+      summary: Contenido de set (preview o desbloqueado)
+      description: >
+        Si el set no está pagado, devuelve solo items públicos/preview.
+        Si está pagado, devuelve todo y downloadUrl (ZIP).
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentSetDTO'
+        '404':
+          description: No encontrado
+
+  /api/creator/{creatorId}:
+    get:
+      tags: [Public Creator BFF]
+      summary: Perfil público de creador + sets
+      parameters:
+        - in: path
+          name: creatorId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum: [FREE, PAID, ALL]
+            default: ALL
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - in: query
+          name: size
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatorProfileDTO'
+        '404':
+          description: No encontrado
+
+  /api/sets/{setId}:
+    get:
+      tags: [Public Set Detail BFF]
+      summary: Detalle de set (preview o desbloqueado)
+      parameters:
+        - in: path
+          name: setId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetDetailDTO'
+        '404':
+          description: No encontrado

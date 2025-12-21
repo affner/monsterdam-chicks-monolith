@@ -39,7 +39,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/creator/content")
+@RequestMapping("/api/creator/content")
 @Tag(name = "BFF Creator Content")
 public class CreatorContentController {
 

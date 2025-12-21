@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/bff/creator/dashboard")
+@RequestMapping("/api/creator/dashboard")
 @Tag(name = "BFF Creator Dashboard")
 public class CreatorDashboardController {
 

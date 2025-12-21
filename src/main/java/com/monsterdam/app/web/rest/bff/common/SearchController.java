@@ -1,4 +1,4 @@
-package com.monsterdam.app.web.rest.bff.nologin;
+package com.monsterdam.app.web.rest.bff.common;
 
 import com.monsterdam.app.service.PostFeedService;
 import com.monsterdam.app.service.UserLiteService;
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
 @RestController
-@RequestMapping("/api/bff/search")
+@RequestMapping("/api/search")
 @Tag(name = "BFF Search")
 public class SearchController {
 

@@ -1,4 +1,4 @@
-package com.monsterdam.app.web.rest.bff.nologin;
+package com.monsterdam.app.web.rest.bff.common;
 
 import com.monsterdam.app.service.AdminAnnouncementService;
 import com.monsterdam.app.service.HelpCategoryService;
@@ -20,7 +20,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/api/bff/landing")
+@RequestMapping("/api/landing")
 @Tag(name = "BFF Landing")
 public class LandingController {
 
