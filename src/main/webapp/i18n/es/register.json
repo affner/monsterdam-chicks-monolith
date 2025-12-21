@@ -2,14 +2,6 @@
   "register": {
     "title": "Registro",
     "form": {
-      "firstName": {
-        "label": "Nombre",
-        "placeholder": "Tu nombre"
-      },
-      "lastName": {
-        "label": "Apellidos",
-        "placeholder": "Tus apellidos"
-      },
       "fullName": {
         "label": "Nombre completo",
         "placeholder": "Nombre a mostrar"
@@ -28,16 +20,6 @@
     },
     "messages": {
       "validate": {
-        "firstName": {
-          "required": "Se requiere que ingreses tu nombre.",
-          "minlength": "Tu nombre debe tener al menos 1 caracter.",
-          "maxlength": "Tu nombre no puede tener más de 50 caracteres."
-        },
-        "lastName": {
-          "required": "Se requiere que ingreses tus apellidos.",
-          "minlength": "Tus apellidos deben tener al menos 1 caracter.",
-          "maxlength": "Tus apellidos no pueden tener más de 50 caracteres."
-        },
         "fullName": {
           "required": "Se requiere que ingreses tu nombre completo.",
           "pattern": "Solo se permiten letras, números y espacios."

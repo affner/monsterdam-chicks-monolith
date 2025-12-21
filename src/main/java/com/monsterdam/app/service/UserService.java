@@ -137,7 +137,6 @@ public class UserService {
         userRepository.save(newUser);
 
         UserProfile userProfile = new UserProfile();
-        userProfile.setId(newUser.getId());
         userProfile.setEmailContact(newUser.getEmail());
         userProfile.setLastLoginDate(Instant.now());
         userProfile.setCreatedDate(Instant.now());

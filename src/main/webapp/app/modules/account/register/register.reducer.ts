@@ -22,8 +22,6 @@ export const handleRegister = createAsyncThunk(
     email: string;
     password: string;
     langKey?: string;
-    firstName?: string;
-    lastName?: string;
     nickName: string;
     fullName: string;
     birthDate: string;
