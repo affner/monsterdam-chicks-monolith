@@ -34,7 +34,7 @@ export const forgetYourPasswordSelector = '[data-cy="forgetYourPasswordSelector"
 export const submitLoginSelector = '[data-cy="submit"]';
 
 // Register
-export const usernameRegisterSelector = '[data-cy="username"]';
+export const nicknameRegisterSelector = '[data-cy="nickName"]';
 export const emailRegisterSelector = '[data-cy="email"]';
 export const firstPasswordRegisterSelector = '[data-cy="firstPassword"]';
 export const secondPasswordRegisterSelector = '[data-cy="secondPassword"]';

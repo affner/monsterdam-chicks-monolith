@@ -144,7 +144,6 @@ public class UserService {
         userProfileRepository.save(userProfile);
 
         UserLite userLite = new UserLite();
-        userLite.setId(newUser.getId());
         userLite.setBirthDate(userDTO.getBirthDate());
         userLite.setGender(userDTO.getGender());
         userLite.setCreatedDate(Instant.now());

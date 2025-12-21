@@ -3,9 +3,9 @@ import {
   classValid,
   emailRegisterSelector,
   firstPasswordRegisterSelector,
+  nicknameRegisterSelector,
   secondPasswordRegisterSelector,
   submitRegisterSelector,
-  usernameRegisterSelector,
 } from '../../support/commands';
 
 describe('/account/register', () => {
@@ -27,12 +27,12 @@ describe('/account/register', () => {
     cy.get(submitRegisterSelector).should('be.visible');
   });
 
-  it('requires username', () => {
+  it('requires nickname', () => {
     cy.get(submitRegisterSelector).click();
-    cy.get(usernameRegisterSelector).should('have.class', classInvalid);
-    cy.get(usernameRegisterSelector).type('test');
-    cy.get(usernameRegisterSelector).blur();
-    cy.get(usernameRegisterSelector).should('have.class', classValid);
+    cy.get(nicknameRegisterSelector).should('have.class', classInvalid);
+    cy.get(nicknameRegisterSelector).type('test');
+    cy.get(nicknameRegisterSelector).blur();
+    cy.get(nicknameRegisterSelector).should('have.class', classValid);
   });
 
   it('should not accept invalid email', () => {
@@ -85,8 +85,11 @@ describe('/account/register', () => {
 
   it('register a valid user', () => {
     const randomEmail = 'Marina22@hotmail.com';
-    const randomUsername = 'Tod.Cartwright';
-    cy.get(usernameRegisterSelector).type(randomUsername);
+    const randomUsername = 'tod-cartwright';
+    cy.get('[data-cy="fullName"]').type('Test User');
+    cy.get(nicknameRegisterSelector).type(randomUsername);
+    cy.get('[data-cy="birthDate"]').type('1990-01-01');
+    cy.get('[data-cy="gender"]').select('MALE');
     cy.get(emailRegisterSelector).type(randomEmail);
     cy.get(firstPasswordRegisterSelector).type('jondoe');
     cy.get(secondPasswordRegisterSelector).type('jondoe');
