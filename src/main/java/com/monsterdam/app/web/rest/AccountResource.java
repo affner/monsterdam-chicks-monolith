@@ -7,9 +7,9 @@ import com.monsterdam.app.service.MailService;
 import com.monsterdam.app.service.UserService;
 import com.monsterdam.app.service.dto.AdminUserDTO;
 import com.monsterdam.app.service.dto.PasswordChangeDTO;
+import com.monsterdam.app.service.dto.RegisterUserDTO;
 import com.monsterdam.app.web.rest.errors.*;
 import com.monsterdam.app.web.rest.vm.KeyAndPasswordVM;
-import com.monsterdam.app.web.rest.vm.ManagedUserVM;
 import jakarta.validation.Valid;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -49,18 +49,18 @@ public class AccountResource {
     /**
      * {@code POST  /register} : register the user.
      *
-     * @param managedUserVM the managed user View Model.
+     * @param registerUserDTO the managed user View Model.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
+    public void registerAccount(@Valid @RequestBody RegisterUserDTO registerUserDTO) {
+        if (isPasswordLengthInvalid(registerUserDTO.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        User user = userService.registerUser(registerUserDTO, registerUserDTO.getPassword());
         mailService.sendActivationEmail(user);
     }
 
@@ -173,8 +173,8 @@ public class AccountResource {
     private static boolean isPasswordLengthInvalid(String password) {
         return (
             StringUtils.isEmpty(password) ||
-            password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
-            password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
+            password.length() < RegisterUserDTO.PASSWORD_MIN_LENGTH ||
+            password.length() > RegisterUserDTO.PASSWORD_MAX_LENGTH
         );
     }
 }

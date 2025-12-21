@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { handleRegister, reset } from './register.reducer';
+import { UserGender } from 'app/shared/model/enumerations/user-gender.model';
 
 export const RegisterPage = () => {
   const [password, setPassword] = useState('');
@@ -21,8 +22,21 @@ export const RegisterPage = () => {
 
   const currentLocale = useAppSelector(state => state.locale.currentLocale);
 
-  const handleValidSubmit = ({ username, email, firstPassword }) => {
-    dispatch(handleRegister({ login: username, email, password: firstPassword, langKey: currentLocale }));
+  const handleValidSubmit = ({ username, email, firstPassword, firstName, lastName, nickName, fullName, birthDate, gender }) => {
+    dispatch(
+      handleRegister({
+        login: username,
+        email,
+        password: firstPassword,
+        langKey: currentLocale,
+        firstName,
+        lastName,
+        nickName,
+        fullName,
+        birthDate,
+        gender,
+      }),
+    );
   };
 
   const updatePassword = event => setPassword(event.target.value);
@@ -47,6 +61,73 @@ export const RegisterPage = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <ValidatedForm id="register-form" onSubmit={handleValidSubmit}>
+            <ValidatedField
+              name="firstName"
+              label={translate('register.form.firstName.label')}
+              placeholder={translate('register.form.firstName.placeholder')}
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.firstName.required') },
+                minLength: { value: 1, message: translate('register.messages.validate.firstName.minlength') },
+                maxLength: { value: 50, message: translate('register.messages.validate.firstName.maxlength') },
+              }}
+              data-cy="firstName"
+            />
+            <ValidatedField
+              name="lastName"
+              label={translate('register.form.lastName.label')}
+              placeholder={translate('register.form.lastName.placeholder')}
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.lastName.required') },
+                minLength: { value: 1, message: translate('register.messages.validate.lastName.minlength') },
+                maxLength: { value: 50, message: translate('register.messages.validate.lastName.maxlength') },
+              }}
+              data-cy="lastName"
+            />
+            <ValidatedField
+              name="fullName"
+              label={translate('register.form.fullName.label')}
+              placeholder={translate('register.form.fullName.placeholder')}
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.fullName.required') },
+                pattern: { value: /^[a-zA-Z0-9 ]*$/, message: translate('register.messages.validate.fullName.pattern') },
+              }}
+              data-cy="fullName"
+            />
+            <ValidatedField
+              name="nickName"
+              label={translate('register.form.nickName.label')}
+              placeholder={translate('register.form.nickName.placeholder')}
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.nickName.required') },
+                pattern: { value: /^[a-z0-9_-]{3,16}$/, message: translate('register.messages.validate.nickName.pattern') },
+              }}
+              data-cy="nickName"
+            />
+            <ValidatedField
+              name="birthDate"
+              label={translate('register.form.birthDate.label')}
+              placeholder="YYYY-MM-DD"
+              type="date"
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.birthDate.required') },
+              }}
+              data-cy="birthDate"
+            />
+            <ValidatedField
+              name="gender"
+              label={translate('register.form.gender.label')}
+              type="select"
+              validate={{
+                required: { value: true, message: translate('register.messages.validate.gender.required') },
+              }}
+              data-cy="gender"
+            >
+              {Object.keys(UserGender).map(key => (
+                <option value={key} key={key}>
+                  {translate(`monsterdamChicksApp.UserGender.${key}`)}
+                </option>
+              ))}
+            </ValidatedField>
             <ValidatedField
               name="username"
               label={translate('global.form.username.label')}

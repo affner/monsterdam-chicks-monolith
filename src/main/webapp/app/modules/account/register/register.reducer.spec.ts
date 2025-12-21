@@ -81,7 +81,17 @@ describe('Creating account tests', () => {
     });
 
     it('dispatches CREATE_ACCOUNT_PENDING and CREATE_ACCOUNT_FULFILLED actions', async () => {
-      const arg = { login: '', email: '', password: '' };
+      const arg = {
+        login: '',
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        nickName: 'nick',
+        fullName: 'Full Name',
+        birthDate: '2000-01-01',
+        gender: 'MALE',
+      };
 
       const result = await handleRegister(arg)(dispatch, getState, extra);
 

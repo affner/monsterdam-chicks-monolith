@@ -2,10 +2,56 @@
   "register": {
     "title": "Registro",
     "form": {
+      "firstName": {
+        "label": "Nombre",
+        "placeholder": "Tu nombre"
+      },
+      "lastName": {
+        "label": "Apellidos",
+        "placeholder": "Tus apellidos"
+      },
+      "fullName": {
+        "label": "Nombre completo",
+        "placeholder": "Nombre a mostrar"
+      },
+      "nickName": {
+        "label": "Apodo",
+        "placeholder": "Apodo único"
+      },
+      "birthDate": {
+        "label": "Fecha de nacimiento"
+      },
+      "gender": {
+        "label": "Género"
+      },
       "button": "Crear la cuenta"
     },
     "messages": {
       "validate": {
+        "firstName": {
+          "required": "Se requiere que ingreses tu nombre.",
+          "minlength": "Tu nombre debe tener al menos 1 caracter.",
+          "maxlength": "Tu nombre no puede tener más de 50 caracteres."
+        },
+        "lastName": {
+          "required": "Se requiere que ingreses tus apellidos.",
+          "minlength": "Tus apellidos deben tener al menos 1 caracter.",
+          "maxlength": "Tus apellidos no pueden tener más de 50 caracteres."
+        },
+        "fullName": {
+          "required": "Se requiere que ingreses tu nombre completo.",
+          "pattern": "Solo se permiten letras, números y espacios."
+        },
+        "nickName": {
+          "required": "Se requiere que ingreses tu apodo.",
+          "pattern": "El apodo debe tener entre 3 y 16 caracteres usando minúsculas, números, guiones bajos o guiones."
+        },
+        "birthDate": {
+          "required": "La fecha de nacimiento es obligatoria."
+        },
+        "gender": {
+          "required": "Selecciona un género."
+        },
         "login": {
           "required": "Su nombre de usuario es obligatorio.",
           "minlength": "Su nombre de usuario debe tener al menos 1 caracter.",
