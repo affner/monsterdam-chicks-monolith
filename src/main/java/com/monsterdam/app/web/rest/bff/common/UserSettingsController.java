@@ -1,9 +1,7 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.repository.UserSettingsRepository;
 import com.monsterdam.app.service.UserSettingsService;
 import com.monsterdam.app.service.dto.UserSettingsDTO;
-import com.monsterdam.app.service.mapper.UserSettingsMapper;
 import com.monsterdam.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -42,17 +40,9 @@ public class UserSettingsController {
     private String applicationName;
 
     private final UserSettingsService userSettingsService;
-    private final UserSettingsRepository userSettingsRepository;
-    private final UserSettingsMapper userSettingsMapper;
 
-    public UserSettingsController(
-        UserSettingsService userSettingsService,
-        UserSettingsRepository userSettingsRepository,
-        UserSettingsMapper userSettingsMapper
-    ) {
+    public UserSettingsController(UserSettingsService userSettingsService) {
         this.userSettingsService = userSettingsService;
-        this.userSettingsRepository = userSettingsRepository;
-        this.userSettingsMapper = userSettingsMapper;
     }
 
     @PostMapping("")
@@ -79,7 +69,7 @@ public class UserSettingsController {
         if (!Objects.equals(id, userSettingsDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-        if (!userSettingsRepository.existsByIdAndDeletedDateIsNull(id)) {
+        if (userSettingsService.logicalGet(id).isEmpty()) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
         UserSettingsDTO result = userSettingsService.update(userSettingsDTO);
@@ -100,7 +90,7 @@ public class UserSettingsController {
         if (!Objects.equals(id, userSettingsDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-        if (!userSettingsRepository.existsByIdAndDeletedDateIsNull(id)) {
+        if (userSettingsService.logicalGet(id).isEmpty()) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
         return ResponseUtil.wrapOrNotFound(
@@ -114,9 +104,7 @@ public class UserSettingsController {
         @org.springdoc.core.annotations.ParameterObject org.springframework.data.domain.Pageable pageable
     ) {
         LOG.debug("REST request to get page of UserSettings from BFF");
-        org.springframework.data.domain.Page<UserSettingsDTO> page = userSettingsRepository
-            .findAllByDeletedDateIsNull(pageable)
-            .map(userSettingsMapper::toDto);
+        org.springframework.data.domain.Page<UserSettingsDTO> page = userSettingsService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -124,6 +112,6 @@ public class UserSettingsController {
     @GetMapping("/{id}")
     public ResponseEntity<UserSettingsDTO> getSettings(@PathVariable Long id) {
         LOG.debug("REST request to get UserSettings from BFF : {}", id);
-        return ResponseUtil.wrapOrNotFound(userSettingsRepository.findByIdAndDeletedDateIsNull(id).map(userSettingsMapper::toDto));
+        return ResponseUtil.wrapOrNotFound(userSettingsService.logicalGet(id));
     }
 }

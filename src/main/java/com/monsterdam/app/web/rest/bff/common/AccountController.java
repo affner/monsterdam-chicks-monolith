@@ -1,10 +1,9 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.repository.UserLiteRepository;
+import com.monsterdam.app.service.UserLiteService;
 import com.monsterdam.app.service.UserService;
 import com.monsterdam.app.service.dto.AdminUserDTO;
 import com.monsterdam.app.service.dto.UserLiteDTO;
-import com.monsterdam.app.service.mapper.UserLiteMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +27,11 @@ public class AccountController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
     private final UserService userService;
-    private final UserLiteRepository userLiteRepository;
-    private final UserLiteMapper userLiteMapper;
+    private final UserLiteService userLiteService;
 
-    public AccountController(UserService userService, UserLiteRepository userLiteRepository, UserLiteMapper userLiteMapper) {
+    public AccountController(UserService userService, UserLiteService userLiteService) {
         this.userService = userService;
-        this.userLiteRepository = userLiteRepository;
-        this.userLiteMapper = userLiteMapper;
+        this.userLiteService = userLiteService;
     }
 
     @GetMapping("/me")
@@ -46,7 +43,7 @@ public class AccountController {
     @GetMapping("/users")
     public ResponseEntity<java.util.List<UserLiteDTO>> listUsers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get BFF users page");
-        Page<UserLiteDTO> page = userLiteRepository.findAllByDeletedDateIsNull(pageable).map(userLiteMapper::toDto);
+        Page<UserLiteDTO> page = userLiteService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -54,6 +51,6 @@ public class AccountController {
     @GetMapping("/users/{id}")
     public ResponseEntity<UserLiteDTO> getUser(@PathVariable Long id) {
         LOG.debug("REST request to get BFF user {}", id);
-        return ResponseUtil.wrapOrNotFound(userLiteRepository.findByIdAndDeletedDateIsNull(id).map(userLiteMapper::toDto));
+        return ResponseUtil.wrapOrNotFound(userLiteService.logicalGet(id));
     }
 }
