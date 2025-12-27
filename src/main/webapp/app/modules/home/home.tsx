@@ -2,98 +2,84 @@ import './home.scss';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Translate } from 'react-jhipster';
-import { Alert, Col, Row } from 'reactstrap';
+import { Alert, Badge, Button, Col, Row } from 'reactstrap';
 
 import { useAppSelector } from 'app/config/store';
+import { AUTHORITIES } from 'app/config/constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { usePublicNavigation } from 'app/shared/hooks/use-public-navigation';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
+  const isAuthenticated = useAppSelector(state => state.authentication.isAuthenticated);
+  const { items, loading, hasError } = usePublicNavigation();
+  const isViewer = hasAnyAuthority(account?.authorities ?? [], [AUTHORITIES.VIEWER]);
+  const isCreator = hasAnyAuthority(account?.authorities ?? [], [AUTHORITIES.CREATOR]);
 
   return (
-    <Row>
-      <Col md="3" className="pad">
-        <span className="hipster rounded" />
-      </Col>
-      <Col md="9">
-        <h1 className="display-4">
-          <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
-        </h1>
-        <p className="lead">
-          <Translate contentKey="home.subtitle">This is your homepage</Translate>
-        </p>
-        {account?.login ? (
-          <div>
-            <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
-                You are logged in as user {account.login}.
-              </Translate>
+    <div className="public-home">
+      <Row className="public-home__hero">
+        <Col lg="8">
+          <h1>Monsterdam</h1>
+          <p className="lead">Bienvenido/a. Esta es la navegación principal para visitantes anónimos y viewers, alimentada desde el BFF.</p>
+          {isAuthenticated ? (
+            <Alert color="success" className="public-home__alert">
+              Sesión activa para <strong>{account?.login}</strong>.&nbsp;
+              {isViewer && <Badge color="info">Viewer</Badge>}&nbsp;
+              {isCreator && <Badge color="secondary">Creator</Badge>}
             </Alert>
+          ) : (
+            <Alert color="warning" className="public-home__alert">
+              Estás navegando como <strong>ANON</strong>. Puedes explorar el contenido y luego iniciar sesión cuando quieras.
+            </Alert>
+          )}
+          <div className="public-home__actions">
+            {!isAuthenticated && (
+              <Button color="primary" tag={Link} to="/login">
+                Iniciar sesión
+              </Button>
+            )}
+            {!isAuthenticated && (
+              <Button color="outline-primary" tag={Link} to="/account/register">
+                Registrarme
+              </Button>
+            )}
+            {isAuthenticated && (
+              <Button color="primary" tag={Link} to="/public/explorar">
+                Continuar navegando
+              </Button>
+            )}
           </div>
-        ) : (
-          <div>
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
-
-              <Link to="/login" className="alert-link">
-                <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
-              </Link>
-              <Translate contentKey="global.messages.info.authenticated.suffix">
-                , you can try the default accounts:
-                <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;)
-                <br />- User (login=&quot;user&quot; and password=&quot;user&quot;).
-              </Translate>
-            </Alert>
-
-            <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-              <Link to="/account/register" className="alert-link">
-                <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-              </Link>
-            </Alert>
+        </Col>
+      </Row>
+      <Row className="public-home__navigation">
+        <Col lg="12">
+          <h2>Menú principal</h2>
+          <p className="text-muted">
+            {loading && 'Cargando navegación desde el BFF...'}
+            {!loading && hasError && 'Mostrando navegación local mientras se configura el BFF.'}
+            {!loading && !hasError && 'Navegación activa desde el BFF.'}
+          </p>
+          <div className="public-home__cards">
+            {items.map(item => (
+              <div key={item.id ?? item.path} className="public-home__card">
+                <h3>{item.label}</h3>
+                {item.description && <p>{item.description}</p>}
+                {item.path.startsWith('http') ? (
+                  <Button color="link" href={item.path} target="_blank" rel="noopener noreferrer">
+                    Abrir
+                  </Button>
+                ) : (
+                  <Button color="link" tag={Link} to={item.path}>
+                    Entrar
+                  </Button>
+                )}
+              </div>
+            ))}
           </div>
-        )}
-        <p>
-          <Translate contentKey="home.question">If you have any question on JHipster:</Translate>
-        </p>
-
-        <ul>
-          <li>
-            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.homepage">JHipster homepage</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.stackoverflow">JHipster on Stack Overflow</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.bugtracker">JHipster bug tracker</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.chat">JHipster public chat room</Translate>
-            </a>
-          </li>
-          <li>
-            <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">
-              <Translate contentKey="home.link.follow">follow @jhipster on Twitter</Translate>
-            </a>
-          </li>
-        </ul>
-
-        <p>
-          <Translate contentKey="home.like">If you like JHipster, do not forget to give us a star on</Translate>{' '}
-          <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          !
-        </p>
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
