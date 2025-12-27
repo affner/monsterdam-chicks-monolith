@@ -27,6 +27,6 @@ public class SetDetailController {
     @GetMapping("/sets/{setId}")
     public ResponseEntity<SetDetailDTO> getSetDetail(@PathVariable("setId") Long setId) {
         LOG.debug("REST request to get set detail {}", setId);
-        return ResponseEntity.ok(viewerBffService.getSetDetail(setId));
+        return ResponseEntity.ok(viewerBffService.getSetDetailCanonical(setId));
     }
 }

@@ -1,6 +1,6 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.service.UserSettingsService;
+import com.monsterdam.app.service.bff.ViewerBffService;
 import com.monsterdam.app.service.dto.bff.MenuDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class MenuController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MenuController.class);
+    private final ViewerBffService viewerBffService;
+
+    public MenuController(ViewerBffService viewerBffService) {
+        this.viewerBffService = viewerBffService;
+    }
 
     @GetMapping("/menu")
     public ResponseEntity<MenuDTO> getMenu() {
         LOG.debug("REST request to get viewer menu");
-        //        return ResponseEntity.ok(commonservice.buildMenu());
-        return null;
+        return ResponseEntity.ok(viewerBffService.buildMenu());
     }
 }

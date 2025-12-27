@@ -1,18 +1,16 @@
 package com.monsterdam.app.web.rest.bff.creator;
 
-import com.monsterdam.app.service.MoneyEarningService;
-import com.monsterdam.app.service.PostFeedService;
-import com.monsterdam.app.service.SingleAudioService;
-import com.monsterdam.app.service.SinglePhotoService;
-import com.monsterdam.app.service.SingleVideoService;
-import com.monsterdam.app.service.dto.MoneyEarningDTO;
+import com.monsterdam.app.repository.MoneyEarningRepository;
+import com.monsterdam.app.repository.PostFeedRepository;
+import com.monsterdam.app.repository.SingleAudioRepository;
+import com.monsterdam.app.repository.SinglePhotoRepository;
+import com.monsterdam.app.repository.SingleVideoRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,39 +24,38 @@ public class CreatorDashboardController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreatorDashboardController.class);
 
-    private final PostFeedService postFeedService;
-    private final SingleVideoService singleVideoService;
-    private final SinglePhotoService singlePhotoService;
-    private final SingleAudioService singleAudioService;
-    private final MoneyEarningService moneyEarningService;
+    private final PostFeedRepository postFeedRepository;
+    private final SingleVideoRepository singleVideoRepository;
+    private final SinglePhotoRepository singlePhotoRepository;
+    private final SingleAudioRepository singleAudioRepository;
+    private final MoneyEarningRepository moneyEarningRepository;
 
     public CreatorDashboardController(
-        PostFeedService postFeedService,
-        SingleVideoService singleVideoService,
-        SinglePhotoService singlePhotoService,
-        SingleAudioService singleAudioService,
-        MoneyEarningService moneyEarningService
+        PostFeedRepository postFeedRepository,
+        SingleVideoRepository singleVideoRepository,
+        SinglePhotoRepository singlePhotoRepository,
+        SingleAudioRepository singleAudioRepository,
+        MoneyEarningRepository moneyEarningRepository
     ) {
-        this.postFeedService = postFeedService;
-        this.singleVideoService = singleVideoService;
-        this.singlePhotoService = singlePhotoService;
-        this.singleAudioService = singleAudioService;
-        this.moneyEarningService = moneyEarningService;
+        this.postFeedRepository = postFeedRepository;
+        this.singleVideoRepository = singleVideoRepository;
+        this.singlePhotoRepository = singlePhotoRepository;
+        this.singleAudioRepository = singleAudioRepository;
+        this.moneyEarningRepository = moneyEarningRepository;
     }
 
     @GetMapping("/summary")
     public ResponseEntity<CreatorDashboardSummary> getDashboardSummary() {
         LOG.debug("REST request to get creator dashboard summary from BFF");
-        long postCount = postFeedService.findAll(Pageable.unpaged()).getTotalElements();
-        long videoCount = singleVideoService.findAll(Pageable.unpaged()).getTotalElements();
-        long photoCount = singlePhotoService.findAll(Pageable.unpaged()).getTotalElements();
-        long audioCount = singleAudioService.findAll(Pageable.unpaged()).getTotalElements();
+        long postCount = postFeedRepository.findAllByDeletedDateIsNull(Pageable.unpaged()).getTotalElements();
+        long videoCount = singleVideoRepository.findAllByDeletedDateIsNull(Pageable.unpaged()).getTotalElements();
+        long photoCount = singlePhotoRepository.findAllByDeletedDateIsNull(Pageable.unpaged()).getTotalElements();
+        long audioCount = singleAudioRepository.findAllByDeletedDateIsNull(Pageable.unpaged()).getTotalElements();
 
-        Page<MoneyEarningDTO> earningsPage = moneyEarningService.findAll(Pageable.unpaged());
-        BigDecimal totalEarnings = earningsPage
-            .getContent()
+        BigDecimal totalEarnings = moneyEarningRepository
+            .findAllByDeletedDateIsNull(Pageable.unpaged())
             .stream()
-            .map(MoneyEarningDTO::getAmount)
+            .map(earning -> earning.getAmount())
             .filter(Objects::nonNull)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 

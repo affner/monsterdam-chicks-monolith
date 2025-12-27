@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserLiteRepository extends LogicalDeletionRepository<UserLite> {}
+public interface UserLiteRepository extends LogicalDeletionRepository<UserLite>, JpaSpecificationExecutor<UserLite> {}
