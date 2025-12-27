@@ -1,11 +1,9 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.repository.PostFeedRepository;
-import com.monsterdam.app.repository.UserLiteRepository;
+import com.monsterdam.app.service.PostFeedService;
+import com.monsterdam.app.service.UserLiteService;
 import com.monsterdam.app.service.dto.PostFeedDTO;
 import com.monsterdam.app.service.dto.UserLiteDTO;
-import com.monsterdam.app.service.mapper.PostFeedMapper;
-import com.monsterdam.app.service.mapper.UserLiteMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collections;
 import java.util.List;
@@ -33,21 +31,12 @@ public class SearchController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
-    private final PostFeedRepository postFeedRepository;
-    private final UserLiteRepository userLiteRepository;
-    private final PostFeedMapper postFeedMapper;
-    private final UserLiteMapper userLiteMapper;
+    private final PostFeedService postFeedService;
+    private final UserLiteService userLiteService;
 
-    public SearchController(
-        PostFeedRepository postFeedRepository,
-        UserLiteRepository userLiteRepository,
-        PostFeedMapper postFeedMapper,
-        UserLiteMapper userLiteMapper
-    ) {
-        this.postFeedRepository = postFeedRepository;
-        this.userLiteRepository = userLiteRepository;
-        this.postFeedMapper = postFeedMapper;
-        this.userLiteMapper = userLiteMapper;
+    public SearchController(PostFeedService postFeedService, UserLiteService userLiteService) {
+        this.postFeedService = postFeedService;
+        this.userLiteService = userLiteService;
     }
 
     @GetMapping("/posts")
@@ -56,12 +45,11 @@ public class SearchController {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         LOG.debug("REST request to search posts from BFF query={}", query);
-        List<PostFeedDTO> allPosts = postFeedRepository
-            .findAllByDeletedDateIsNull(Pageable.unpaged())
+        List<PostFeedDTO> allPosts = postFeedService
+            .logicalFindAll(Pageable.unpaged())
             .stream()
             .filter(post -> Boolean.TRUE.equals(post.getIsPublic()))
             .filter(post -> matchText(post.getPostContent(), query))
-            .map(postFeedMapper::toDto)
             .collect(Collectors.toList());
         Page<PostFeedDTO> page = paginate(allPosts, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
@@ -74,11 +62,10 @@ public class SearchController {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         LOG.debug("REST request to search users from BFF query={}", query);
-        List<UserLiteDTO> allUsers = userLiteRepository
-            .findAllByDeletedDateIsNull(Pageable.unpaged())
+        List<UserLiteDTO> allUsers = userLiteService
+            .logicalFindAll(Pageable.unpaged())
             .stream()
             .filter(user -> matchText(user.getNickName(), query) || matchText(user.getFullName(), query))
-            .map(userLiteMapper::toDto)
             .collect(Collectors.toList());
 
         Page<UserLiteDTO> page = paginate(allUsers, pageable);

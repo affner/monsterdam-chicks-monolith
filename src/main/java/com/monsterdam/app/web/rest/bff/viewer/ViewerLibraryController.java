@@ -1,14 +1,11 @@
 package com.monsterdam.app.web.rest.bff.viewer;
 
-import com.monsterdam.app.repository.PurchasedContentRepository;
-import com.monsterdam.app.repository.PurchasedSubscriptionRepository;
-import com.monsterdam.app.repository.ViewerWalletRepository;
+import com.monsterdam.app.service.PurchasedContentService;
+import com.monsterdam.app.service.PurchasedSubscriptionService;
+import com.monsterdam.app.service.ViewerWalletService;
 import com.monsterdam.app.service.dto.PurchasedContentDTO;
 import com.monsterdam.app.service.dto.PurchasedSubscriptionDTO;
 import com.monsterdam.app.service.dto.ViewerWalletDTO;
-import com.monsterdam.app.service.mapper.PurchasedContentMapper;
-import com.monsterdam.app.service.mapper.PurchasedSubscriptionMapper;
-import com.monsterdam.app.service.mapper.ViewerWalletMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -35,27 +32,18 @@ public class ViewerLibraryController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ViewerLibraryController.class);
 
-    private final PurchasedContentRepository purchasedContentRepository;
-    private final PurchasedSubscriptionRepository purchasedSubscriptionRepository;
-    private final ViewerWalletRepository viewerWalletRepository;
-    private final PurchasedContentMapper purchasedContentMapper;
-    private final PurchasedSubscriptionMapper purchasedSubscriptionMapper;
-    private final ViewerWalletMapper viewerWalletMapper;
+    private final PurchasedContentService purchasedContentService;
+    private final PurchasedSubscriptionService purchasedSubscriptionService;
+    private final ViewerWalletService viewerWalletService;
 
     public ViewerLibraryController(
-        PurchasedContentRepository purchasedContentRepository,
-        PurchasedSubscriptionRepository purchasedSubscriptionRepository,
-        ViewerWalletRepository viewerWalletRepository,
-        PurchasedContentMapper purchasedContentMapper,
-        PurchasedSubscriptionMapper purchasedSubscriptionMapper,
-        ViewerWalletMapper viewerWalletMapper
+        PurchasedContentService purchasedContentService,
+        PurchasedSubscriptionService purchasedSubscriptionService,
+        ViewerWalletService viewerWalletService
     ) {
-        this.purchasedContentRepository = purchasedContentRepository;
-        this.purchasedSubscriptionRepository = purchasedSubscriptionRepository;
-        this.viewerWalletRepository = viewerWalletRepository;
-        this.purchasedContentMapper = purchasedContentMapper;
-        this.purchasedSubscriptionMapper = purchasedSubscriptionMapper;
-        this.viewerWalletMapper = viewerWalletMapper;
+        this.purchasedContentService = purchasedContentService;
+        this.purchasedSubscriptionService = purchasedSubscriptionService;
+        this.viewerWalletService = viewerWalletService;
     }
 
     @GetMapping("/content")
@@ -63,7 +51,7 @@ public class ViewerLibraryController {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         LOG.debug("REST request to get purchased content from BFF");
-        Page<PurchasedContentDTO> page = purchasedContentRepository.findAllByDeletedDateIsNull(pageable).map(purchasedContentMapper::toDto);
+        Page<PurchasedContentDTO> page = purchasedContentService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -73,9 +61,7 @@ public class ViewerLibraryController {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         LOG.debug("REST request to get purchased subscriptions from BFF");
-        Page<PurchasedSubscriptionDTO> page = purchasedSubscriptionRepository
-            .findAllByDeletedDateIsNull(pageable)
-            .map(purchasedSubscriptionMapper::toDto);
+        Page<PurchasedSubscriptionDTO> page = purchasedSubscriptionService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -83,7 +69,7 @@ public class ViewerLibraryController {
     @GetMapping("/wallets")
     public ResponseEntity<List<ViewerWalletDTO>> getViewerWallets(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get viewer wallets from BFF library");
-        Page<ViewerWalletDTO> page = viewerWalletRepository.findAllByDeletedDateIsNull(pageable).map(viewerWalletMapper::toDto);
+        Page<ViewerWalletDTO> page = viewerWalletService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

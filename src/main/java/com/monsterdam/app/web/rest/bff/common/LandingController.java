@@ -1,11 +1,9 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.repository.AdminAnnouncementRepository;
-import com.monsterdam.app.repository.HelpCategoryRepository;
+import com.monsterdam.app.service.AdminAnnouncementService;
+import com.monsterdam.app.service.HelpCategoryService;
 import com.monsterdam.app.service.dto.AdminAnnouncementDTO;
 import com.monsterdam.app.service.dto.HelpCategoryDTO;
-import com.monsterdam.app.service.mapper.AdminAnnouncementMapper;
-import com.monsterdam.app.service.mapper.HelpCategoryMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.slf4j.Logger;
@@ -28,27 +26,18 @@ public class LandingController {
 
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
-    private final AdminAnnouncementRepository adminAnnouncementRepository;
-    private final HelpCategoryRepository helpCategoryRepository;
-    private final AdminAnnouncementMapper adminAnnouncementMapper;
-    private final HelpCategoryMapper helpCategoryMapper;
+    private final AdminAnnouncementService adminAnnouncementService;
+    private final HelpCategoryService helpCategoryService;
 
-    public LandingController(
-        AdminAnnouncementRepository adminAnnouncementRepository,
-        HelpCategoryRepository helpCategoryRepository,
-        AdminAnnouncementMapper adminAnnouncementMapper,
-        HelpCategoryMapper helpCategoryMapper
-    ) {
-        this.adminAnnouncementRepository = adminAnnouncementRepository;
-        this.helpCategoryRepository = helpCategoryRepository;
-        this.adminAnnouncementMapper = adminAnnouncementMapper;
-        this.helpCategoryMapper = helpCategoryMapper;
+    public LandingController(AdminAnnouncementService adminAnnouncementService, HelpCategoryService helpCategoryService) {
+        this.adminAnnouncementService = adminAnnouncementService;
+        this.helpCategoryService = helpCategoryService;
     }
 
     @GetMapping("/announcements")
     public ResponseEntity<List<AdminAnnouncementDTO>> getAnnouncements(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get landing announcements from BFF");
-        Page<AdminAnnouncementDTO> page = adminAnnouncementRepository.findAll(pageable).map(adminAnnouncementMapper::toDto);
+        Page<AdminAnnouncementDTO> page = adminAnnouncementService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -56,14 +45,14 @@ public class LandingController {
     @GetMapping("/announcements/latest")
     public ResponseEntity<AdminAnnouncementDTO> getLatestAnnouncement() {
         LOG.debug("REST request to get latest announcement from BFF");
-        Page<AdminAnnouncementDTO> page = adminAnnouncementRepository.findAll(Pageable.ofSize(1)).map(adminAnnouncementMapper::toDto);
+        Page<AdminAnnouncementDTO> page = adminAnnouncementService.findAll(Pageable.ofSize(1));
         return ResponseUtil.wrapOrNotFound(page.stream().findFirst());
     }
 
     @GetMapping("/help-categories")
     public ResponseEntity<List<HelpCategoryDTO>> getHelpCategories(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get help categories from BFF");
-        Page<HelpCategoryDTO> page = helpCategoryRepository.findAllByDeletedDateIsNull(pageable).map(helpCategoryMapper::toDto);
+        Page<HelpCategoryDTO> page = helpCategoryService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

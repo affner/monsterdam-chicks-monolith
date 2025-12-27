@@ -1,22 +1,15 @@
 package com.monsterdam.app.web.rest.bff.creator;
 
-import com.monsterdam.app.repository.ContentPackageRepository;
-import com.monsterdam.app.repository.PostFeedRepository;
-import com.monsterdam.app.repository.SingleAudioRepository;
-import com.monsterdam.app.repository.SinglePhotoRepository;
-import com.monsterdam.app.repository.SingleVideoRepository;
 import com.monsterdam.app.service.ContentPackageService;
 import com.monsterdam.app.service.PostFeedService;
+import com.monsterdam.app.service.SingleAudioService;
+import com.monsterdam.app.service.SinglePhotoService;
+import com.monsterdam.app.service.SingleVideoService;
 import com.monsterdam.app.service.dto.ContentPackageDTO;
 import com.monsterdam.app.service.dto.PostFeedDTO;
 import com.monsterdam.app.service.dto.SingleAudioDTO;
 import com.monsterdam.app.service.dto.SinglePhotoDTO;
 import com.monsterdam.app.service.dto.SingleVideoDTO;
-import com.monsterdam.app.service.mapper.ContentPackageMapper;
-import com.monsterdam.app.service.mapper.PostFeedMapper;
-import com.monsterdam.app.service.mapper.SingleAudioMapper;
-import com.monsterdam.app.service.mapper.SinglePhotoMapper;
-import com.monsterdam.app.service.mapper.SingleVideoMapper;
 import com.monsterdam.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -57,49 +50,28 @@ public class CreatorContentController {
 
     private final PostFeedService postFeedService;
     private final ContentPackageService contentPackageService;
-    private final PostFeedRepository postFeedRepository;
-    private final ContentPackageRepository contentPackageRepository;
-    private final SingleVideoRepository singleVideoRepository;
-    private final SinglePhotoRepository singlePhotoRepository;
-    private final SingleAudioRepository singleAudioRepository;
-    private final PostFeedMapper postFeedMapper;
-    private final SingleVideoMapper singleVideoMapper;
-    private final SinglePhotoMapper singlePhotoMapper;
-    private final SingleAudioMapper singleAudioMapper;
-    private final ContentPackageMapper contentPackageMapper;
+    private final SingleVideoService singleVideoService;
+    private final SinglePhotoService singlePhotoService;
+    private final SingleAudioService singleAudioService;
 
     public CreatorContentController(
         PostFeedService postFeedService,
         ContentPackageService contentPackageService,
-        PostFeedRepository postFeedRepository,
-        ContentPackageRepository contentPackageRepository,
-        SingleVideoRepository singleVideoRepository,
-        SinglePhotoRepository singlePhotoRepository,
-        SingleAudioRepository singleAudioRepository,
-        PostFeedMapper postFeedMapper,
-        SingleVideoMapper singleVideoMapper,
-        SinglePhotoMapper singlePhotoMapper,
-        SingleAudioMapper singleAudioMapper,
-        ContentPackageMapper contentPackageMapper
+        SingleVideoService singleVideoService,
+        SinglePhotoService singlePhotoService,
+        SingleAudioService singleAudioService
     ) {
         this.postFeedService = postFeedService;
         this.contentPackageService = contentPackageService;
-        this.postFeedRepository = postFeedRepository;
-        this.contentPackageRepository = contentPackageRepository;
-        this.singleVideoRepository = singleVideoRepository;
-        this.singlePhotoRepository = singlePhotoRepository;
-        this.singleAudioRepository = singleAudioRepository;
-        this.postFeedMapper = postFeedMapper;
-        this.singleVideoMapper = singleVideoMapper;
-        this.singlePhotoMapper = singlePhotoMapper;
-        this.singleAudioMapper = singleAudioMapper;
-        this.contentPackageMapper = contentPackageMapper;
+        this.singleVideoService = singleVideoService;
+        this.singlePhotoService = singlePhotoService;
+        this.singleAudioService = singleAudioService;
     }
 
     @GetMapping("/posts")
     public ResponseEntity<List<PostFeedDTO>> getCreatorPosts(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator posts from BFF");
-        Page<PostFeedDTO> page = postFeedRepository.findAllByDeletedDateIsNull(pageable).map(postFeedMapper::toDto);
+        Page<PostFeedDTO> page = postFeedService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -128,7 +100,7 @@ public class CreatorContentController {
         if (!Objects.equals(id, postFeedDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", POST_ENTITY_NAME, "idinvalid");
         }
-        if (!postFeedRepository.existsByIdAndDeletedDateIsNull(id)) {
+        if (postFeedService.logicalGet(id).isEmpty()) {
             throw new BadRequestAlertException("Entity not found", POST_ENTITY_NAME, "idnotfound");
         }
         PostFeedDTO result = postFeedService.update(postFeedDTO);
@@ -140,7 +112,7 @@ public class CreatorContentController {
     @GetMapping("/videos")
     public ResponseEntity<List<SingleVideoDTO>> getCreatorVideos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator videos from BFF");
-        Page<SingleVideoDTO> page = singleVideoRepository.findAllByDeletedDateIsNull(pageable).map(singleVideoMapper::toDto);
+        Page<SingleVideoDTO> page = singleVideoService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -148,7 +120,7 @@ public class CreatorContentController {
     @GetMapping("/photos")
     public ResponseEntity<List<SinglePhotoDTO>> getCreatorPhotos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator photos from BFF");
-        Page<SinglePhotoDTO> page = singlePhotoRepository.findAllByDeletedDateIsNull(pageable).map(singlePhotoMapper::toDto);
+        Page<SinglePhotoDTO> page = singlePhotoService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -156,7 +128,7 @@ public class CreatorContentController {
     @GetMapping("/audios")
     public ResponseEntity<List<SingleAudioDTO>> getCreatorAudios(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator audios from BFF");
-        Page<SingleAudioDTO> page = singleAudioRepository.findAllByDeletedDateIsNull(pageable).map(singleAudioMapper::toDto);
+        Page<SingleAudioDTO> page = singleAudioService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -164,7 +136,7 @@ public class CreatorContentController {
     @GetMapping("/packages")
     public ResponseEntity<List<ContentPackageDTO>> getCreatorPackages(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator content packages from BFF");
-        Page<ContentPackageDTO> page = contentPackageRepository.findAllByDeletedDateIsNull(pageable).map(contentPackageMapper::toDto);
+        Page<ContentPackageDTO> page = contentPackageService.logicalFindAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -194,7 +166,7 @@ public class CreatorContentController {
         if (!Objects.equals(id, contentPackageDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", PACKAGE_ENTITY_NAME, "idinvalid");
         }
-        if (!contentPackageRepository.existsByIdAndDeletedDateIsNull(id)) {
+        if (contentPackageService.logicalGet(id).isEmpty()) {
             throw new BadRequestAlertException("Entity not found", PACKAGE_ENTITY_NAME, "idnotfound");
         }
         ContentPackageDTO result = contentPackageService.update(contentPackageDTO);
@@ -206,6 +178,6 @@ public class CreatorContentController {
     @GetMapping("/packages/{id}")
     public ResponseEntity<ContentPackageDTO> getCreatorPackage(@PathVariable Long id) {
         LOG.debug("REST request to get ContentPackage from BFF : {}", id);
-        return ResponseUtil.wrapOrNotFound(contentPackageRepository.findByIdAndDeletedDateIsNull(id).map(contentPackageMapper::toDto));
+        return ResponseUtil.wrapOrNotFound(contentPackageService.logicalGet(id));
     }
 }
