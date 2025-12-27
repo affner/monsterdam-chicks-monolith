@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ContentPackageRepository extends LogicalDeletionRepository<ContentPackage> {}
+public interface ContentPackageRepository extends LogicalDeletionRepository<ContentPackage>, JpaSpecificationExecutor<ContentPackage> {}

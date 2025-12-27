@@ -1,11 +1,14 @@
 package com.monsterdam.app.web.rest.bff.creator;
 
-import com.monsterdam.app.service.MoneyEarningService;
-import com.monsterdam.app.service.MoneyGiftService;
-import com.monsterdam.app.service.ViewerWalletService;
+import com.monsterdam.app.repository.MoneyEarningRepository;
+import com.monsterdam.app.repository.MoneyGiftRepository;
+import com.monsterdam.app.repository.ViewerWalletRepository;
 import com.monsterdam.app.service.dto.MoneyEarningDTO;
 import com.monsterdam.app.service.dto.MoneyGiftDTO;
 import com.monsterdam.app.service.dto.ViewerWalletDTO;
+import com.monsterdam.app.service.mapper.MoneyEarningMapper;
+import com.monsterdam.app.service.mapper.MoneyGiftMapper;
+import com.monsterdam.app.service.mapper.ViewerWalletMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.slf4j.Logger;
@@ -27,24 +30,33 @@ public class EarningsController {
 
     private static final Logger LOG = LoggerFactory.getLogger(EarningsController.class);
 
-    private final MoneyEarningService moneyEarningService;
-    private final MoneyGiftService moneyGiftService;
-    private final ViewerWalletService viewerWalletService;
+    private final MoneyEarningRepository moneyEarningRepository;
+    private final MoneyGiftRepository moneyGiftRepository;
+    private final ViewerWalletRepository viewerWalletRepository;
+    private final MoneyEarningMapper moneyEarningMapper;
+    private final MoneyGiftMapper moneyGiftMapper;
+    private final ViewerWalletMapper viewerWalletMapper;
 
     public EarningsController(
-        MoneyEarningService moneyEarningService,
-        MoneyGiftService moneyGiftService,
-        ViewerWalletService viewerWalletService
+        MoneyEarningRepository moneyEarningRepository,
+        MoneyGiftRepository moneyGiftRepository,
+        ViewerWalletRepository viewerWalletRepository,
+        MoneyEarningMapper moneyEarningMapper,
+        MoneyGiftMapper moneyGiftMapper,
+        ViewerWalletMapper viewerWalletMapper
     ) {
-        this.moneyEarningService = moneyEarningService;
-        this.moneyGiftService = moneyGiftService;
-        this.viewerWalletService = viewerWalletService;
+        this.moneyEarningRepository = moneyEarningRepository;
+        this.moneyGiftRepository = moneyGiftRepository;
+        this.viewerWalletRepository = viewerWalletRepository;
+        this.moneyEarningMapper = moneyEarningMapper;
+        this.moneyGiftMapper = moneyGiftMapper;
+        this.viewerWalletMapper = viewerWalletMapper;
     }
 
     @GetMapping("")
     public ResponseEntity<List<MoneyEarningDTO>> getEarnings(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator earnings from BFF");
-        Page<MoneyEarningDTO> page = moneyEarningService.findAll(pageable);
+        Page<MoneyEarningDTO> page = moneyEarningRepository.findAllByDeletedDateIsNull(pageable).map(moneyEarningMapper::toDto);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -52,7 +64,7 @@ public class EarningsController {
     @GetMapping("/gifts")
     public ResponseEntity<List<MoneyGiftDTO>> getGifts(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get creator gifts from BFF");
-        Page<MoneyGiftDTO> page = moneyGiftService.findAll(pageable);
+        Page<MoneyGiftDTO> page = moneyGiftRepository.findAllByDeletedDateIsNull(pageable).map(moneyGiftMapper::toDto);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -60,7 +72,7 @@ public class EarningsController {
     @GetMapping("/wallets")
     public ResponseEntity<List<ViewerWalletDTO>> getWallets(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get viewer wallets from BFF");
-        Page<ViewerWalletDTO> page = viewerWalletService.findAll(pageable);
+        Page<ViewerWalletDTO> page = viewerWalletRepository.findAllByDeletedDateIsNull(pageable).map(viewerWalletMapper::toDto);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

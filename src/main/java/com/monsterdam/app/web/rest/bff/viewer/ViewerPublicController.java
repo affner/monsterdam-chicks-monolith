@@ -1,14 +1,16 @@
 package com.monsterdam.app.web.rest.bff.viewer;
 
+import com.monsterdam.app.service.bff.ModelBrowseService;
 import com.monsterdam.app.service.bff.ViewerBffService;
 import com.monsterdam.app.service.dto.bff.ContentSetDTO;
-import com.monsterdam.app.service.dto.bff.MenuDTO;
+import com.monsterdam.app.service.dto.bff.ModelDto;
 import com.monsterdam.app.service.dto.bff.SingleSetDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +30,11 @@ public class ViewerPublicController {
     private static final Logger LOG = LoggerFactory.getLogger(ViewerPublicController.class);
 
     private final ViewerBffService viewerBffService;
+    private final ModelBrowseService modelBrowseService;
 
-    public ViewerPublicController(ViewerBffService viewerBffService) {
+    public ViewerPublicController(ViewerBffService viewerBffService, ModelBrowseService modelBrowseService) {
         this.viewerBffService = viewerBffService;
+        this.modelBrowseService = modelBrowseService;
     }
 
     @GetMapping("/set/list")
@@ -52,10 +56,11 @@ public class ViewerPublicController {
     }
 
     @GetMapping("/model/list")
-    public ResponseEntity<ContentSetDTO> getModels() {
+    public ResponseEntity<List<ModelDto>> getModels() {
         // aqui se traeran la lista de modelos, pero sera aleatoria y solo regresara maximo 10
         //  LOG.debug("REST request to get content set {}", id);
-        return null;
+        Page<ModelDto> page = modelBrowseService.listModels(PageRequest.of(0, 10));
+        return ResponseEntity.ok(page.getContent());
     }
     //  @GetMapping("/model/profile")
 

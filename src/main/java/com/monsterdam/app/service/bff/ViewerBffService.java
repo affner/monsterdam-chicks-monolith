@@ -139,6 +139,20 @@ public class ViewerBffService {
 
     @Transactional(readOnly = true)
     public ContentSetDTO getContentSet(Long id) {
+        return buildContentSet(id);
+    }
+
+    @Transactional(readOnly = true)
+    public SetDetailDTO getSetDetail(Long id) {
+        return getSetDetailCanonical(id);
+    }
+
+    @Transactional(readOnly = true)
+    public SetDetailDTO getSetDetailCanonical(Long id) {
+        return toSetDetail(buildContentSet(id));
+    }
+
+    private ContentSetDTO buildContentSet(Long id) {
         UserContext context = resolveUserContext();
         ContentPackage contentPackage = contentPackageRepository
             .findByIdAndDeletedDateIsNull(id)
@@ -169,9 +183,7 @@ public class ViewerBffService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public SetDetailDTO getSetDetail(Long id) {
-        ContentSetDTO contentSet = getContentSet(id);
+    private SetDetailDTO toSetDetail(ContentSetDTO contentSet) {
         SetDetailDTO detail = new SetDetailDTO();
         detail.setId(contentSet.getId());
         detail.setTitle(contentSet.getTitle());

@@ -6,13 +6,14 @@ import com.monsterdam.app.repository.ContentPackageRepository;
 import com.monsterdam.app.repository.UserLiteRepository;
 import com.monsterdam.app.service.dto.bff.ModelDto;
 import com.monsterdam.app.service.dto.bff.PackageDto;
-import java.util.List;
+import jakarta.persistence.criteria.JoinType;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * Service class implementing the browse logic for models and packages.  It
@@ -46,22 +47,28 @@ public class ModelBrowseService {
      * @return a page of ModelDto objects
      */
     public Page<ModelDto> searchModels(String query, String style, Pageable pageable) {
-        // Basic specification filtering deleted users and applying search on nickName/fullName.
-        Specification<UserLite> spec = (root, q, cb) -> {
-            // Only return users without a deletedDate
-            var predicates = cb.conjunction();
-            predicates.getExpressions().add(cb.isNull(root.get("deletedDate")));
-            if (query != null && !query.isBlank()) {
-                String like = "%" + query.toLowerCase().trim() + "%";
+        Specification<UserLite> spec = Specification.where(BffDeletedDate.<UserLite>isNull());
+        if (StringUtils.hasText(query)) {
+            String like = "%" + query.toLowerCase(Locale.ROOT).trim() + "%";
+            spec = spec.and((root, q, cb) -> {
                 var nick = cb.like(cb.lower(root.get("nickName")), like);
                 var full = cb.like(cb.lower(root.get("fullName")), like);
-                predicates.getExpressions().add(cb.or(nick, full));
-            }
-            // TODO: filter by style once the domain supports it
-            return predicates;
-        };
+                return cb.or(nick, full);
+            });
+        }
+        if (StringUtils.hasText(style)) {
+            String like = "%" + style.toLowerCase(Locale.ROOT).trim() + "%";
+            spec = spec.and((root, q, cb) -> {
+                var profile = root.join("profile", JoinType.LEFT);
+                return cb.like(cb.lower(profile.get("biography")), like);
+            });
+        }
 
-        return userLiteRepository.findAllByDeletedDateIsNull(pageable).map(this::mapToModelDto);
+        return userLiteRepository.findAll(spec, pageable).map(this::mapToModelDto);
+    }
+
+    public Page<ModelDto> listModels(Pageable pageable) {
+        return searchModels(null, null, pageable);
     }
 
     /**
@@ -94,17 +101,13 @@ public class ModelBrowseService {
      * @return a page of PackageDto objects
      */
     public Page<PackageDto> listPackagesByModel(Long modelId, Boolean paid, Pageable pageable) {
-        Specification<ContentPackage> spec = (root, query, cb) -> {
-            var predicates = cb.conjunction();
-            // Only packages created by the given model: join via createdBy string
-            // In a future iteration this should use a proper relationship
-            predicates.getExpressions().add(cb.equal(root.get("createdBy"), modelId.toString()));
-            if (paid != null) {
-                predicates.getExpressions().add(cb.equal(root.get("isPaidContent"), paid));
-            }
-            return predicates;
-        };
-        return contentPackageRepository.findAllByDeletedDateIsNull(pageable).map(this::mapToPackageDto);
+        Specification<ContentPackage> spec = Specification.where(BffDeletedDate.<ContentPackage>isNull()).and((root, query, cb) ->
+            cb.equal(root.get("createdBy"), modelId != null ? modelId.toString() : null)
+        );
+        if (paid != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("isPaidContent"), paid));
+        }
+        return contentPackageRepository.findAll(spec, pageable).map(this::mapToPackageDto);
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.monsterdam.app.web.rest.bff.common;
 
-import com.monsterdam.app.service.ContentPackageService;
-import com.monsterdam.app.service.PostFeedService;
+import com.monsterdam.app.repository.ContentPackageRepository;
+import com.monsterdam.app.repository.PostFeedRepository;
 import com.monsterdam.app.service.dto.ContentPackageDTO;
 import com.monsterdam.app.service.dto.PostFeedDTO;
+import com.monsterdam.app.service.mapper.ContentPackageMapper;
+import com.monsterdam.app.service.mapper.PostFeedMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,12 +32,21 @@ public class CatalogController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogController.class);
 
-    private final PostFeedService postFeedService;
-    private final ContentPackageService contentPackageService;
+    private final PostFeedRepository postFeedRepository;
+    private final ContentPackageRepository contentPackageRepository;
+    private final PostFeedMapper postFeedMapper;
+    private final ContentPackageMapper contentPackageMapper;
 
-    public CatalogController(PostFeedService postFeedService, ContentPackageService contentPackageService) {
-        this.postFeedService = postFeedService;
-        this.contentPackageService = contentPackageService;
+    public CatalogController(
+        PostFeedRepository postFeedRepository,
+        ContentPackageRepository contentPackageRepository,
+        PostFeedMapper postFeedMapper,
+        ContentPackageMapper contentPackageMapper
+    ) {
+        this.postFeedRepository = postFeedRepository;
+        this.contentPackageRepository = contentPackageRepository;
+        this.postFeedMapper = postFeedMapper;
+        this.contentPackageMapper = contentPackageMapper;
     }
 
     @GetMapping("/posts")
@@ -44,7 +55,7 @@ public class CatalogController {
         @RequestParam(value = "publicOnly", defaultValue = "true") boolean publicOnly
     ) {
         LOG.debug("REST request to get catalog posts with publicOnly={}", publicOnly);
-        Page<PostFeedDTO> page = postFeedService.findAll(pageable);
+        Page<PostFeedDTO> page = postFeedRepository.findAllByDeletedDateIsNull(pageable).map(postFeedMapper::toDto);
         List<PostFeedDTO> visiblePosts = publicOnly
             ? page.getContent().stream().filter(post -> Boolean.TRUE.equals(post.getIsPublic())).collect(Collectors.toList())
             : page.getContent();
@@ -57,14 +68,17 @@ public class CatalogController {
     public ResponseEntity<PostFeedDTO> getPublicPost(@PathVariable Long id) {
         LOG.debug("REST request to get catalog post {}", id);
         return ResponseUtil.wrapOrNotFound(
-            postFeedService.findOne(id).filter(post -> post.getIsPublic() == null || Boolean.TRUE.equals(post.getIsPublic()))
+            postFeedRepository
+                .findByIdAndDeletedDateIsNull(id)
+                .filter(post -> post.getIsPublic() == null || Boolean.TRUE.equals(post.getIsPublic()))
+                .map(postFeedMapper::toDto)
         );
     }
 
     @GetMapping("/packages")
     public ResponseEntity<List<ContentPackageDTO>> getContentPackages(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get catalog content packages");
-        Page<ContentPackageDTO> page = contentPackageService.findAll(pageable);
+        Page<ContentPackageDTO> page = contentPackageRepository.findAllByDeletedDateIsNull(pageable).map(contentPackageMapper::toDto);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -72,6 +86,6 @@ public class CatalogController {
     @GetMapping("/packages/{id}")
     public ResponseEntity<ContentPackageDTO> getContentPackage(@PathVariable Long id) {
         LOG.debug("REST request to get catalog content package {}", id);
-        return ResponseUtil.wrapOrNotFound(contentPackageService.findOne(id));
+        return ResponseUtil.wrapOrNotFound(contentPackageRepository.findByIdAndDeletedDateIsNull(id).map(contentPackageMapper::toDto));
     }
 }
