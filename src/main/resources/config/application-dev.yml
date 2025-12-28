@@ -50,11 +50,12 @@ spring:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
+    # Mail de pruebas para cachar los mails enviados.
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: sandbox.smtp.mailtrap.io
+    port: 465
+    username: fea99098a81705
+    password: 7b8b303f828c5d
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
