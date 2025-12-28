@@ -10,6 +10,21 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './single-video.reducer';
 
+const resolveVideoSource = (contentS3Key?: string | null, contentContentType?: string | null, content?: string | null) => {
+  if (contentS3Key) {
+    if (contentS3Key.startsWith('http') || contentS3Key.startsWith('/')) {
+      return contentS3Key;
+    }
+    return `/content/videos/${contentS3Key}`;
+  }
+
+  if (content && contentContentType) {
+    return `data:${contentContentType};base64,${content}`;
+  }
+
+  return null;
+};
+
 export const SingleVideoDetail = () => {
   const dispatch = useAppDispatch();
 
@@ -20,6 +35,7 @@ export const SingleVideoDetail = () => {
   }, []);
 
   const singleVideoEntity = useAppSelector(state => state.singleVideo.entity);
+  const videoSource = resolveVideoSource(singleVideoEntity.contentS3Key, singleVideoEntity.contentContentType, singleVideoEntity.content);
   return (
     <Row>
       <Col md="8">
@@ -67,17 +83,11 @@ export const SingleVideoDetail = () => {
             </span>
           </dt>
           <dd>
-            {singleVideoEntity.content ? (
-              <div>
-                {singleVideoEntity.contentContentType ? (
-                  <a onClick={openFile(singleVideoEntity.contentContentType, singleVideoEntity.content)}>
-                    <Translate contentKey="entity.action.open">Open</Translate>&nbsp;
-                  </a>
-                ) : null}
-                <span>
-                  {singleVideoEntity.contentContentType}, {byteSize(singleVideoEntity.content)}
-                </span>
-              </div>
+            {videoSource ? (
+              <video controls preload="metadata" style={{ maxWidth: '100%' }}>
+                <source src={videoSource} type={singleVideoEntity.contentContentType || 'video/mp4'} />
+                Your browser does not support the video tag.
+              </video>
             ) : null}
           </dd>
           <dt>
