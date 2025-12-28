@@ -1,6 +1,6 @@
-$header-color: #fff;
-$header-color-secondary: #bbb;
-$header-color-hover: darken($header-color, 20%);
+$header-color: var(--text);
+$header-color-secondary: var(--text-muted);
+$header-color-hover: var(--brand-purple-bright);
 
 /* ==========================================================================
 Development Ribbon
@@ -46,6 +46,12 @@ Navbar styles
   padding-left: 0;
 }
 
+.jh-navbar,
+.navbar {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
 .navbar-version {
   font-size: 0.65em;
   color: $header-color-secondary;
@@ -78,7 +84,7 @@ Navbar styles
 
 .loading-bar {
   height: 3px;
-  background-color: #009cd8;
+  background-color: var(--brand-red);
   position: absolute;
   top: 0;
   z-index: 1031;

@@ -1,16 +1,35 @@
 // Override Bootstrap variables
-@import 'bootstrap-variables';
 @import 'bootswatch/dist/slate/variables';
+@import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
 @import 'bootstrap/scss/bootstrap';
 @import 'bootswatch/dist/slate/bootswatch';
+
+:root {
+  --bg: #0b0a0f;
+  --surface: #15151f;
+  --surface-2: #1d1d2a;
+  --text: #e7e6f0;
+  --text-muted: #b7b4c6;
+  --brand-red: #e3222a;
+  --brand-purple: #a88cff;
+  --brand-purple-bright: #c2b2ff;
+  --border: #2a2637;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
 body {
   margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 a {
-  color: #533f03;
-  font-weight: bold;
+  color: var(--brand-purple);
+  font-weight: 600;
+  &:hover {
+    color: var(--brand-purple-bright);
+  }
 }
 
 * {
@@ -31,6 +50,7 @@ a {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1rem;
+    background-color: var(--bg);
     .card {
       padding: 1rem;
     }
@@ -60,8 +80,8 @@ Browser Upgrade Prompt
 
 .browserupgrade {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  background: var(--surface-2);
+  color: var(--text);
   padding: 0.2em 0;
 }
 
@@ -85,8 +105,8 @@ Custom button styles
 }
 
 .cta-button {
-  background-color: $danger;
-  color: white;
+  background-color: var(--brand-red);
+  color: var(--text);
   border-radius: 30px;
   padding: 0.75rem 2rem;
 }
@@ -113,15 +133,13 @@ Generic styles
 }
 
 .shadow {
-  box-shadow:
-    rgba(0, 0, 0, 0.12) 0 1px 6px,
-    rgba(0, 0, 0, 0.12) 0 1px 4px;
-  border-radius: 2px;
+  box-shadow: var(--shadow);
+  border-radius: 0.5rem;
 }
 
 .error {
-  color: white;
-  background-color: red;
+  color: var(--text);
+  background-color: var(--brand-red);
 }
 
 .break {
@@ -257,8 +275,83 @@ Generic styles
 @include voffset('150');
 
 .readonly {
-  background-color: #eee;
+  background-color: var(--surface-2);
   opacity: 1;
+}
+
+.card,
+.modal-content,
+.dropdown-menu,
+.list-group-item {
+  background-color: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.card-header,
+.card-footer,
+.modal-header,
+.modal-footer {
+  background-color: var(--surface-2);
+  border-color: var(--border);
+}
+
+.btn-primary {
+  border-radius: 999px;
+  background-color: var(--brand-red);
+  border-color: var(--brand-red);
+  color: var(--text);
+  &:hover,
+  &:focus {
+    background-color: #f2323b;
+    border-color: #f2323b;
+    color: var(--text);
+  }
+}
+
+.btn-secondary {
+  border-radius: 999px;
+  background-color: var(--brand-purple);
+  border-color: var(--brand-purple);
+  color: #120f1a;
+  &:hover,
+  &:focus {
+    background-color: var(--brand-purple-bright);
+    border-color: var(--brand-purple-bright);
+    color: #120f1a;
+  }
+}
+
+.btn-outline-light {
+  color: var(--text);
+  border-color: var(--border);
+  &:hover,
+  &:focus {
+    background-color: var(--surface-2);
+    border-color: var(--brand-purple);
+    color: var(--text);
+  }
+}
+
+.form-control,
+.custom-select {
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.form-control:focus,
+.custom-select:focus {
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 0 0.2rem rgba(168, 140, 255, 0.25);
+}
+
+.breadcrumb,
+.breadcrumb-item.active {
+  color: var(--text-muted);
 }
 
 /* ==========================================================================
