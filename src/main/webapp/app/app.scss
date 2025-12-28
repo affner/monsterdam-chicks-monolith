@@ -1,9 +1,9 @@
 // Override Bootstrap variables
 @import 'bootstrap-variables';
-@import 'bootswatch/dist/lumen/variables';
+@import 'bootswatch/dist/slate/variables';
 // Import Bootstrap source files from node_modules
 @import 'bootstrap/scss/bootstrap';
-@import 'bootswatch/dist/lumen/bootswatch';
+@import 'bootswatch/dist/slate/bootswatch';
 body {
   margin: 0;
 }
@@ -82,6 +82,13 @@ Custom button styles
     -webkit-box-shadow: none;
     box-shadow: none;
   }
+}
+
+.cta-button {
+  background-color: $danger;
+  color: white;
+  border-radius: 30px;
+  padding: 0.75rem 2rem;
 }
 
 /* ==========================================================================
