@@ -4,8 +4,21 @@
 * https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss can be overwritten here
 * Make sure not to add !default to values here
 */
-$body-bg: #0a0a0f;
-$primary: #8751d3;
-$secondary: #1d1d29;
-$danger: #e53935;
-$text-light: #f5f5f5;
+$body-bg: #0b0a0f;
+$body-color: #e7e6f0;
+$primary: #e3222a;
+$secondary: #a88cff;
+$danger: #b51f2b;
+$link-color: #a88cff;
+$link-hover-color: #c2b2ff;
+$border-color: #2a2637;
+$card-bg: #15151f;
+$card-border-color: #2a2637;
+$input-bg: #15151f;
+$input-border-color: #2a2637;
+$input-color: #e7e6f0;
+$input-placeholder-color: #9f9bb0;
+$navbar-dark-color: #e7e6f0;
+$navbar-dark-hover-color: #ffffff;
+$navbar-dark-active-color: #ffffff;
+$navbar-dark-toggler-border-color: #2a2637;
