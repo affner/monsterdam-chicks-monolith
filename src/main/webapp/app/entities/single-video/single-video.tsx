@@ -12,6 +12,21 @@ import { DurationFormat } from 'app/shared/DurationFormat';
 
 import { getEntities } from './single-video.reducer';
 
+const resolveVideoSource = (contentS3Key?: string | null, contentContentType?: string | null, content?: string | null) => {
+  if (contentS3Key) {
+    if (contentS3Key.startsWith('http') || contentS3Key.startsWith('/')) {
+      return contentS3Key;
+    }
+    return `/content/videos/${contentS3Key}`;
+  }
+
+  if (content && contentContentType) {
+    return `data:${contentContentType};base64,${content}`;
+  }
+
+  return null;
+};
+
 export const SingleVideo = () => {
   const dispatch = useAppDispatch();
 
@@ -174,109 +189,105 @@ export const SingleVideo = () => {
               </tr>
             </thead>
             <tbody>
-              {singleVideoList.map((singleVideo, i) => (
-                <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
-                    <Button tag={Link} to={`/single-video/${singleVideo.id}`} color="link" size="sm">
-                      {singleVideo.id}
-                    </Button>
-                  </td>
-                  <td>
-                    {singleVideo.thumbnail ? (
-                      <div>
-                        {singleVideo.thumbnailContentType ? (
-                          <a onClick={openFile(singleVideo.thumbnailContentType, singleVideo.thumbnail)}>
-                            <img
-                              src={`data:${singleVideo.thumbnailContentType};base64,${singleVideo.thumbnail}`}
-                              style={{ maxHeight: '30px' }}
-                            />
-                            &nbsp;
-                          </a>
-                        ) : null}
-                        <span>
-                          {singleVideo.thumbnailContentType}, {byteSize(singleVideo.thumbnail)}
-                        </span>
+              {singleVideoList.map((singleVideo, i) => {
+                const videoSource = resolveVideoSource(singleVideo.contentS3Key, singleVideo.contentContentType, singleVideo.content);
+                return (
+                  <tr key={`entity-${i}`} data-cy="entityTable">
+                    <td>
+                      <Button tag={Link} to={`/single-video/${singleVideo.id}`} color="link" size="sm">
+                        {singleVideo.id}
+                      </Button>
+                    </td>
+                    <td>
+                      {singleVideo.thumbnail ? (
+                        <div>
+                          {singleVideo.thumbnailContentType ? (
+                            <a onClick={openFile(singleVideo.thumbnailContentType, singleVideo.thumbnail)}>
+                              <img
+                                src={`data:${singleVideo.thumbnailContentType};base64,${singleVideo.thumbnail}`}
+                                style={{ maxHeight: '30px' }}
+                              />
+                              &nbsp;
+                            </a>
+                          ) : null}
+                          <span>
+                            {singleVideo.thumbnailContentType}, {byteSize(singleVideo.thumbnail)}
+                          </span>
+                        </div>
+                      ) : null}
+                    </td>
+                    <td>{singleVideo.thumbnailS3Key}</td>
+                    <td>
+                      {videoSource ? (
+                        <video controls preload="metadata" style={{ maxWidth: '220px' }}>
+                          <source src={videoSource} type={singleVideo.contentContentType || 'video/mp4'} />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : null}
+                    </td>
+                    <td>{singleVideo.contentS3Key}</td>
+                    <td>{singleVideo.duration ? <DurationFormat value={singleVideo.duration} /> : null}</td>
+                    <td>{singleVideo.likeCount}</td>
+                    <td>{singleVideo.isPreview ? 'true' : 'false'}</td>
+                    <td>
+                      {singleVideo.createdDate ? <TextFormat type="date" value={singleVideo.createdDate} format={APP_DATE_FORMAT} /> : null}
+                    </td>
+                    <td>
+                      {singleVideo.lastModifiedDate ? (
+                        <TextFormat type="date" value={singleVideo.lastModifiedDate} format={APP_DATE_FORMAT} />
+                      ) : null}
+                    </td>
+                    <td>{singleVideo.createdBy}</td>
+                    <td>{singleVideo.lastModifiedBy}</td>
+                    <td>
+                      {singleVideo.deletedDate ? <TextFormat type="date" value={singleVideo.deletedDate} format={APP_DATE_FORMAT} /> : null}
+                    </td>
+                    <td>
+                      {singleVideo.contentPackage ? (
+                        <Link to={`/content-package/${singleVideo.contentPackage.id}`}>{singleVideo.contentPackage.id}</Link>
+                      ) : (
+                        ''
+                      )}
+                    </td>
+                    <td>{singleVideo.creator ? <Link to={`/user-lite/${singleVideo.creator.id}`}>{singleVideo.creator.id}</Link> : ''}</td>
+                    <td className="text-end">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button tag={Link} to={`/single-video/${singleVideo.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                          <FontAwesomeIcon icon="eye" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.view">View</Translate>
+                          </span>
+                        </Button>
+                        <Button
+                          tag={Link}
+                          to={`/single-video/${singleVideo.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                          color="primary"
+                          size="sm"
+                          data-cy="entityEditButton"
+                        >
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            (window.location.href = `/single-video/${singleVideo.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
+                          }
+                          color="danger"
+                          size="sm"
+                          data-cy="entityDeleteButton"
+                        >
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
                       </div>
-                    ) : null}
-                  </td>
-                  <td>{singleVideo.thumbnailS3Key}</td>
-                  <td>
-                    {singleVideo.content ? (
-                      <div>
-                        {singleVideo.contentContentType ? (
-                          <a onClick={openFile(singleVideo.contentContentType, singleVideo.content)}>
-                            <Translate contentKey="entity.action.open">Open</Translate>
-                            &nbsp;
-                          </a>
-                        ) : null}
-                        <span>
-                          {singleVideo.contentContentType}, {byteSize(singleVideo.content)}
-                        </span>
-                      </div>
-                    ) : null}
-                  </td>
-                  <td>{singleVideo.contentS3Key}</td>
-                  <td>{singleVideo.duration ? <DurationFormat value={singleVideo.duration} /> : null}</td>
-                  <td>{singleVideo.likeCount}</td>
-                  <td>{singleVideo.isPreview ? 'true' : 'false'}</td>
-                  <td>
-                    {singleVideo.createdDate ? <TextFormat type="date" value={singleVideo.createdDate} format={APP_DATE_FORMAT} /> : null}
-                  </td>
-                  <td>
-                    {singleVideo.lastModifiedDate ? (
-                      <TextFormat type="date" value={singleVideo.lastModifiedDate} format={APP_DATE_FORMAT} />
-                    ) : null}
-                  </td>
-                  <td>{singleVideo.createdBy}</td>
-                  <td>{singleVideo.lastModifiedBy}</td>
-                  <td>
-                    {singleVideo.deletedDate ? <TextFormat type="date" value={singleVideo.deletedDate} format={APP_DATE_FORMAT} /> : null}
-                  </td>
-                  <td>
-                    {singleVideo.contentPackage ? (
-                      <Link to={`/content-package/${singleVideo.contentPackage.id}`}>{singleVideo.contentPackage.id}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>{singleVideo.creator ? <Link to={`/user-lite/${singleVideo.creator.id}`}>{singleVideo.creator.id}</Link> : ''}</td>
-                  <td className="text-end">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/single-video/${singleVideo.id}`} color="info" size="sm" data-cy="entityDetailsButton">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`/single-video/${singleVideo.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                        data-cy="entityEditButton"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          (window.location.href = `/single-video/${singleVideo.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
-                        }
-                        color="danger"
-                        size="sm"
-                        data-cy="entityDeleteButton"
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         ) : (

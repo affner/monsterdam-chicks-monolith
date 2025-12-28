@@ -141,6 +141,7 @@ export const SingleVideoUpdate = () => {
                 name="content"
                 data-cy="content"
                 openActionLabel={translate('entity.action.open')}
+                accept="video/*"
                 validate={{
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
