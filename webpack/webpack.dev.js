@@ -98,7 +98,7 @@ module.exports = async options =>
       ),
       new WebpackNotifierPlugin({
         title: 'Monsterdam Chicks',
-        contentImage: path.join(__dirname, 'logo-jhipster.png'),
+        contentImage: path.join(__dirname, 'logo-monsterdam.png'),
       }),
     ].filter(Boolean),
   });
