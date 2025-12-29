@@ -87,8 +87,12 @@ public class ModelBrowseService {
      * @return an optional containing the ModelDto
      */
     public Optional<ModelDto> getModelDetails(Long id, Integer limit) {
+        Specification<UserLite> spec = Specification.where(userLiteRepository.notDeletedSpec())
+            .and(hasCreatorRole())
+            .and((root, query, cb) -> cb.equal(root.get("id"), id));
+
         return userLiteRepository
-            .findByIdAndDeletedDateIsNull(id)
+            .findOne(spec)
             .map(userLite -> {
                 ModelDto dto = mapToModelDto(userLite);
                 // Fetch limited packages (posts omitted for brevity)
