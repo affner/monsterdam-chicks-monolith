@@ -1,12 +1,16 @@
 package com.monsterdam.app.service.bff;
 
 import com.monsterdam.app.domain.ContentPackage;
+import com.monsterdam.app.domain.User;
 import com.monsterdam.app.domain.UserLite;
 import com.monsterdam.app.repository.ContentPackageRepository;
 import com.monsterdam.app.repository.UserLiteRepository;
+import com.monsterdam.app.security.AuthoritiesConstants;
 import com.monsterdam.app.service.dto.bff.ModelDto;
 import com.monsterdam.app.service.dto.bff.PackageDto;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import java.util.Locale;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -48,6 +52,8 @@ public class ModelBrowseService {
      */
     public Page<ModelDto> searchModels(String query, String style, Pageable pageable) {
         Specification<UserLite> spec = Specification.where(null);
+
+        spec = spec.and(hasCreatorRole());
 
         if (StringUtils.hasText(query)) {
             String like = "%" + query.toLowerCase(Locale.ROOT).trim() + "%";
@@ -121,6 +127,17 @@ public class ModelBrowseService {
      */
     public Optional<PackageDto> getPackageDetails(Long packageId) {
         return contentPackageRepository.findByIdAndDeletedDateIsNull(packageId).map(this::mapToPackageDto);
+    }
+
+    private Specification<UserLite> hasCreatorRole() {
+        return (root, query, cb) -> {
+            Subquery<Long> subquery = query.subquery(Long.class);
+            Root<User> userRoot = subquery.from(User.class);
+            var authorityJoin = userRoot.join("authorities");
+            subquery.select(userRoot.get("id"));
+            subquery.where(cb.equal(userRoot.get("id"), root.get("id")), cb.equal(authorityJoin.get("name"), AuthoritiesConstants.CREATOR));
+            return cb.exists(subquery);
+        };
     }
 
     private ModelDto mapToModelDto(UserLite user) {
