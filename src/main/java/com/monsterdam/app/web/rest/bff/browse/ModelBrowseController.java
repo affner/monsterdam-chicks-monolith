@@ -5,12 +5,10 @@ import com.monsterdam.app.service.bff.ModelBrowseService;
 import com.monsterdam.app.service.dto.bff.ModelDto;
 import com.monsterdam.app.service.dto.bff.PackageDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,13 +16,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST controller for browsing models and their content.  The methods
- * implemented here expose read‑only endpoints under `/api/public/browse` that
- * return lightweight DTOs for consumption by the front end.  These DTOs
- * include precomputed URLs for the creators' profile pictures and content
- * thumbnails as well as counts for posts and packages.  All pagination and
- * search parameters follow the conventions established by other browse
- * controllers.
+ * Controlador REST (BFF) para navegación pública de modelos y su contenido.
+ *
+ * Expone endpoints de solo lectura bajo `/api/public/browse` para que el front
+ * pueda:
+ * - listar modelos (con búsqueda y filtros),
+ * - ver el detalle público de un modelo (preview),
+ * - listar paquetes de un modelo,
+ * - ver detalle de un paquete,
+ * - obtener una URL temporal (token) para descargar un media.
+ *
+ * Nota: Los DTOs ya deben venir “listos para UI” (con URLs calculadas, contadores, etc.)
+ * desde el service, para no meter lógica en el controller.
  */
 @RestController
 @RequestMapping("/api/public/browse")
@@ -39,134 +42,143 @@ public class ModelBrowseController {
     }
 
     /**
-     * GET  /models : return a paginated list of models.
+     * GET /models : regresa una lista paginada de modelos.
      *
-     * Clients may search by nick name or full name using the optional
-     * {@code q} query parameter.  Additionally, a simple text filter
-     * {@code style} can be provided to filter by the creator's primary style
-     * (e.g. “goth”, “punk”).  When no parameters are provided all active
-     * creators are returned ordered by the most recently created profiles.
+     * Permite:
+     * - búsqueda libre por nick o nombre completo con `textName`
+     * - filtro simple por estilo principal con `style` (ej: "goth", "punk")
      *
-     * @param pageable the pagination information
-     * @param q the free text search query
-     * @param style the style filter
-     * @return the list of creators, with pagination headers
+     * Si no mandas parámetros, regresa todos los modelos activos ordenados por los más recientes.
      */
     @GetMapping("/models")
     @Operation(
-        summary = "List models",
-        description = "Return a paginated list of models.  Results can be filtered via optional text search and style parameters."
+        summary = "Listar modelos",
+        description = "Regresa una lista paginada de modelos. Se puede filtrar con búsqueda libre (q) y estilo (style)."
     )
     @ApiResponses(
         {
             @ApiResponse(
                 responseCode = "200",
-                description = "The list of models",
+                description = "Lista paginada de modelos",
                 content = @Content(schema = @Schema(implementation = ModelDto.class))
             ),
         }
     )
     public ResponseEntity<Page<ModelDto>> listModels(
         @ParameterObject Pageable pageable,
-        @RequestParam(value = "q", required = false) String q,
+        @RequestParam(value = "textName", required = false) String textName,
         @RequestParam(value = "style", required = false) String style
     ) {
-        Page<ModelDto> page = modelBrowseService.searchModels(q, style, pageable);
-        // Each DTO already contains the correct image URLs; no further processing required.
+        Page<ModelDto> page = modelBrowseService.searchModels(textName, style, pageable);
         return ResponseEntity.ok(page);
     }
 
     /**
-     * GET  /models/{id} : get the detailed profile for a single model.
+     * GET /models/{idModel} : obtiene el perfil público detallado de un modelo.
      *
-     * The response includes the creator's public profile information, a
-     * selection of their recent posts and a summary of packages they offer.
-     * Clients may supply an optional {@code limit} parameter to cap the number
-     * of posts and packages returned.  This method defers to the
-     * {@link ModelBrowseService} for all business logic.
-     *
-     * @param id the id of the model to retrieve
-     * @param limit the maximum number of posts and packages to include
-     * @return the response entity with status 200 (OK) and the model details
+     * Incluye información pública del modelo + preview (posts recientes y paquetes).
+     * `limit` es un tope opcional para limitar cuántos items se regresan en el preview.
      */
-    @GetMapping("/models/{id}")
+    @GetMapping("/models/{idModel}")
     @Operation(
-        summary = "Get model details",
-        description = "Retrieve the public profile of a creator along with a preview of their posts and packages."
+        summary = "Obtener detalle de modelo",
+        description = "Obtiene el perfil público del modelo, junto con un preview de posts y paquetes."
     )
     @ApiResponses(
         {
             @ApiResponse(
                 responseCode = "200",
-                description = "The model profile",
+                description = "Detalle del modelo",
                 content = @Content(schema = @Schema(implementation = ModelDto.class))
             ),
-            @ApiResponse(responseCode = "404", description = "Model not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Modelo no encontrado", content = @Content),
         }
     )
-    public ResponseEntity<ModelDto> getModel(@PathVariable("id") Long id, @RequestParam(value = "limit", required = false) Integer limit) {
-        return modelBrowseService.getModelDetails(id, limit).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ModelDto> getModel(
+        @PathVariable("idModel") Long idModel,
+        @RequestParam(value = "limit", required = false) Integer limit
+    ) {
+        return modelBrowseService.getModelDetails(idModel, limit).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * GET  /models/{modelId}/packages : list packages for a specific model.
+     * GET /models/{idModel}/packages : lista paginada de paquetes de un modelo.
      *
-     * Returns a paginated list of the content packages created by the given
-     * model.  Each package entry includes counts of videos and images as well
-     * as a thumbnail URL representing the package.  Clients can restrict
-     * results to only free or only paid content via the {@code paid}
-     * parameter.
-     *
-     * @param modelId the id of the model
-     * @param pageable the pagination information
-     * @param paid if true, return only paid packages; if false, only free packages; null returns all
-     * @return a page of PackageDto objects
+     * `paid`:
+     * - true  => solo paquetes de pago
+     * - false => solo paquetes gratis
+     * - null  => todos
      */
-    @GetMapping("/models/{modelId}/packages")
-    @Operation(summary = "List a model's packages", description = "Paginated listing of content packages offered by a specific creator.")
+    @GetMapping("/models/{idModel}/packages")
+    @Operation(
+        summary = "Listar paquetes de un modelo",
+        description = "Regresa una lista paginada de paquetes ofrecidos por un modelo, con filtro opcional por contenido pagado."
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Lista paginada de paquetes",
+                content = @Content(schema = @Schema(implementation = PackageDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Modelo no encontrado", content = @Content),
+        }
+    )
     public ResponseEntity<Page<PackageDto>> listModelPackages(
-        @PathVariable("modelId") Long modelId,
+        @PathVariable("idModel") Long idModel,
         @ParameterObject Pageable pageable,
         @RequestParam(value = "paid", required = false) Boolean paid
     ) {
-        Page<PackageDto> page = modelBrowseService.listPackagesByModel(modelId, paid, pageable);
+        Page<PackageDto> page = modelBrowseService.listPackagesByModel(idModel, paid, pageable);
         return ResponseEntity.ok(page);
     }
 
     /**
-     * GET  /packages/{packageId} : get full details for a content package.
+     * GET /packages/{packageId} : obtiene el detalle completo de un paquete.
      *
-     * Returns the meta‑data for the package along with lists of photo and
-     * video identifiers.  The front end may call the media endpoint to
-     * exchange those identifiers for temporary download URLs.  In the
-     * initial phase, the identifiers map directly to filesystem paths.
+     * Regresa metadatos + lista de ids de fotos/videos.
+     * El front usa /media/{mediaId} para intercambiar ids por URLs temporales de descarga.
      *
-     * @param packageId the id of the package
-     * @return the package detail with its media ids
+     * En fase inicial, estos ids pueden mapear directo a filesystem; después se puede migrar a pre-signed URLs (S3).
      */
     @GetMapping("/packages/{packageId}")
     @Operation(
-        summary = "Get package details",
-        description = "Retrieve the name, description, price and media item identifiers for a package."
+        summary = "Obtener detalle de paquete",
+        description = "Obtiene nombre, descripción, precio e identificadores de media (fotos/videos) de un paquete."
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Detalle del paquete",
+                content = @Content(schema = @Schema(implementation = PackageDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Paquete no encontrado", content = @Content),
+        }
     )
     public ResponseEntity<PackageDto> getPackage(@PathVariable("packageId") Long packageId) {
         return modelBrowseService.getPackageDetails(packageId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * GET /media/{mediaId} : exchange a media id for a download URL.
+     * GET /media/{mediaId} : intercambia un id de media por una URL temporal.
      *
-     * This endpoint provides an abstraction layer over the underlying
-     * storage.  During early development it returns a filesystem path to
-     * serve as a stand‑in for a pre‑signed S3 URL.  Once the front end has
-     * direct access to the database the implementation can be swapped out to
-     * generate real pre‑signed URLs without requiring changes to the UI.
-     *
-     * @param mediaId the id of the media item (photo or video)
-     * @return a plain string containing the download URL
+     * Esto abstrae el storage:
+     * - hoy puede ser filesystem (o un “token” simple),
+     * - mañana puede ser una pre-signed URL real (S3/MinIO),
+     * sin que el front tenga que cambiar su lógica.
      */
     @GetMapping("/media/{mediaId}")
-    @Operation(summary = "Get media URL", description = "Given a media identifier, return a temporary URL for download.")
+    @Operation(
+        summary = "Obtener URL temporal de media",
+        description = "Dado un mediaId (foto o video), regresa una URL temporal para descarga."
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(responseCode = "200", description = "URL temporal de descarga", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Media no encontrado", content = @Content),
+        }
+    )
     public ResponseEntity<String> getMediaUrl(@PathVariable("mediaId") Long mediaId) {
         return ResponseEntity.ok(mediaTokenService.getTokenForMedia(mediaId));
     }

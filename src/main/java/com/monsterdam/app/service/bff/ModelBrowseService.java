@@ -47,7 +47,8 @@ public class ModelBrowseService {
      * @return a page of ModelDto objects
      */
     public Page<ModelDto> searchModels(String query, String style, Pageable pageable) {
-        Specification<UserLite> spec = Specification.where(BffDeletedDate.<UserLite>isNull());
+        Specification<UserLite> spec = Specification.where(null);
+
         if (StringUtils.hasText(query)) {
             String like = "%" + query.toLowerCase(Locale.ROOT).trim() + "%";
             spec = spec.and((root, q, cb) -> {
@@ -56,6 +57,7 @@ public class ModelBrowseService {
                 return cb.or(nick, full);
             });
         }
+
         if (StringUtils.hasText(style)) {
             String like = "%" + style.toLowerCase(Locale.ROOT).trim() + "%";
             spec = spec.and((root, q, cb) -> {
@@ -64,7 +66,7 @@ public class ModelBrowseService {
             });
         }
 
-        return userLiteRepository.findAll(spec, pageable).map(this::mapToModelDto);
+        return userLiteRepository.findAllByDeletedDateIsNull(spec, pageable).map(this::mapToModelDto);
     }
 
     public Page<ModelDto> listModels(Pageable pageable) {
