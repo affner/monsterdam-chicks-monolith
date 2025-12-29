@@ -103,13 +103,14 @@ public class ModelBrowseService {
      * @return a page of PackageDto objects
      */
     public Page<PackageDto> listPackagesByModel(Long modelId, Boolean paid, Pageable pageable) {
-        Specification<ContentPackage> spec = Specification.where(BffDeletedDate.<ContentPackage>isNull()).and((root, query, cb) ->
-            cb.equal(root.get("createdBy"), modelId != null ? modelId.toString() : null)
-        );
+        Specification<ContentPackage> spec = Specification.where(null);
+        if (modelId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("createdBy"), modelId.toString()));
+        }
         if (paid != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("isPaidContent"), paid));
         }
-        return contentPackageRepository.findAll(spec, pageable).map(this::mapToPackageDto);
+        return contentPackageRepository.findAllByDeletedDateIsNull(spec, pageable).map(this::mapToPackageDto);
     }
 
     /**
