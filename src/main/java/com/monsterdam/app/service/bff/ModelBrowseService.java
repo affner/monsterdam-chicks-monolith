@@ -170,7 +170,7 @@ public class ModelBrowseService {
     public Page<PackageDto> listPackagesByModel(Long modelId, Boolean paid, Pageable pageable) {
         Specification<ContentPackage> spec = Specification.where(null);
         if (modelId != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("createdBy"), modelId.toString()));
+            spec = spec.and(contentMatchesModel(modelId));
         }
         if (paid != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("isPaidContent"), paid));
@@ -207,8 +207,7 @@ public class ModelBrowseService {
     }
 
     private List<ModelSetPreviewDto> listSetPreviews(Long modelId, int limit) {
-        Specification<ContentPackage> spec = Specification.where(null);
-        spec = spec.and((root, query, cb) -> cb.equal(root.get("createdBy"), modelId.toString()));
+        Specification<ContentPackage> spec = Specification.where(null).and(contentMatchesModel(modelId));
         Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdDate"));
         return contentPackageRepository
             .findAllByDeletedDateIsNull(spec, pageable)
@@ -246,6 +245,25 @@ public class ModelBrowseService {
             return Optional.empty();
         }
         return post;
+    }
+
+    private Specification<ContentPackage> contentMatchesModel(Long modelId) {
+        List<Long> postIds = resolvePostIdsForCreator(modelId);
+        return (root, query, cb) -> {
+            var createdByMatch = cb.equal(root.get("createdBy"), modelId.toString());
+            if (postIds.isEmpty()) {
+                return createdByMatch;
+            }
+            return cb.or(createdByMatch, root.get("postId").in(postIds));
+        };
+    }
+
+    private List<Long> resolvePostIdsForCreator(Long modelId) {
+        return postFeedRepository
+            .findAllByCreator_IdAndDeletedDateIsNull(modelId)
+            .stream()
+            .map(PostFeed::getId)
+            .collect(Collectors.toList());
     }
 
     private String resolveCoverUrl(Long contentPackageId) {
