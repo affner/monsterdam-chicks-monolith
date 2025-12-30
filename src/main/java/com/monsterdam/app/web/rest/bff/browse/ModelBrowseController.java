@@ -3,6 +3,7 @@ package com.monsterdam.app.web.rest.bff.browse;
 import com.monsterdam.app.service.bff.MediaTokenService;
 import com.monsterdam.app.service.bff.ModelBrowseService;
 import com.monsterdam.app.service.dto.bff.ModelDto;
+import com.monsterdam.app.service.dto.bff.ModelProfileDto;
 import com.monsterdam.app.service.dto.bff.PackageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -99,6 +100,34 @@ public class ModelBrowseController {
         @RequestParam(value = "limit", required = false) Integer limit
     ) {
         return modelBrowseService.getModelDetails(idModel, limit).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * GET /models/{idModel}/profile : obtiene el perfil público completo de un modelo.
+     *
+     * Incluye información pública del modelo + sets recientes para renderizar la pantalla de perfil.
+     * `limit` es un tope opcional para limitar cuántos sets se regresan.
+     */
+    @GetMapping("/models/{idModel}/profile")
+    @Operation(
+        summary = "Obtener perfil completo de modelo",
+        description = "Obtiene el perfil público del modelo junto con los sets recientes para la pantalla de perfil."
+    )
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Perfil completo del modelo",
+                content = @Content(schema = @Schema(implementation = ModelProfileDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Modelo no encontrado", content = @Content),
+        }
+    )
+    public ResponseEntity<ModelProfileDto> getModelProfile(
+        @PathVariable("idModel") Long idModel,
+        @RequestParam(value = "limit", required = false) Integer limit
+    ) {
+        return modelBrowseService.getModelProfile(idModel, limit).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     /**

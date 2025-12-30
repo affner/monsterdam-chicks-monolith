@@ -1,20 +1,37 @@
 package com.monsterdam.app.service.bff;
 
 import com.monsterdam.app.domain.ContentPackage;
+import com.monsterdam.app.domain.PostFeed;
+import com.monsterdam.app.domain.SingleAudio;
+import com.monsterdam.app.domain.SinglePhoto;
+import com.monsterdam.app.domain.SingleVideo;
 import com.monsterdam.app.domain.User;
 import com.monsterdam.app.domain.UserLite;
+import com.monsterdam.app.domain.UserProfile;
 import com.monsterdam.app.repository.ContentPackageRepository;
+import com.monsterdam.app.repository.PostFeedRepository;
+import com.monsterdam.app.repository.SingleAudioRepository;
+import com.monsterdam.app.repository.SinglePhotoRepository;
+import com.monsterdam.app.repository.SingleVideoRepository;
 import com.monsterdam.app.repository.UserLiteRepository;
+import com.monsterdam.app.repository.UserProfileRepository;
 import com.monsterdam.app.security.AuthoritiesConstants;
 import com.monsterdam.app.service.dto.bff.ModelDto;
+import com.monsterdam.app.service.dto.bff.ModelProfileDto;
+import com.monsterdam.app.service.dto.bff.ModelSetPreviewDto;
 import com.monsterdam.app.service.dto.bff.PackageDto;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,15 +48,30 @@ public class ModelBrowseService {
     private final UserLiteRepository userLiteRepository;
     private final ContentPackageRepository contentPackageRepository;
     private final MediaTokenService mediaTokenService;
+    private final PostFeedRepository postFeedRepository;
+    private final SinglePhotoRepository singlePhotoRepository;
+    private final SingleVideoRepository singleVideoRepository;
+    private final SingleAudioRepository singleAudioRepository;
+    private final UserProfileRepository userProfileRepository;
 
     public ModelBrowseService(
         UserLiteRepository userLiteRepository,
         ContentPackageRepository contentPackageRepository,
-        MediaTokenService mediaTokenService
+        MediaTokenService mediaTokenService,
+        PostFeedRepository postFeedRepository,
+        SinglePhotoRepository singlePhotoRepository,
+        SingleVideoRepository singleVideoRepository,
+        SingleAudioRepository singleAudioRepository,
+        UserProfileRepository userProfileRepository
     ) {
         this.userLiteRepository = userLiteRepository;
         this.contentPackageRepository = contentPackageRepository;
         this.mediaTokenService = mediaTokenService;
+        this.postFeedRepository = postFeedRepository;
+        this.singlePhotoRepository = singlePhotoRepository;
+        this.singleVideoRepository = singleVideoRepository;
+        this.singleAudioRepository = singleAudioRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     /**
@@ -105,6 +137,29 @@ public class ModelBrowseService {
     }
 
     /**
+     * Fetch a complete profile payload for the profile screen.
+     *
+     * @param id the model id
+     * @param limit optional limit to the number of sets included in the response
+     * @return optional containing ModelProfileDto
+     */
+    public Optional<ModelProfileDto> getModelProfile(Long id, Integer limit) {
+        Specification<UserLite> spec = Specification.where(userLiteRepository.notDeletedSpec())
+            .and(hasCreatorRole())
+            .and((root, query, cb) -> cb.equal(root.get("id"), id));
+
+        return userLiteRepository
+            .findOne(spec)
+            .map(userLite -> {
+                UserProfile profile = resolveProfile(userLite);
+                ModelProfileDto dto = mapToModelProfileDto(userLite, profile);
+                int size = limit != null && limit > 0 ? limit : 12;
+                dto.setSets(listSetPreviews(id, size));
+                return dto;
+            });
+    }
+
+    /**
      * List packages belonging to a particular model.
      *
      * @param modelId the id of the creator
@@ -144,6 +199,116 @@ public class ModelBrowseService {
         };
     }
 
+    private UserProfile resolveProfile(UserLite userLite) {
+        if (userLite.getProfile() == null) {
+            return null;
+        }
+        return userProfileRepository.findByIdAndDeletedDateIsNull(userLite.getProfile().getId()).orElse(null);
+    }
+
+    private List<ModelSetPreviewDto> listSetPreviews(Long modelId, int limit) {
+        Specification<ContentPackage> spec = Specification.where(null);
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("createdBy"), modelId.toString()));
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return contentPackageRepository
+            .findAllByDeletedDateIsNull(spec, pageable)
+            .stream()
+            .map(this::toSetPreview)
+            .flatMap(Optional::stream)
+            .collect(Collectors.toList());
+    }
+
+    private Optional<ModelSetPreviewDto> toSetPreview(ContentPackage contentPackage) {
+        Optional<PostFeed> post = loadPublicPost(contentPackage);
+        if (post.isEmpty()) {
+            return Optional.empty();
+        }
+        ModelSetPreviewDto dto = new ModelSetPreviewDto();
+        dto.setId(contentPackage.getId());
+        dto.setTitle(buildTitle(contentPackage, post.orElse(null)));
+        dto.setDescriptionShort(shorten(buildDescription(post.orElse(null)), 140));
+        dto.setCoverUrl(resolveCoverUrl(contentPackage.getId()));
+        dto.setCreatedDate(contentPackage.getCreatedDate());
+        dto.setPaid(Boolean.TRUE.equals(contentPackage.getIsPaidContent()));
+        dto.setAmount(contentPackage.getAmount());
+        return Optional.of(dto);
+    }
+
+    private Optional<PostFeed> loadPublicPost(ContentPackage contentPackage) {
+        if (contentPackage.getPostId() == null) {
+            return Optional.empty();
+        }
+        Optional<PostFeed> post = postFeedRepository.findByIdAndDeletedDateIsNull(contentPackage.getPostId());
+        if (post.isEmpty()) {
+            return Optional.empty();
+        }
+        if (!Boolean.TRUE.equals(post.orElseThrow(IllegalStateException::new).getIsPublic())) {
+            return Optional.empty();
+        }
+        return post;
+    }
+
+    private String resolveCoverUrl(Long contentPackageId) {
+        return resolveCoverKey(contentPackageId).map(mediaTokenService::getTokenForKey).orElse(null);
+    }
+
+    private Optional<String> resolveCoverKey(Long contentPackageId) {
+        List<SinglePhoto> photos = singlePhotoRepository.findAllByContentPackage_IdAndDeletedDateIsNull(contentPackageId);
+        Optional<String> previewPhoto = photos
+            .stream()
+            .filter(photo -> Boolean.TRUE.equals(photo.getIsPreview()))
+            .map(SinglePhoto::getThumbnailS3Key)
+            .filter(StringUtils::hasText)
+            .findFirst();
+        if (previewPhoto.isPresent()) {
+            return previewPhoto;
+        }
+        Optional<String> photoFallback = photos.stream().map(SinglePhoto::getThumbnailS3Key).filter(StringUtils::hasText).findFirst();
+        if (photoFallback.isPresent()) {
+            return photoFallback;
+        }
+        Optional<String> videoFallback = singleVideoRepository
+            .findAllByContentPackage_IdAndDeletedDateIsNull(contentPackageId)
+            .stream()
+            .map(SingleVideo::getThumbnailS3Key)
+            .filter(StringUtils::hasText)
+            .findFirst();
+        if (videoFallback.isPresent()) {
+            return videoFallback;
+        }
+        return singleAudioRepository
+            .findAllByContentPackage_IdAndDeletedDateIsNull(contentPackageId)
+            .stream()
+            .map(SingleAudio::getThumbnailS3Key)
+            .filter(StringUtils::hasText)
+            .findFirst();
+    }
+
+    private String buildTitle(ContentPackage contentPackage, PostFeed post) {
+        if (post != null && StringUtils.hasText(post.getPostContent())) {
+            String content = post.getPostContent().trim();
+            return shorten(content, 60);
+        }
+        return "Set #" + contentPackage.getId();
+    }
+
+    private String buildDescription(PostFeed post) {
+        if (post != null && StringUtils.hasText(post.getPostContent())) {
+            return post.getPostContent();
+        }
+        return null;
+    }
+
+    private String shorten(String text, int maxLength) {
+        if (!StringUtils.hasText(text)) {
+            return null;
+        }
+        if (text.length() <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + "...";
+    }
+
     private ModelDto mapToModelDto(UserLite user) {
         ModelDto dto = new ModelDto();
         dto.setId(user.getId());
@@ -167,6 +332,50 @@ public class ModelBrowseService {
         }
         // TODO: populate followers count and other stats once available
         return dto;
+    }
+
+    private ModelProfileDto mapToModelProfileDto(UserLite user, UserProfile profile) {
+        ModelProfileDto dto = new ModelProfileDto();
+        dto.setId(user.getId());
+        dto.setNickName(user.getNickName());
+        dto.setFullName(user.getFullName());
+        dto.setHandle(user.getNickName());
+        if (profile != null) {
+            dto.setBiography(profile.getBiography());
+            dto.setIsFree(Boolean.TRUE.equals(profile.getIsFree()));
+            String profileKey = profile.getProfilePhotoS3Key();
+            if (profileKey != null) {
+                dto.setProfilePhotoUrl(mediaTokenService.getTokenForKey(profileKey));
+            }
+            String coverKey = profile.getCoverPhotoS3Key();
+            if (coverKey != null) {
+                dto.setCoverPhotoUrl(mediaTokenService.getTokenForKey(coverKey));
+            }
+            dto.setLinks(collectLinks(profile));
+        }
+        String thumbKey = user.getThumbnailS3Key();
+        if (thumbKey != null) {
+            dto.setThumbnailUrl(mediaTokenService.getTokenForKey(thumbKey));
+        }
+        dto.setFollowersCount(null);
+        return dto;
+    }
+
+    private List<String> collectLinks(UserProfile profile) {
+        if (profile == null) {
+            return List.of();
+        }
+        List<String> links = new ArrayList<>();
+        if (StringUtils.hasText(profile.getWebsiteUrl())) {
+            links.add(profile.getWebsiteUrl());
+        }
+        if (StringUtils.hasText(profile.getAmazonWishlistUrl())) {
+            links.add(profile.getAmazonWishlistUrl());
+        }
+        if (StringUtils.hasText(profile.getMainContentUrl())) {
+            links.add(profile.getMainContentUrl());
+        }
+        return links;
     }
 
     private PackageDto mapToPackageDto(ContentPackage pkg) {
