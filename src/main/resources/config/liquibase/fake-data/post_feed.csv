@@ -19,3 +19,4 @@ id;post_content;is_public;pinned_post;like_count;created_date;last_modified_date
 18;../fake-data/blob/hipster.txt;true;false;55;2025-12-21T10:05:00;2025-12-21T10:05:00;user9;user9;2025-12-23T09:00:00;9
 19;../fake-data/blob/hipster.txt;true;true;390;2025-12-15T13:02:43;2025-12-15T22:04:55;user10;user10;;10
 20;../fake-data/blob/hipster.txt;true;false;44;2025-12-22T12:00:00;2025-12-22T12:30:00;user10;system;;10
+21;../fake-data/blob/hipster.txt;true;false;64;2025-12-17T15:10:00;2025-12-17T15:10:00;user3;user3;;3
