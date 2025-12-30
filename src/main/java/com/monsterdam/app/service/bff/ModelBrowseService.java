@@ -207,7 +207,10 @@ public class ModelBrowseService {
     }
 
     private List<ModelSetPreviewDto> listSetPreviews(Long modelId, int limit) {
-        Specification<ContentPackage> spec = Specification.where(null).and(contentMatchesModel(modelId));
+        Specification<ContentPackage> spec = Specification.where(null);
+        if (modelId != null) {
+            spec = spec.and(contentMatchesModel(modelId));
+        }
         Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdDate"));
         return contentPackageRepository
             .findAllByDeletedDateIsNull(spec, pageable)
