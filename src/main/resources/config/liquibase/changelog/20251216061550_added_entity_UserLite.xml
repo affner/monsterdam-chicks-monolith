@@ -78,6 +78,8 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="thumbnail_s_3_key" type="string"/>
+            <column name="thumbnail" type="blob"/>
+            <column name="thumbnail_content_type" type="string"/>
             <column name="birth_date" type="date"/>
             <column name="gender" type="string"/>
             <column name="created_date" type="date"/>
