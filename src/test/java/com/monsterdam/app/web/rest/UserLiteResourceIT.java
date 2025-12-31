@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -41,6 +42,11 @@ class UserLiteResourceIT {
 
     private static final String DEFAULT_THUMBNAIL_S_3_KEY = "AAAAAAAAAA";
     private static final String UPDATED_THUMBNAIL_S_3_KEY = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_THUMBNAIL = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_THUMBNAIL = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_THUMBNAIL_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_THUMBNAIL_CONTENT_TYPE = "image/png";
 
     private static final LocalDate DEFAULT_BIRTH_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_BIRTH_DATE = LocalDate.now(ZoneId.systemDefault());
@@ -103,6 +109,8 @@ class UserLiteResourceIT {
     public static UserLite createEntity() {
         return new UserLite()
             .thumbnailS3Key(DEFAULT_THUMBNAIL_S_3_KEY)
+            .thumbnail(DEFAULT_THUMBNAIL)
+            .thumbnailContentType(DEFAULT_THUMBNAIL_CONTENT_TYPE)
             .birthDate(DEFAULT_BIRTH_DATE)
             .gender(DEFAULT_GENDER)
             .createdDate(DEFAULT_CREATED_DATE)
@@ -123,6 +131,8 @@ class UserLiteResourceIT {
     public static UserLite createUpdatedEntity() {
         return new UserLite()
             .thumbnailS3Key(UPDATED_THUMBNAIL_S_3_KEY)
+            .thumbnail(UPDATED_THUMBNAIL)
+            .thumbnailContentType(UPDATED_THUMBNAIL_CONTENT_TYPE)
             .birthDate(UPDATED_BIRTH_DATE)
             .gender(UPDATED_GENDER)
             .createdDate(UPDATED_CREATED_DATE)
@@ -287,6 +297,8 @@ class UserLiteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userLite.getId().intValue())))
             .andExpect(jsonPath("$.[*].thumbnailS3Key").value(hasItem(DEFAULT_THUMBNAIL_S_3_KEY)))
+            .andExpect(jsonPath("$.[*].thumbnailContentType").value(hasItem(DEFAULT_THUMBNAIL_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].thumbnail").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_THUMBNAIL))))
             .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
@@ -311,6 +323,8 @@ class UserLiteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userLite.getId().intValue()))
             .andExpect(jsonPath("$.thumbnailS3Key").value(DEFAULT_THUMBNAIL_S_3_KEY))
+            .andExpect(jsonPath("$.thumbnailContentType").value(DEFAULT_THUMBNAIL_CONTENT_TYPE))
+            .andExpect(jsonPath("$.thumbnail").value(Base64.getEncoder().encodeToString(DEFAULT_THUMBNAIL)))
             .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
@@ -343,6 +357,8 @@ class UserLiteResourceIT {
         em.detach(updatedUserLite);
         updatedUserLite
             .thumbnailS3Key(UPDATED_THUMBNAIL_S_3_KEY)
+            .thumbnail(UPDATED_THUMBNAIL)
+            .thumbnailContentType(UPDATED_THUMBNAIL_CONTENT_TYPE)
             .birthDate(UPDATED_BIRTH_DATE)
             .gender(UPDATED_GENDER)
             .createdDate(UPDATED_CREATED_DATE)
@@ -443,6 +459,8 @@ class UserLiteResourceIT {
 
         partialUpdatedUserLite
             .thumbnailS3Key(UPDATED_THUMBNAIL_S_3_KEY)
+            .thumbnail(UPDATED_THUMBNAIL)
+            .thumbnailContentType(UPDATED_THUMBNAIL_CONTENT_TYPE)
             .birthDate(UPDATED_BIRTH_DATE)
             .gender(UPDATED_GENDER)
             .createdDate(UPDATED_CREATED_DATE)
@@ -478,6 +496,8 @@ class UserLiteResourceIT {
 
         partialUpdatedUserLite
             .thumbnailS3Key(UPDATED_THUMBNAIL_S_3_KEY)
+            .thumbnail(UPDATED_THUMBNAIL)
+            .thumbnailContentType(UPDATED_THUMBNAIL_CONTENT_TYPE)
             .birthDate(UPDATED_BIRTH_DATE)
             .gender(UPDATED_GENDER)
             .createdDate(UPDATED_CREATED_DATE)

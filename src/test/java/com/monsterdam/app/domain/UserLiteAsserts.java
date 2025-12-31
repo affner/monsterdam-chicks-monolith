@@ -48,6 +48,10 @@ public class UserLiteAsserts {
         assertThat(actual)
             .as("Verify UserLite relevant properties")
             .satisfies(a -> assertThat(a.getThumbnailS3Key()).as("check thumbnailS3Key").isEqualTo(expected.getThumbnailS3Key()))
+            .satisfies(a -> assertThat(a.getThumbnail()).as("check thumbnail").isEqualTo(expected.getThumbnail()))
+            .satisfies(a ->
+                assertThat(a.getThumbnailContentType()).as("check thumbnailContentType").isEqualTo(expected.getThumbnailContentType())
+            )
             .satisfies(a -> assertThat(a.getBirthDate()).as("check birthDate").isEqualTo(expected.getBirthDate()))
             .satisfies(a -> assertThat(a.getGender()).as("check gender").isEqualTo(expected.getGender()))
             .satisfies(a -> assertThat(a.getCreatedDate()).as("check createdDate").isEqualTo(expected.getCreatedDate()))

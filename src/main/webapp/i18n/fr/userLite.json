@@ -19,6 +19,7 @@
       },
       "id": "ID",
       "thumbnailS3Key": "Thumbnail S 3 Key",
+      "thumbnail": "Vignette",
       "birthDate": "Birth Date",
       "gender": "Gender",
       "createdDate": "Created Date",
