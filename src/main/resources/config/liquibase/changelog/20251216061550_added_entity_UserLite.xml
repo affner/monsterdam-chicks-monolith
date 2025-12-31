@@ -17,6 +17,12 @@
             <column name="thumbnail_s_3_key" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="thumbnail" type="blob">
+                <constraints nullable="true" />
+            </column>
+            <column name="thumbnail_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="birth_date" type="date">
                 <constraints nullable="false" />
             </column>
