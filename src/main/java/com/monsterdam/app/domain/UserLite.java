@@ -35,6 +35,13 @@ public class UserLite implements Serializable {
     @Column(name = "thumbnail_s_3_key")
     private String thumbnailS3Key;
 
+    @Lob
+    @Column(name = "thumbnail")
+    private byte[] thumbnail;
+
+    @Column(name = "thumbnail_content_type")
+    private String thumbnailContentType;
+
     @NotNull
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
@@ -190,6 +197,32 @@ public class UserLite implements Serializable {
 
     public void setThumbnailS3Key(String thumbnailS3Key) {
         this.thumbnailS3Key = thumbnailS3Key;
+    }
+
+    public byte[] getThumbnail() {
+        return this.thumbnail;
+    }
+
+    public UserLite thumbnail(byte[] thumbnail) {
+        this.setThumbnail(thumbnail);
+        return this;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getThumbnailContentType() {
+        return this.thumbnailContentType;
+    }
+
+    public UserLite thumbnailContentType(String thumbnailContentType) {
+        this.thumbnailContentType = thumbnailContentType;
+        return this;
+    }
+
+    public void setThumbnailContentType(String thumbnailContentType) {
+        this.thumbnailContentType = thumbnailContentType;
     }
 
     public LocalDate getBirthDate() {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Col, Row } from 'reactstrap';
-import { Translate, ValidatedField, ValidatedForm, translate } from 'react-jhipster';
+import { Translate, ValidatedBlobField, ValidatedField, ValidatedForm, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -130,6 +130,14 @@ export const UserLiteUpdate = () => {
                 name="thumbnailS3Key"
                 data-cy="thumbnailS3Key"
                 type="text"
+              />
+              <ValidatedBlobField
+                label={translate('monsterdamChicksApp.userLite.thumbnail')}
+                id="user-lite-thumbnail"
+                name="thumbnail"
+                data-cy="thumbnail"
+                isImage
+                accept="image/*"
               />
               <ValidatedField
                 label={translate('monsterdamChicksApp.userLite.birthDate')}

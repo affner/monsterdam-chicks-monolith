@@ -1,6 +1,7 @@
 package com.monsterdam.app.service.dto;
 
 import com.monsterdam.app.domain.enumeration.UserGender;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -18,6 +19,11 @@ public class UserLiteDTO implements Serializable {
     private Long id;
 
     private String thumbnailS3Key;
+
+    @Lob
+    private byte[] thumbnail;
+
+    private String thumbnailContentType;
 
     @NotNull
     private LocalDate birthDate;
@@ -66,6 +72,22 @@ public class UserLiteDTO implements Serializable {
 
     public void setThumbnailS3Key(String thumbnailS3Key) {
         this.thumbnailS3Key = thumbnailS3Key;
+    }
+
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getThumbnailContentType() {
+        return thumbnailContentType;
+    }
+
+    public void setThumbnailContentType(String thumbnailContentType) {
+        this.thumbnailContentType = thumbnailContentType;
     }
 
     public LocalDate getBirthDate() {
@@ -199,6 +221,8 @@ public class UserLiteDTO implements Serializable {
         return "UserLiteDTO{" +
             "id=" + getId() +
             ", thumbnailS3Key='" + getThumbnailS3Key() + "'" +
+            ", thumbnail='" + getThumbnail() + "'" +
+            ", thumbnailContentType='" + getThumbnailContentType() + "'" +
             ", birthDate='" + getBirthDate() + "'" +
             ", gender='" + getGender() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +

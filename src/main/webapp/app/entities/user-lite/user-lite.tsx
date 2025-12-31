@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
-import { JhiItemCount, JhiPagination, TextFormat, Translate, getPaginationState } from 'react-jhipster';
+import { JhiItemCount, JhiPagination, TextFormat, Translate, byteSize, getPaginationState, openFile } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -118,6 +118,10 @@ export const UserLite = () => {
                   <Translate contentKey="monsterdamChicksApp.userLite.thumbnailS3Key">Thumbnail S 3 Key</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('thumbnailS3Key')} />
                 </th>
+                <th className="hand" onClick={sort('thumbnail')}>
+                  <Translate contentKey="monsterdamChicksApp.userLite.thumbnail">Thumbnail</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('thumbnail')} />
+                </th>
                 <th className="hand" onClick={sort('birthDate')}>
                   <Translate contentKey="monsterdamChicksApp.userLite.birthDate">Birth Date</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('birthDate')} />
@@ -176,6 +180,20 @@ export const UserLite = () => {
                     </Button>
                   </td>
                   <td>{userLite.thumbnailS3Key}</td>
+                  <td>
+                    {userLite.thumbnail ? (
+                      <div>
+                        {userLite.thumbnailContentType ? (
+                          <a onClick={openFile(userLite.thumbnailContentType, userLite.thumbnail)}>
+                            <img src={`data:${userLite.thumbnailContentType};base64,${userLite.thumbnail}`} style={{ maxHeight: '30px' }} />
+                          </a>
+                        ) : null}
+                        <span>
+                          {userLite.thumbnailContentType}, {byteSize(userLite.thumbnail)}
+                        </span>
+                      </div>
+                    ) : null}
+                  </td>
                   <td>
                     {userLite.birthDate ? <TextFormat type="date" value={userLite.birthDate} format={APP_LOCAL_DATE_FORMAT} /> : null}
                   </td>

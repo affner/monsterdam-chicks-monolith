@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Col, Row } from 'reactstrap';
-import { TextFormat, Translate } from 'react-jhipster';
+import { TextFormat, Translate, byteSize, openFile } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -38,6 +38,28 @@ export const UserLiteDetail = () => {
             </span>
           </dt>
           <dd>{userLiteEntity.thumbnailS3Key}</dd>
+          <dt>
+            <span id="thumbnail">
+              <Translate contentKey="monsterdamChicksApp.userLite.thumbnail">Thumbnail</Translate>
+            </span>
+          </dt>
+          <dd>
+            {userLiteEntity.thumbnail ? (
+              <div>
+                {userLiteEntity.thumbnailContentType ? (
+                  <a onClick={openFile(userLiteEntity.thumbnailContentType, userLiteEntity.thumbnail)}>
+                    <img
+                      src={`data:${userLiteEntity.thumbnailContentType};base64,${userLiteEntity.thumbnail}`}
+                      style={{ maxHeight: '30px' }}
+                    />
+                  </a>
+                ) : null}
+                <span>
+                  {userLiteEntity.thumbnailContentType}, {byteSize(userLiteEntity.thumbnail)}
+                </span>
+              </div>
+            ) : null}
+          </dd>
           <dt>
             <span id="birthDate">
               <Translate contentKey="monsterdamChicksApp.userLite.birthDate">Birth Date</Translate>

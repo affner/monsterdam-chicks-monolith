@@ -8,6 +8,8 @@ import { UserGender } from 'app/shared/model/enumerations/user-gender.model';
 export interface IUserLite {
   id?: number;
   thumbnailS3Key?: string | null;
+  thumbnailContentType?: string | null;
+  thumbnail?: string | null;
   birthDate?: dayjs.Dayjs;
   gender?: keyof typeof UserGender;
   createdDate?: dayjs.Dayjs;
