@@ -17,7 +17,7 @@
             <column name="thumbnail_s_3_key" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="thumbnail" type="blob">
+            <column name="thumbnail" type="${blobType}">
                 <constraints nullable="true" />
             </column>
             <column name="thumbnail_content_type" type="varchar(255)">

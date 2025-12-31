@@ -4,14 +4,30 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="20251216071550-1" author="codex">
-        <addColumn tableName="user_lite">
-            <column name="thumbnail" type="${blobType}">
-                <constraints nullable="true"/>
-            </column>
-            <column name="thumbnail_content_type" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
+
+  <changeSet id="20251216071550-1" author="codex">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="user_lite" columnName="thumbnail"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="user_lite">
+      <column name="thumbnail" type="${blobType}">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet id="20251216071550-2" author="codex">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <columnExists tableName="user_lite" columnName="thumbnail_content_type"/>
+      </not>
+    </preConditions>
+    <addColumn tableName="user_lite">
+      <column name="thumbnail_content_type" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
     </changeSet>
 </databaseChangeLog>
