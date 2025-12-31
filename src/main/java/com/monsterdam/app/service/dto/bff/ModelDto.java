@@ -1,5 +1,6 @@
 package com.monsterdam.app.service.dto.bff;
 
+import jakarta.persistence.Lob;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ public class ModelDto {
     private String profilePhotoUrl;
     private String coverPhotoUrl;
     private String thumbnailUrl;
+
+    @Lob
+    private byte[] thumbnail;
+
     private List<PackageDto> packages = new ArrayList<>();
 
     // getters and setters
@@ -92,5 +97,13 @@ public class ModelDto {
 
     public void setPackages(List<PackageDto> packages) {
         this.packages = packages;
+    }
+
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

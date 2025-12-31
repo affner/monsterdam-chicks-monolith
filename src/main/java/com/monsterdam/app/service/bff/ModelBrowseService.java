@@ -335,6 +335,7 @@ public class ModelBrowseService {
         dto.setId(user.getId());
         dto.setNickName(user.getNickName());
         dto.setFullName(user.getFullName());
+        dto.setThumbnail(user.getThumbnail());
         if (user.getProfile() != null) {
             dto.setBiography(user.getProfile().getBiography());
             dto.setIsFree(Boolean.TRUE.equals(user.getProfile().getIsFree()));
